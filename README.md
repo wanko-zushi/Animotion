@@ -1,1 +1,1 @@
-# ![](assets/logo.gif)
+# ![](assets/banner.png)
