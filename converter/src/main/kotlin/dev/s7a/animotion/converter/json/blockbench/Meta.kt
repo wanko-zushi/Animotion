@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Meta(
-    @SerialName("format_version") var formatVersion: String? = null,
-    @SerialName("model_format") var modelFormat: String? = null,
-    @SerialName("box_uv") var boxUv: Boolean? = null,
+    @SerialName("format_version") val formatVersion: String, // TODO 4.5 であることをチェックする
+    @SerialName("model_format") val modelFormat: String, // TODO free であることをチェックする
 )
