@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("com.github.ajalt.clikt:clikt:3.5.2")
 }
 
 application {
