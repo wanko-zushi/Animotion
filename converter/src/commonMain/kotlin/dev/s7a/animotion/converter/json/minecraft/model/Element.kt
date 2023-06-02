@@ -8,5 +8,5 @@ data class Element(
     val from: List<Double>,
     val to: List<Double>,
     val rotation: Rotation,
-    val faces: Map<FaceType, Face>
+    val faces: Map<FaceType, Face>,
 )

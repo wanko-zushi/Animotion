@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class MinecraftModel(
     @SerialName("texture_size") val textureSize: List<Int>,
     val textures: Map<String, String>,
-    val elements: List<Element>
+    val elements: List<Element>,
 )

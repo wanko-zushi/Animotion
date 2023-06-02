@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Rotation(
     val angle: Double,
     val axis: String,
-    val origin: List<Double>
+    val origin: List<Double>,
 )

@@ -1,5 +1,5 @@
 on: push
-name: Test
+name: Check
 jobs:
   test:
     strategy:
@@ -17,5 +17,5 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - name: Test
-        run: ./gradlew allTests
+      - name: Check
+        run: ./gradlew check
