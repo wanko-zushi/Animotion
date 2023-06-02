@@ -23,13 +23,18 @@ data class Element(
         Cube,
     }
 
-    fun toMinecraftElement(): MinecraftElement {
+    fun toMinecraftElement(originOffset: List<Double>): MinecraftElement {
+        val origin = origin.mapIndexed { index, value ->
+            value - originOffset[index]
+        }
         return MinecraftElement(from, to, Rotation(0.0, "y", origin), faces.toMinecraftFaces())
     }
 
     companion object {
-        fun List<Element>.toMinecraftElements(): List<MinecraftElement> {
-            return map(Element::toMinecraftElement)
+        fun List<Element>.toMinecraftElements(originOffset: List<Double>): List<MinecraftElement> {
+            return map {
+                it.toMinecraftElement(originOffset)
+            }
         }
     }
 }
