@@ -15,8 +15,8 @@ data class Face(
 
     companion object {
         fun Map<FaceType, Face>.toMinecraftFaces(): Map<FaceType, MinecraftFace> {
-            return entries.associate { (key, value) ->
-                key to value.toMinecraftFace()
+            return mapValues { (_, value) ->
+                value.toMinecraftFace()
             }
         }
     }
