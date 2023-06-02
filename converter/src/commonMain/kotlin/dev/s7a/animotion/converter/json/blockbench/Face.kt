@@ -2,7 +2,7 @@ package dev.s7a.animotion.converter.json.blockbench
 
 import dev.s7a.animotion.converter.json.common.FaceType
 import kotlinx.serialization.Serializable
-import dev.s7a.animotion.converter.json.minecraft.Face as MinecraftFace
+import dev.s7a.animotion.converter.json.minecraft.model.Face as MinecraftFace
 
 @Serializable
 data class Face(

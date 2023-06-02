@@ -2,11 +2,11 @@ package dev.s7a.animotion.converter.json.blockbench
 
 import dev.s7a.animotion.converter.json.blockbench.Face.Companion.toMinecraftFaces
 import dev.s7a.animotion.converter.json.common.FaceType
-import dev.s7a.animotion.converter.json.minecraft.Rotation
+import dev.s7a.animotion.converter.json.minecraft.model.Rotation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.uuid.UUID
-import dev.s7a.animotion.converter.json.minecraft.Element as MinecraftElement
+import dev.s7a.animotion.converter.json.minecraft.model.Element as MinecraftElement
 
 @Serializable
 data class Element(

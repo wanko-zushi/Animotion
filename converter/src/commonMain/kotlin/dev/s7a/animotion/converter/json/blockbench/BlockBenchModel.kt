@@ -2,7 +2,7 @@ package dev.s7a.animotion.converter.json.blockbench
 
 import dev.s7a.animotion.converter.json.animotion.AnimotionSettings
 import dev.s7a.animotion.converter.json.blockbench.Element.Companion.toMinecraftElements
-import dev.s7a.animotion.converter.json.minecraft.MinecraftModel
+import dev.s7a.animotion.converter.json.minecraft.model.MinecraftModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,14 +16,13 @@ data class BlockBenchModel(
     val animations: List<Animations>,
 ) {
     fun toMinecraftModels(settings: AnimotionSettings): List<MinecraftModel> {
-        val elements = elements.associateBy(Element::uuid)
+        val elementByUuid = elements.associateBy(Element::uuid)
 
         return outliner.map { outliner ->
-            MinecraftModel(
-                textureSize = listOf(resolution.width, resolution.height),
-                textures = textures.indices.associate { "$it" to "${settings.namespace}:$name/$it" },
-                elements = outliner.children.mapNotNull(elements::get).toMinecraftElements(),
-            )
+            val textureSize = listOf(resolution.width, resolution.height)
+            val textures = textures.indices.associate { "$it" to "${settings.namespace}:$name/$it" }
+            val elements = outliner.children.mapNotNull(elementByUuid::get).toMinecraftElements()
+            MinecraftModel(textureSize, textures, elements)
         }
     }
 }
