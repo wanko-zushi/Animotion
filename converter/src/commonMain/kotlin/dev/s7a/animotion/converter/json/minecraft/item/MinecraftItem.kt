@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class MinecraftItem(
     val parent: String? = null,
     val textures: Map<String, String>? = null,
+    val overrides: List<Override>? = null
 )
