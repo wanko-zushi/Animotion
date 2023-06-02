@@ -5,6 +5,7 @@ import dev.s7a.animotion.converter.json.blockbench.BlockBenchModel
 import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
 import dev.s7a.animotion.converter.util.path.extension
 import dev.s7a.animotion.converter.util.path.list
+import dev.s7a.animotion.converter.util.path.nameWithoutExtension
 import dev.s7a.animotion.converter.util.path.readText
 import kotlinx.serialization.json.Json
 import okio.Path
@@ -17,7 +18,7 @@ data class Animotion(val settings: AnimotionSettings, val models: List<BlockBenc
                 json.decodeFromString<BlockBenchModel>(it.readText())
             }
             val base = directory.resolve("base").list().filter { it.extension == "json" }.associate {
-                it.name to json.decodeFromString<MinecraftItem>(it.readText())
+                it.nameWithoutExtension to json.decodeFromString<MinecraftItem>(it.readText())
             }
             return Animotion(settings, models, base)
         }
