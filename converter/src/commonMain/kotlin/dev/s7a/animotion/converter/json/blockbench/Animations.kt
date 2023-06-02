@@ -2,6 +2,7 @@ package dev.s7a.animotion.converter.json.blockbench
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.uuid.UUID
 
 @Serializable
 data class Animations(
@@ -12,7 +13,7 @@ data class Animations(
     @SerialName("blend_weight") val blendWeight: String = "", // TODO 非対応なので "" であることをチェック
     @SerialName("start_delay") val startDelay: String = "", // TODO 非対応なので "" であることをチェック
     @SerialName("loop_delay") val loopDelay: String = "", // TODO 非対応なので "" であることをチェック
-    @SerialName("animators") val animators: Map<String, Animator> = mapOf(), // TODO K: Outliner#uuid
+    @SerialName("animators") val animators: Map<UUID, Animator> = mapOf(), // TODO K: Outliner#uuid
 ) {
     @Serializable
     enum class LoopType {
