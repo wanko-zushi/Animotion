@@ -1,31 +1,23 @@
 package dev.s7a.animotion.converter.json.blockbench
 
-import kotlinx.serialization.SerialName
+import dev.s7a.animotion.converter.json.common.FaceType
 import kotlinx.serialization.Serializable
+import dev.s7a.animotion.converter.json.minecraft.Face as MinecraftFace
 
 @Serializable
 data class Face(
-    val uv: List<Int>,
-    val texture: Int, // TODO BlockBenchModel#textures の番号
+    val uv: List<Double>,
+    val texture: Int,
 ) {
-    @Serializable
-    enum class Type {
-        @SerialName("north")
-        North,
+    fun toMinecraftFace(): MinecraftFace {
+        return MinecraftFace(uv, "#$texture")
+    }
 
-        @SerialName("east")
-        East,
-
-        @SerialName("south")
-        South,
-
-        @SerialName("west")
-        West,
-
-        @SerialName("up")
-        Up,
-
-        @SerialName("down")
-        Down,
+    companion object {
+        fun Map<FaceType, Face>.toMinecraftFaces(): Map<FaceType, MinecraftFace> {
+            return entries.associate { (key, value) ->
+                key to value.toMinecraftFace()
+            }
+        }
     }
 }

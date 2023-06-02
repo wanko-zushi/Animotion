@@ -9,5 +9,5 @@ data class Outliner(
     val origin: List<Double>,
     val rotation: List<Double>? = null,
     val uuid: UUID,
-    val children: List<UUID>, // TODO Elements#uuid
+    val children: List<UUID>,
 )
