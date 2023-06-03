@@ -10,7 +10,7 @@ data class Face(
     val texture: Int,
 ) {
     fun toMinecraftFace(): MinecraftFace {
-        return MinecraftFace(uv, "#$texture")
+        return MinecraftFace(uv.map { it / 4 }, "#$texture") // TODO なぜか４で割る。何かの数字を使っている？？
     }
 
     companion object {
