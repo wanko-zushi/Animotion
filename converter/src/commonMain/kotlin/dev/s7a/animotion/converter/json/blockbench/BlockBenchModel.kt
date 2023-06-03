@@ -22,7 +22,7 @@ data class BlockBenchModel(
         return outliner.map { outliner ->
             val textureSize = listOf(resolution.width, resolution.height)
             val textures = textures.indices.associate { "$it" to "${settings.namespace}:$name/$it" }
-            val elements = outliner.children.mapNotNull(elementByUuid::get).toMinecraftElements(outliner.origin)
+            val elements = outliner.children.mapNotNull(elementByUuid::get).toMinecraftElements(outliner.origin, outliner.rotation)
             Part(outliner.name, MinecraftModel(textureSize, textures, elements))
         }
     }
