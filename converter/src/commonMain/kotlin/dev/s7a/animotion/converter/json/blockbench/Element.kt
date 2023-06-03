@@ -36,7 +36,7 @@ data class Element(
     fun toMinecraftElement(originOffset: List<Double>, rotationOffset: List<Double>?): MinecraftElement {
         val (angle, axis) = rotationAngle(rotationOffset ?: listOf(0.0, 0.0, 0.0))
         val origin = origin.mapIndexed { index, value ->
-            value - originOffset[index]
+            value + originOffset[index]
         }
         return MinecraftElement(from, to, Rotation(angle, axis, origin), faces.toMinecraftFaces())
     }
