@@ -9,14 +9,19 @@ data class Face(
     val uv: List<Double>,
     val texture: Int,
 ) {
-    fun toMinecraftFace(): MinecraftFace {
-        return MinecraftFace(uv.map { it / 4 }, "#$texture") // TODO なぜか４で割る。何かの数字を使っている？？
+    fun toMinecraftFace(resolution: Resolution): MinecraftFace {
+        return MinecraftFace(
+            uv.mapIndexed { index, value ->
+                value * 16 / (if (index % 2 == 0) resolution.width else resolution.height)
+            },
+            "#$texture",
+        )
     }
 
     companion object {
-        fun Map<FaceType, Face>.toMinecraftFaces(): Map<FaceType, MinecraftFace> {
+        fun Map<FaceType, Face>.toMinecraftFaces(resolution: Resolution): Map<FaceType, MinecraftFace> {
             return mapValues { (_, value) ->
-                value.toMinecraftFace()
+                value.toMinecraftFace(resolution)
             }
         }
     }

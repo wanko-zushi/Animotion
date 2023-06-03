@@ -33,18 +33,18 @@ data class Element(
         return rotation[index] to Rotation.Axis.values()[index]
     }
 
-    fun toMinecraftElement(originOffset: List<Double>, rotationOffset: List<Double>?): MinecraftElement {
+    fun toMinecraftElement(originOffset: List<Double>, rotationOffset: List<Double>?, resolution: Resolution): MinecraftElement {
         val (angle, axis) = rotationAngle(rotationOffset ?: listOf(0.0, 0.0, 0.0))
         val origin = origin.mapIndexed { index, value ->
             value + originOffset[index]
         }
-        return MinecraftElement(from, to, Rotation(angle, axis, origin), faces.toMinecraftFaces())
+        return MinecraftElement(from, to, Rotation(angle, axis, origin), faces.toMinecraftFaces(resolution))
     }
 
     companion object {
-        fun List<Element>.toMinecraftElements(originOffset: List<Double>, rotationOffset: List<Double>?): List<MinecraftElement> {
+        fun List<Element>.toMinecraftElements(originOffset: List<Double>, rotationOffset: List<Double>?, resolution: Resolution): List<MinecraftElement> {
             return map {
-                it.toMinecraftElement(originOffset, rotationOffset)
+                it.toMinecraftElement(originOffset, rotationOffset, resolution)
             }
         }
     }
