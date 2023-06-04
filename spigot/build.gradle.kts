@@ -1,7 +1,6 @@
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
-    kotlin("jvm") version "1.8.21"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
     id("org.jmailen.kotlinter") version "3.15.0"
 }
