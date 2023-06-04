@@ -1,4 +1,5 @@
 import dev.s7a.animotion.converter.Converter
+import dev.s7a.animotion.converter.exception.MinecraftItemNotFoundException
 import dev.s7a.animotion.converter.exception.ModelNotFoundException
 import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
@@ -46,6 +47,18 @@ sealed class ResourcePackTest(private val name: String) {
                 resourcePack()
             }.run {
                 assertEquals("Unsupported pack_format: 12 (< 13)", message)
+            }
+        }
+    }
+
+    class MinecraftItemNotFound : ResourcePackTest("minecraft_item_not_found") {
+        @Test
+        fun load() {
+            val resourcePack = resourcePack()
+            assertFailsWith<MinecraftItemNotFoundException> {
+                Converter(resourcePack)
+            }.run {
+                assertEquals("animotion/base/kelp.json not found", message)
             }
         }
     }
