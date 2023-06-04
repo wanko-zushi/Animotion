@@ -24,27 +24,22 @@ data class Element(
         Cube,
     }
 
-    private fun rotationAngle(rotationOffset: List<Double>): Pair<Double, Rotation.Axis> {
-        val rotation = (this.rotation ?: listOf(0.0, 0.0, 0.0)).mapIndexed { index, value ->
-            value + rotationOffset[index]
-        }
+    private fun rotationAngle(): Pair<Double, Rotation.Axis> {
+        val rotation = this.rotation ?: return 0.0 to Rotation.Axis.Y
         val index = rotation.indexOfFirst { it != 0.0 }
         if (index == -1) return 0.0 to Rotation.Axis.Y
         return rotation[index] to Rotation.Axis.values()[index]
     }
 
-    fun toMinecraftElement(originOffset: List<Double>, rotationOffset: List<Double>?, resolution: Resolution): MinecraftElement {
-        val (angle, axis) = rotationAngle(rotationOffset ?: listOf(0.0, 0.0, 0.0))
-        val origin = origin.mapIndexed { index, value ->
-            value + originOffset[index]
-        }
+    fun toMinecraftElement(resolution: Resolution): MinecraftElement {
+        val (angle, axis) = rotationAngle()
         return MinecraftElement(from, to, Rotation(angle, axis, origin), faces.toMinecraftFaces(resolution))
     }
 
     companion object {
-        fun List<Element>.toMinecraftElements(originOffset: List<Double>, rotationOffset: List<Double>?, resolution: Resolution): List<MinecraftElement> {
+        fun List<Element>.toMinecraftElements(resolution: Resolution): List<MinecraftElement> {
             return map {
-                it.toMinecraftElement(originOffset, rotationOffset, resolution)
+                it.toMinecraftElement(resolution)
             }
         }
     }
