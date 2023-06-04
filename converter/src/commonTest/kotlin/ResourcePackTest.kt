@@ -1,4 +1,5 @@
 import dev.s7a.animotion.converter.Converter
+import dev.s7a.animotion.converter.exception.ModelNotFoundException
 import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
 import dev.s7a.animotion.converter.loader.ResourcePack
@@ -45,6 +46,18 @@ sealed class ResourcePackTest(private val name: String) {
                 resourcePack()
             }.run {
                 assertEquals("Unsupported pack_format: 12 (< 13)", message)
+            }
+        }
+    }
+
+    class ModelNotFound : ResourcePackTest("model_not_found") {
+        @Test
+        fun load() {
+            val resourcePack = resourcePack()
+            assertFailsWith<ModelNotFoundException> {
+                Converter(resourcePack)
+            }.run {
+                assertEquals("animotion/not_exist.bbmodel not found", message)
             }
         }
     }
