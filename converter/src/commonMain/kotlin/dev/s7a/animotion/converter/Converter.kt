@@ -34,15 +34,15 @@ class Converter(private val resourcePack: ResourcePack) {
         val namespace = resourcePack.animotion.settings.namespace
         parts.forEach { (key, value) ->
             val (itemName, item) = key
-            var index = 0
+            var customModelData = 0
             val overrides = value.flatMap { (bbModel, parts) ->
                 bbModel.textures.forEachIndexed { index, texture ->
                     texture.save(destination, namespace, bbModel.name, index)
                 }
-                parts.map { part ->
-                    index += 1
+                parts.mapIndexed { index, part ->
+                    customModelData += 1
                     part.save(destination, namespace, bbModel.name, index)
-                    Override(Predicate(index), "$namespace:${bbModel.name}/$index")
+                    Override(Predicate(customModelData), "$namespace:${bbModel.name}/$index")
                 }
             }
             destination.resolve("assets/minecraft/models/item/$itemName.json").run {
