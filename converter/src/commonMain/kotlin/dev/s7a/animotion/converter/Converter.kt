@@ -39,7 +39,7 @@ class Converter(private val resourcePack: ResourcePack) {
             val itemPath = destination.resolve("assets/minecraft/models/item/$itemName.json")
             val overrides = value.flatMap { (bbModel, parts) ->
                 bbModel.textures.forEachIndexed { index, texture ->
-                    val texturePath = destination.resolve("assets/$namespace/textures/${bbModel.name}/$index.png")
+                    val texturePath = destination.resolve("assets/$namespace/textures/item/${bbModel.name}/$index.png")
                     texturePath.createParentDirectories()
                     saveImage(texture.source, texturePath)
                 }
