@@ -10,7 +10,6 @@ import dev.s7a.animotion.converter.json.minecraft.item.Predicate
 import dev.s7a.animotion.converter.loader.ResourcePack
 import dev.s7a.animotion.converter.util.path.createParentDirectories
 import dev.s7a.animotion.converter.util.path.writeText
-import dev.s7a.animotion.converter.util.saveImage
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okio.Path
@@ -36,24 +35,20 @@ class Converter(private val resourcePack: ResourcePack) {
         parts.forEach { (key, value) ->
             val (itemName, item) = key
             var index = 0
-            val itemPath = destination.resolve("assets/minecraft/models/item/$itemName.json")
             val overrides = value.flatMap { (bbModel, parts) ->
                 bbModel.textures.forEachIndexed { index, texture ->
-                    val texturePath = destination.resolve("assets/$namespace/textures/item/${bbModel.name}/$index.png")
-                    texturePath.createParentDirectories()
-                    saveImage(texture.source, texturePath)
+                    texture.save(destination, namespace, bbModel.name, index)
                 }
                 parts.map { part ->
                     index += 1
-                    val model = "$namespace:${bbModel.name}/$index"
-                    val partPath = destination.resolve("assets/$namespace/models/${bbModel.name}/$index.json")
-                    partPath.createParentDirectories()
-                    partPath.writeText(Json.encodeToString(part.model))
-                    Override(Predicate(index), model)
+                    part.save(destination, namespace, bbModel.name, index)
+                    Override(Predicate(index), "$namespace:${bbModel.name}/$index")
                 }
             }
-            itemPath.createParentDirectories()
-            itemPath.writeText(Json.encodeToString(item.copy(overrides = overrides)))
+            destination.resolve("assets/minecraft/models/item/$itemName.json").run {
+                createParentDirectories()
+                writeText(Json.encodeToString(item.copy(overrides = overrides)))
+            }
         }
     }
 }
