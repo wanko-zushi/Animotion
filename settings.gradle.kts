@@ -2,5 +2,6 @@ rootProject.name = "Animotion"
 
 include(
     ":converter",
-    ":spigot"
+    ":spigot:library",
+    ":spigot:plugin"
 )
