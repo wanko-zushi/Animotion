@@ -1,7 +1,7 @@
 on: push
 name: Check
 jobs:
-  test:
+  check:
     strategy:
       matrix:
         os:
