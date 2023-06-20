@@ -14,7 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-                implementation("com.github.ajalt.clikt:clikt:3.5.3")
+                implementation("com.github.ajalt.clikt:clikt:3.5.4")
                 implementation("com.squareup.okio:okio:3.3.0")
                 implementation("app.softwork:kotlinx-uuid-core:0.0.20")
             }
