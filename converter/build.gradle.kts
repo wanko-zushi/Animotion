@@ -1,6 +1,6 @@
 plugins {
     kotlin("plugin.serialization") version "1.8.22"
-    id("org.jetbrains.kotlinx.kover") version "0.7.2"
+    id("org.jetbrains.kotlinx.kover") version "0.7.3"
 }
 
 kotlin {
