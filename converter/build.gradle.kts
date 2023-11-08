@@ -1,11 +1,18 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.palantir.gradle.gitversion.VersionDetails
+import groovy.lang.Closure
+import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 plugins {
     kotlin("plugin.serialization") version "1.9.20"
     id("org.jetbrains.kotlinx.kover") version "0.7.4"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.palantir.git-version") version "3.0.0"
 }
+
+val versionDetails: Closure<VersionDetails> by extra
+val details = versionDetails()
 
 kotlin {
     jvm {
@@ -70,6 +77,35 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+            }
+        }
+    }
+}
+
+kotlin.targets.forEach {
+    tasks.named("compileKotlin" + it.targetName.capitalized()) {
+        doFirst {
+            val version = if (details.isCleanTag) {
+                details.lastTag
+            } else {
+                details.lastTag + "+" + details.commitDistance
+            }
+            replaceVersion(version, details.gitHash)
+        }
+        doLast {
+            replaceVersion("dev", "")
+        }
+    }
+}
+
+fun replaceVersion(version: String, commit: String) {
+    val templateFile = projectDir.resolve("templates/Main.kt")
+    val destinationFile = projectDir.resolve("src/commonMain/kotlin/dev/s7a/animotion/converter/Main.kt")
+
+    templateFile.inputStream().use { inputStream ->
+        destinationFile.printWriter().use { writer ->
+            inputStream.bufferedReader().forEachLine { line ->
+                writer.println(line.replace("{VERSION}", version).replace("{COMMIT}", commit))
             }
         }
     }
