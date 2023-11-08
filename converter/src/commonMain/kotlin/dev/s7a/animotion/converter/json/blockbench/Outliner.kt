@@ -6,8 +6,10 @@ import kotlinx.uuid.UUID
 @Serializable
 data class Outliner(
     val name: String,
-    val origin: List<Double>, // TODO .anim に出力
-    val rotation: List<Double>? = null, // TODO .anim に出力
+    // TODO .anim に出力
+    val origin: List<Double>,
+    // TODO .anim に出力
+    val rotation: List<Double>? = null,
     val uuid: UUID,
     val children: List<UUID>,
 )

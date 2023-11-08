@@ -1,5 +1,5 @@
 plugins {
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("plugin.serialization") version "1.9.20"
     id("org.jetbrains.kotlinx.kover") version "0.7.4"
 }
 
@@ -13,10 +13,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-                implementation("com.github.ajalt.clikt:clikt:3.5.4")
-                implementation("com.squareup.okio:okio:3.4.0")
-                implementation("app.softwork:kotlinx-uuid-core:0.0.20")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+                implementation("com.github.ajalt.clikt:clikt:4.2.1")
+                implementation("com.squareup.okio:okio:3.6.0")
+                implementation("app.softwork:kotlinx-uuid-core:0.0.22")
             }
         }
 

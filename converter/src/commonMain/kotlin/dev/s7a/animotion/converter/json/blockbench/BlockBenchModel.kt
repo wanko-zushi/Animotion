@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BlockBenchModel(
-    val meta: Meta, // TODO モデルをロードする前に Meta をチェックして必要に応じてローダーを変える
+    // TODO モデルをロードする前に Meta をチェックして必要に応じてローダーを変える
+    val meta: Meta,
     val name: String,
     val resolution: Resolution,
     val elements: List<Element>,
     val outliner: List<Outliner>,
     val textures: List<Texture>,
-    val animations: List<Animations>, // TODO .anim に出力
+    // TODO .anim に出力
+    val animations: List<Animations>,
 ) {
     fun toParts(settings: AnimotionSettings): List<Part> {
         val elementByUuid = elements.associateBy(Element::uuid)

@@ -1,7 +1,6 @@
 package dev.s7a.animotion.converter.command
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.parameters.options.option
 import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
@@ -18,6 +17,6 @@ class AnimotionConverterCommand : CliktCommand(name = "animotion-converter") {
             }
             println(ResourcePack.load(directory.toPath(), json))
         }
-        throw PrintHelpMessage(this)
+        echoFormattedHelp()
     }
 }

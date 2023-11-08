@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Animator(
-    val name: String, // TODO Outliner#name と同じ
+    // TODO Outliner#name と同じ
+    val name: String,
     val type: Type,
     val keyframes: List<Keyframes>,
 ) {
