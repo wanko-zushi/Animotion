@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.versionOption
 import dev.s7a.animotion.converter.Converter
+import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.converter.loader.ResourcePack
 import dev.s7a.animotion.converter.util.clikt.directory
 import dev.s7a.animotion.converter.util.clikt.existingDirectory
@@ -22,10 +23,11 @@ import okio.IOException
 import okio.Path
 
 class AnimotionConverterCommand(version: String, commit: String) : CliktCommand(name = "animotion-converter") {
-    private val directory: Path? by option("--directory", "-d", completionCandidates = CompletionCandidates.Path, help = "Resource pack path").path(true).existingDirectory()
-    private val output: Path? by option("--output", "-o", completionCandidates = CompletionCandidates.Path, help = "Output destination path").path(true).directory()
-    private val force: Boolean by option("--force", "-f", help = "Ignore warnings").flag()
-    private val convertOnly: Boolean by option("--convert-only", help = "Without a copy of the resource pack").flag()
+    private val directory by option("--directory", "-d", completionCandidates = CompletionCandidates.Path, help = "Resource pack path").path(true).existingDirectory()
+    private val output by option("--output", "-o", completionCandidates = CompletionCandidates.Path, help = "Output destination path").path(true).directory()
+    private val force by option("--force", "-f", help = "Answer yes to all confirmations").flag()
+    private val convertOnly by option("--convert-only", help = "Without a copy of the resource pack").flag()
+    private val ignorePackFormat by option("--ignore-pack-format", help = "Ignore unsupported pack_format error").flag()
 
     init {
         versionOption("$version ($commit)", names = setOf("--version", "-v")) { it }
@@ -41,20 +43,27 @@ class AnimotionConverterCommand(version: String, commit: String) : CliktCommand(
             val json = Json {
                 ignoreUnknownKeys = true
             }
-            val resourcePack = ResourcePack.load(directory, json)
+            val resourcePack = ResourcePack.load(directory, json) { error ->
+                when (error) {
+                    is UnsupportedPackFormatException -> {
+                        if (ignorePackFormat) {
+                            warnMessage("Unsupported pack_format: ${error.packFormat} (${error.required})", newline = false)
+                        } else {
+                            existWithErrorMessage("Unsupported pack_format: ${error.packFormat} (${error.required})", "Use --ignore-pack-format to force processing")
+                        }
+                    }
+                    else -> {
+                        throw error
+                    }
+                }
+            }
 
             if (!force) {
                 val output = output
                 if (output == null) {
-                    if (terminal.prompt("Overwrite the original resource pack?", choices = setOf("yes")) == null) {
-                        return
-                    }
-                    terminal.println()
+                    promptConfirm("Overwrite the original resource pack?")
                 } else if (output.exists()) {
-                    if (terminal.prompt("Output directory already exists, overwrite it?", choices = setOf("yes")) == null) {
-                        return
-                    }
-                    terminal.println()
+                    promptConfirm("Output directory already exists, overwrite it?")
                 }
             }
 
@@ -64,8 +73,7 @@ class AnimotionConverterCommand(version: String, commit: String) : CliktCommand(
                     existWithErrorMessage("Failed to delete output directory.")
                 }
                 if (convertOnly) {
-                    terminal.info("INFO: The resource pack will not be copied because --convertOnly is enabled.")
-                    terminal.println()
+                    infoMessage("The resource pack will not be copied because --convertOnly is enabled.")
                 } else {
                     try {
                         directory.copyRecursively(destination)
@@ -78,19 +86,39 @@ class AnimotionConverterCommand(version: String, commit: String) : CliktCommand(
                     }
                 }
             } else if (convertOnly) {
-                terminal.warning("WARN: --convertOnly is ignored unless --output is specified.")
-                terminal.println()
+                warnMessage("--convertOnly is ignored unless --output is specified.")
             }
 
             Converter(resourcePack).save(destination)
-            terminal.success("Generate resource pack: $destination")
+            successMessage("Generate resource pack: $destination")
         } else {
             echoFormattedHelp()
         }
     }
 
-    private fun existWithErrorMessage(message: String): Nothing {
-        terminal.danger("ERROR: $message")
+    private fun promptConfirm(message: String) {
+        if (terminal.prompt(message, choices = setOf("yes")) == null) {
+            return
+        }
+        terminal.println()
+    }
+
+    private fun successMessage(message: String) {
+        terminal.success(message)
+    }
+
+    private fun infoMessage(message: String, newline: Boolean = true) {
+        terminal.info("INFO: $message")
+        if (newline) terminal.println()
+    }
+
+    private fun warnMessage(message: String, newline: Boolean = true) {
+        terminal.warning("WARN: $message")
+        if (newline) terminal.println()
+    }
+
+    private fun existWithErrorMessage(vararg message: String): Nothing {
+        terminal.danger("ERROR: ${message.joinToString("\n")}")
         throw CliktError()
     }
 }

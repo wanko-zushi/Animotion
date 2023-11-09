@@ -8,10 +8,10 @@ import okio.Path
 
 data class ResourcePack(val meta: PackMeta, val animotion: Animotion) {
     companion object {
-        fun load(directory: Path, json: Json = Json.Default): ResourcePack {
+        fun load(directory: Path, json: Json = Json.Default, onErrorAction: (Exception) -> Unit = { exception -> throw exception }): ResourcePack {
             val meta = json.decodeFromString<PackMeta>(directory.resolve("pack.mcmeta").readText())
             if (meta.pack.packFormat < 13) {
-                throw UnsupportedPackFormatException(meta.pack.packFormat)
+                onErrorAction(UnsupportedPackFormatException(meta.pack.packFormat, "< 13"))
             }
             val animotion = Animotion.load(directory.resolve("animotion"), json)
             return ResourcePack(meta, animotion)
