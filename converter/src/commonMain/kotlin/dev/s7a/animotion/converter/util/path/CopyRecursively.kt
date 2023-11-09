@@ -19,24 +19,16 @@ fun Path.copyRecursively(
                 }
             } else {
                 val relPath = src.relativeTo(this)
-                val dstFile = target / relPath
-                if (dstFile.exists() && !(src.isDirectory && dstFile.isDirectory)) {
+                val dst = target / relPath
+                if (dst.exists() && !(src.isDirectory && dst.isDirectory)) {
                     val stillExists = when {
                         !overwrite -> true
-                        dstFile.isDirectory -> !dstFile.deleteRecursively()
-                        else -> !dstFile.delete()
+                        dst.isDirectory -> !dst.deleteRecursively()
+                        else -> !dst.delete()
                     }
 
                     if (stillExists) {
-                        if (onError(
-                                dstFile,
-                                FileAlreadyExistsException(
-                                    file = src,
-                                    other = dstFile,
-                                    reason = "The destination file already exists.",
-                                ),
-                            ) == OnErrorAction.TERMINATE
-                        ) {
+                        if (onError(dst, FileAlreadyExistsException(src, dst, "The destination file already exists.")) == OnErrorAction.TERMINATE) {
                             return false
                         }
 
@@ -45,8 +37,8 @@ fun Path.copyRecursively(
                 }
 
                 if (src.isDirectory) {
-                    dstFile.createDirectories()
-                } else if (src.copyTo(dstFile, overwrite).length() != src.length()) {
+                    dst.createDirectories()
+                } else if (src.copyTo(dst, overwrite).length() != src.length()) {
                     if (onError(src, IOException("Source file wasn't copied completely, length of destination file differs.")) == OnErrorAction.TERMINATE) {
                         return false
                     }
