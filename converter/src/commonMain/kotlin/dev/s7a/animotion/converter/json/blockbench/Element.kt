@@ -30,7 +30,7 @@ data class Element(
         val rotation = rotation?.eachMinus(outliner.rotation ?: List(rotation.size) { 0.0 }) ?: return 0.0 to Rotation.Axis.Y
         val index = rotation.indexOfFirst { it != 0.0 }
         if (index == -1) return 0.0 to Rotation.Axis.Y
-        return rotation[index] to Rotation.Axis.values()[index]
+        return rotation[index] to Rotation.Axis.entries[index]
     }
 
     fun toMinecraftElement(outliner: Outliner, resolution: Resolution): MinecraftElement {
