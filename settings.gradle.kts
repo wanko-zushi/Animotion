@@ -1,7 +1,8 @@
 rootProject.name = "Animotion"
 
 include(
+    ":api",
     ":converter",
-    ":spigot:library",
-    ":spigot:plugin"
+    ":spigot-api",
+    ":spigot-plugin",
 )

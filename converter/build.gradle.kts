@@ -8,7 +8,6 @@ plugins {
     kotlin("plugin.serialization") version "1.9.20"
     id("org.jetbrains.kotlinx.kover") version "0.7.4"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.palantir.git-version") version "3.0.0"
 }
 
 val versionDetails: Closure<VersionDetails> by extra
@@ -28,35 +27,13 @@ kotlin {
         registerShadowJar("animotion-converter", "dev.s7a.animotion.converter.MainKt")
     }
 
-    linuxX64 {
-        binaries {
-            executable {
-                baseName = "animotion-converter"
-                entryPoint("dev.s7a.animotion.converter.main")
-            }
-        }
-    }
-
-    mingwX64 {
-        binaries {
-            executable {
-                baseName = "animotion-converter"
-                entryPoint("dev.s7a.animotion.converter.main")
-            }
-        }
-    }
-
-    macosX64 {
-        binaries {
-            executable {
-                baseName = "animotion-converter"
-                entryPoint("dev.s7a.animotion.converter.main")
-            }
-        }
-    }
-
-    macosArm64 {
-        binaries {
+    listOf(
+        linuxX64(),
+        mingwX64(),
+        macosX64(),
+        macosArm64(),
+    ).forEach {
+        it.binaries {
             executable {
                 baseName = "animotion-converter"
                 entryPoint("dev.s7a.animotion.converter.main")
@@ -65,8 +42,9 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
+                api(project(":api"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
                 implementation("com.github.ajalt.clikt:clikt:4.2.1")
                 implementation("com.squareup.okio:okio:3.6.0")
@@ -74,7 +52,7 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
@@ -85,12 +63,7 @@ kotlin {
 kotlin.targets.forEach {
     tasks.named("compileKotlin" + it.targetName.capitalized()) {
         doFirst {
-            val version = if (details.isCleanTag) {
-                details.lastTag
-            } else {
-                details.lastTag + "+" + details.commitDistance
-            }
-            replaceVersion(version, details.gitHash)
+            replaceVersion(project.version.toString(), details.gitHash)
         }
         doLast {
             replaceVersion("dev", "")
