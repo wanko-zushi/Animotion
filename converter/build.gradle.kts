@@ -5,9 +5,11 @@ import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 plugins {
-    kotlin("plugin.serialization") version "1.9.20"
-    id("org.jetbrains.kotlinx.kover") version "0.7.4"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.plugin.serialization)
+    alias(libs.plugins.git.version)
+    alias(libs.plugins.kotlinx.kover)
+    alias(libs.plugins.shadow)
 }
 
 val versionDetails: Closure<VersionDetails> by extra
@@ -45,10 +47,10 @@ kotlin {
         commonMain {
             dependencies {
                 api(project(":api"))
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-                implementation("com.github.ajalt.clikt:clikt:4.2.1")
-                implementation("com.squareup.okio:okio:3.6.0")
-                implementation("app.softwork:kotlinx-uuid-core:0.0.22")
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.clikt)
+                implementation(libs.okio)
+                implementation(libs.kotlinx.uuid.core)
             }
         }
 

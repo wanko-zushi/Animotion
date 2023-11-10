@@ -1,0 +1,32 @@
+[versions]
+# Plugins
+kotlin = "1.9.20"
+kotlinter = "4.0.0"
+kotlinx-kover = "0.7.4"
+git-version = "3.0.0"
+shadow = "8.1.1"
+plugin-yml = "0.6.0"
+
+# Libraries
+kotlinx-serialization = "1.6.0"
+kotlinx-uuid = "0.0.22"
+clikt = "4.2.1"
+okio = "3.6.0"
+spigot-api = "1.19.4-R0.1-SNAPSHOT"
+
+[libraries]
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
+kotlinx-uuid-core = { group = "app.softwork", name = "kotlinx-uuid-core", version.ref = "kotlinx-uuid" }
+clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
+spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinx-kover" }
+git-version = { id = "com.palantir.git-version", version.ref = "git-version" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+plugin-yml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "plugin-yml" }

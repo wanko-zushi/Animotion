@@ -1,17 +1,14 @@
-import groovy.lang.Closure
-
 plugins {
-    kotlin("multiplatform") version "1.9.20" apply false
-    kotlin("jvm") version "1.9.20" apply false
-    id("org.jmailen.kotlinter") version "4.0.0" apply false
-    id("com.palantir.git-version") version "3.0.0" apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlinter) apply false
+    alias(libs.plugins.git.version) apply false
 }
 
-val gitVersion: Closure<String> by extra
-
 allprojects {
-    apply(plugin = "org.jmailen.kotlinter")
-    apply(plugin = "com.palantir.git-version")
+    afterEvaluate {
+        apply(plugin = libs.plugins.kotlinter.get().pluginId)
+    }
 
     group = "dev.s7a"
     version = "1.0.0-SNAPSHOT"
@@ -19,20 +16,4 @@ allprojects {
     repositories {
         mavenCentral()
     }
-}
-
-project(":api") {
-    apply(plugin = "kotlin-multiplatform")
-}
-
-project(":converter") {
-    apply(plugin = "kotlin-multiplatform")
-}
-
-project(":spigot-api") {
-    apply(plugin = "kotlin")
-}
-
-project(":spigot-plugin") {
-    apply(plugin = "kotlin")
 }

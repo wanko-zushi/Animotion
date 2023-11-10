@@ -3,7 +3,9 @@ import groovy.lang.Closure
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.git.version)
+    alias(libs.plugins.plugin.yml.bukkit)
 }
 
 val versionDetails: Closure<VersionDetails> by extra
@@ -15,7 +17,7 @@ repositories {
 
 dependencies {
     api(project(":spigot-api"))
-    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly(libs.spigot.api)
 }
 
 configure<BukkitPluginDescription> {
