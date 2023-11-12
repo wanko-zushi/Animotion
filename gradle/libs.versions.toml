@@ -15,6 +15,7 @@ okio = "3.6.0"
 spigot-api = "1.19.4-R0.1-SNAPSHOT"
 
 [libraries]
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 kotlinx-uuid-core = { group = "app.softwork", name = "kotlinx-uuid-core", version.ref = "kotlinx-uuid" }
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt" }
