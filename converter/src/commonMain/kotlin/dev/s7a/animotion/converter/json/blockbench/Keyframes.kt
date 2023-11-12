@@ -9,11 +9,6 @@ data class Keyframes(
     @SerialName("data_points") val dataPoints: List<DataPoints>,
     val time: Double,
     val interpolation: Interpolation,
-    @SerialName("bezier_linked") val bezierLinked: Boolean,
-    @SerialName("bezier_left_time") val bezierLeftTime: List<Double>,
-    @SerialName("bezier_left_value") val bezierLeftValue: List<Int>,
-    @SerialName("bezier_right_time") val bezierRightTime: List<Double>,
-    @SerialName("bezier_right_value") val bezierRightValue: List<Int>,
 ) {
     @Serializable
     enum class Channel {

@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 public data class AnimotionModelData<Material>(
-    public val parts: Map<String, Part<Material>>,
+    public val parts: List<Part<Material>>,
     public val animations: Map<String, Animation> = mapOf(),
 )

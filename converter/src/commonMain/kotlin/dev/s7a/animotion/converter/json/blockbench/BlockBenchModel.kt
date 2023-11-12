@@ -15,8 +15,7 @@ data class BlockBenchModel(
     val elements: List<Element>,
     val outliner: List<Outliner>,
     val textures: List<Texture>,
-    // TODO .anim に出力
-    val animations: List<Animations>,
+    val animations: List<Animation>,
 ) {
     fun toParts(settings: AnimotionSettings): List<Part> {
         val elementByUuid = elements.associateBy(Element::uuid)

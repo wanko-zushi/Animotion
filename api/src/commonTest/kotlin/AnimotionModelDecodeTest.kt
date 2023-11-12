@@ -1,7 +1,7 @@
+
 import dev.s7a.animotion.AnimotionModel
 import dev.s7a.animotion.AnimotionModelLoader
 import dev.s7a.animotion.exception.UnsupportedVersionException
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -14,14 +14,14 @@ class AnimotionModelDecodeTest {
     @Test
     fun empty() {
         assertEquals(
-            AnimotionModel.new(mapOf(), mapOf()),
+            AnimotionModel.new(listOf(), mapOf()),
             load<String>(
                 """
                     {
                         "version": 1,
                         "data": {
-                            "parts": {
-                            }
+                            "parts": [
+                            ]
                         }
                     }
                 """.trimIndent(),

@@ -11,7 +11,7 @@ public class AnimotionModel<Material>(
 ) {
     public companion object {
         public fun <Material> new(
-            parts: Map<String, Part<Material>>,
+            parts: List<Part<Material>>,
             animations: Map<String, Animation> = mapOf(),
         ): AnimotionModel<Material> {
             return AnimotionModel(1, AnimotionModelData(parts, animations))

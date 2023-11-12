@@ -4,6 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
+@Suppress("ktlint:standard:function-naming")
 public inline fun <reified Material> AnimotionModelLoader(
     json: Json = Json { ignoreUnknownKeys = true },
     materialSerializer: KSerializer<Material> = serializer<Material>(),

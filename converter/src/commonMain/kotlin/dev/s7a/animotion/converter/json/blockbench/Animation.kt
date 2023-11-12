@@ -5,22 +5,14 @@ import kotlinx.serialization.Serializable
 import kotlinx.uuid.UUID
 
 @Serializable
-data class Animations(
-    // TODO アニメーション名
+data class Animation(
     val name: String,
-    // TODO 再生方法
     val loop: LoopType,
-    // TODO 再生時間(s)
     val length: Double,
-    // TODO 非対応なので "" であることをチェック
     @SerialName("anim_time_update") val animTimeUpdate: String = "",
-    // TODO 非対応なので "" であることをチェック
     @SerialName("blend_weight") val blendWeight: String = "",
-    // TODO 非対応なので "" であることをチェック
     @SerialName("start_delay") val startDelay: String = "",
-    // TODO 非対応なので "" であることをチェック
     @SerialName("loop_delay") val loopDelay: String = "",
-    // TODO K: Outliner#uuid
     @SerialName("animators") val animators: Map<UUID, Animator> = mapOf(),
 ) {
     @Serializable

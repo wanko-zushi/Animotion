@@ -29,7 +29,7 @@ sealed class ResourcePackTest(private val name: String) {
             Converter(resourcePack()).run {
                 assertEquals(
                     listOf(("kelp" to kelpItem) to listOf("robit" to robitParts)),
-                    parts.map { (key, value) ->
+                    items.map { (key, value) ->
                         key to value.map { (bbmodel, parts) ->
                             bbmodel.name to parts.map { it.name }
                         }

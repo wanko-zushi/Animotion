@@ -21,12 +21,12 @@ class AnimotionModelEncodeTest {
                 {
                     "version": 1,
                     "data": {
-                        "parts": {
-                        }
+                        "parts": [
+                        ]
                     }
                 }
             """.trimIndent(),
-            AnimotionModel.new<String>(mapOf(), mapOf()).save(),
+            AnimotionModel.new<String>(listOf(), mapOf()).save(),
         )
     }
 }
