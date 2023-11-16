@@ -6,6 +6,7 @@ kotlinx-kover = "0.7.4"
 git-version = "3.0.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
+minecraft-server = "3.0.0"
 
 # Libraries
 kotlinx-serialization = "1.6.1"
@@ -31,3 +32,4 @@ kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinx-kov
 git-version = { id = "com.palantir.git-version", version.ref = "git-version" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 plugin-yml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "plugin-yml" }
+minecraft-server = { id = "dev.s7a.gradle.minecraft.server", version.ref = "minecraft-server" }
