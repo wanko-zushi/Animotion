@@ -3,7 +3,8 @@
 A Spigot plugin and CLI tool to animate BlockBench models in Minecraft Java Edition.
 
 ## Features
-> **Warning**
+> [!WARNING]
+> 
 > This project is under development, and not all features have been implemented yet.
 
 ### CLI tool
