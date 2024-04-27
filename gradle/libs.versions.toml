@@ -11,7 +11,7 @@ minecraft-server = "3.1.0"
 # Libraries
 kotlinx-serialization = "1.6.2"
 kotlinx-uuid = "0.0.25"
-clikt = "4.3.0"
+clikt = "4.4.0"
 okio = "3.9.0"
 spigot-api = "1.19.4-R0.1-SNAPSHOT"
 
