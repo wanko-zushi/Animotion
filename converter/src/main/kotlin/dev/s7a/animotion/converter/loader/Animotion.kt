@@ -6,7 +6,11 @@ import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
 import kotlinx.serialization.json.Json
 import java.io.File
 
-data class Animotion(val settings: AnimotionSettings, val models: List<BlockBenchModel>, val base: Map<String, MinecraftItem>) {
+data class Animotion(
+    val settings: AnimotionSettings,
+    val models: List<BlockBenchModel>,
+    val base: Map<String, MinecraftItem>,
+) {
     companion object {
         fun load(
             directory: File,

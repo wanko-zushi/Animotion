@@ -6,7 +6,9 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Serializable
-data class Texture(val source: String) {
+data class Texture(
+    val source: String,
+) {
     fun getDestinationFile(
         directory: File,
         namespace: String,

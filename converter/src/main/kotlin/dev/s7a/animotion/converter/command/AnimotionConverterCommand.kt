@@ -14,7 +14,9 @@ import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
 import java.io.IOException
 
-class AnimotionConverterCommand(version: String) : CliktCommand(name = "animotion-converter") {
+class AnimotionConverterCommand(
+    version: String,
+) : CliktCommand(name = "animotion-converter") {
     private val directory by option(
         "--directory",
         "-d",

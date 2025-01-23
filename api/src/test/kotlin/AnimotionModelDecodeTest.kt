@@ -7,9 +7,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class AnimotionModelDecodeTest {
-    private inline fun <reified Material> load(text: String): AnimotionModel<Material> {
-        return AnimotionModelLoader<Material>().load(text)
-    }
+    private inline fun <reified Material> load(text: String): AnimotionModel<Material> = AnimotionModelLoader<Material>().load(text)
 
     @Test
     fun empty() {

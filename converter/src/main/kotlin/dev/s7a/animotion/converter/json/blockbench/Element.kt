@@ -51,10 +51,9 @@ data class Element(
         fun List<Element>.toMinecraftElements(
             outliner: Outliner,
             resolution: Resolution,
-        ): List<MinecraftElement> {
-            return map {
+        ): List<MinecraftElement> =
+            map {
                 it.toMinecraftElement(outliner, resolution)
             }
-        }
     }
 }

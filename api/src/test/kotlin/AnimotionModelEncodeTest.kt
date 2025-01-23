@@ -5,14 +5,13 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class AnimotionModelEncodeTest {
-    private inline fun <reified Material> AnimotionModel<Material>.save(): String {
-        return AnimotionModelLoader<Material>(
+    private inline fun <reified Material> AnimotionModel<Material>.save(): String =
+        AnimotionModelLoader<Material>(
             Json {
                 prettyPrint = true
                 ignoreUnknownKeys = true
             },
         ).save(this)
-    }
 
     @Test
     fun empty() {

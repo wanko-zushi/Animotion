@@ -16,10 +16,12 @@ internal class AnimotionModelLoaderImpl<Material>(
     }
 
     @Serializable
-    class AnimotionModelBase(val version: Int)
+    class AnimotionModelBase(
+        val version: Int,
+    )
 
-    override fun load(text: String): AnimotionModel<Material> {
-        return when (val version = json.decodeFromString(AnimotionModelBase.serializer(), text).version) {
+    override fun load(text: String): AnimotionModel<Material> =
+        when (val version = json.decodeFromString(AnimotionModelBase.serializer(), text).version) {
             1 -> {
                 json.decodeFromString(AnimotionModel.serializer(materialSerializer), text)
             }
@@ -27,9 +29,6 @@ internal class AnimotionModelLoaderImpl<Material>(
                 throw UnsupportedVersionException(version)
             }
         }
-    }
 
-    override fun save(value: AnimotionModel<Material>): String {
-        return json.encodeToString(AnimotionModel.serializer(materialSerializer), value)
-    }
+    override fun save(value: AnimotionModel<Material>): String = json.encodeToString(AnimotionModel.serializer(materialSerializer), value)
 }

@@ -5,7 +5,10 @@ import dev.s7a.animotion.converter.json.minecraft.PackMeta
 import kotlinx.serialization.json.Json
 import java.io.File
 
-data class ResourcePack(val meta: PackMeta, val animotion: Animotion) {
+data class ResourcePack(
+    val meta: PackMeta,
+    val animotion: Animotion,
+) {
     companion object {
         fun load(
             directory: File,

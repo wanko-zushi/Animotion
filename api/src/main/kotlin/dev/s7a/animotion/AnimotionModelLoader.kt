@@ -8,18 +8,14 @@ import kotlinx.serialization.serializer
 public inline fun <reified Material> AnimotionModelLoader(
     json: Json = Json { ignoreUnknownKeys = true },
     materialSerializer: KSerializer<Material> = serializer<Material>(),
-): AnimotionModelLoader<Material> {
-    return AnimotionModelLoader.new(json, materialSerializer)
-}
+): AnimotionModelLoader<Material> = AnimotionModelLoader.new(json, materialSerializer)
 
 public interface AnimotionModelLoader<Material> {
     public companion object {
         public fun <Material> new(
             json: Json,
             materialSerializer: KSerializer<Material>,
-        ): AnimotionModelLoader<Material> {
-            return AnimotionModelLoaderImpl(json, materialSerializer)
-        }
+        ): AnimotionModelLoader<Material> = AnimotionModelLoaderImpl(json, materialSerializer)
     }
 
     public fun load(text: String): AnimotionModel<Material>

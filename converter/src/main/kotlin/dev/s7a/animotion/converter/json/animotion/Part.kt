@@ -7,7 +7,10 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 @Serializable
-data class Part(val name: String, val model: MinecraftModel) {
+data class Part(
+    val name: String,
+    val model: MinecraftModel,
+) {
     fun save(
         destination: File,
         namespace: String,

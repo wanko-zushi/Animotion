@@ -13,9 +13,7 @@ public class AnimotionModel<Material>(
         public fun <Material> new(
             parts: List<Part<Material>>,
             animations: Map<String, Animation> = mapOf(),
-        ): AnimotionModel<Material> {
-            return AnimotionModel(1, AnimotionModelData(parts, animations))
-        }
+        ): AnimotionModel<Material> = AnimotionModel(1, AnimotionModelData(parts, animations))
     }
 
     override fun equals(other: Any?): Boolean {
@@ -27,7 +25,5 @@ public class AnimotionModel<Material>(
         return data == other.data
     }
 
-    override fun hashCode(): Int {
-        return data.hashCode()
-    }
+    override fun hashCode(): Int = data.hashCode()
 }

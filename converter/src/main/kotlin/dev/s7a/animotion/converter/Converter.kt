@@ -25,7 +25,9 @@ import dev.s7a.animotion.converter.json.blockbench.Animation.LoopType as Blockbe
 import dev.s7a.animotion.converter.json.blockbench.Animator.Type as BlockbenchAnimatorType
 import dev.s7a.animotion.model.Part as AnimotionModelPart
 
-class Converter(private val resourcePack: ResourcePack) {
+class Converter(
+    private val resourcePack: ResourcePack,
+) {
     private val loader = AnimotionModelLoader<String>()
 
     val items: Map<Pair<String, MinecraftItem>, List<Pair<BlockBenchModel, List<Part>>>>

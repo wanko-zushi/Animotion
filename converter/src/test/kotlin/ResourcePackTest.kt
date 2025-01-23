@@ -11,7 +11,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-sealed class ResourcePackTest(private val name: String) {
+sealed class ResourcePackTest(
+    private val name: String,
+) {
     private val json =
         Json {
             ignoreUnknownKeys = true

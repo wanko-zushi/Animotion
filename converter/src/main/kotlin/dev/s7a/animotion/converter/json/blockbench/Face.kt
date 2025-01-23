@@ -9,20 +9,18 @@ data class Face(
     val uv: List<Double>,
     val texture: Int,
 ) {
-    fun toMinecraftFace(resolution: Resolution): MinecraftFace {
-        return MinecraftFace(
+    fun toMinecraftFace(resolution: Resolution): MinecraftFace =
+        MinecraftFace(
             uv.mapIndexed { index, value ->
                 value * 16 / (if (index % 2 == 0) resolution.width else resolution.height)
             },
             "#$texture",
         )
-    }
 
     companion object {
-        fun Map<FaceType, Face>.toMinecraftFaces(resolution: Resolution): Map<FaceType, MinecraftFace> {
-            return mapValues { (_, value) ->
+        fun Map<FaceType, Face>.toMinecraftFaces(resolution: Resolution): Map<FaceType, MinecraftFace> =
+            mapValues { (_, value) ->
                 value.toMinecraftFace(resolution)
             }
-        }
     }
 }
