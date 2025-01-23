@@ -1,39 +1,24 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.plugin.serialization)
+}
+
+dependencies {
+    implementation(libs.kotlinx.serialization.json)
+    testImplementation(libs.kotlin.test)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 kotlin {
     explicitApi()
 
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-    }
-
-    js {
-        browser()
-        nodejs()
-    }
-
-    linuxX64()
-    linuxArm64()
-    mingwX64()
-    macosX64()
-    macosArm64()
-
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlinx.serialization.json)
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }
