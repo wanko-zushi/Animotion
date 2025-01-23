@@ -12,7 +12,6 @@ minecraft-server = "3.2.1"
 kotlinx-serialization = "1.6.2"
 kotlinx-uuid = "0.0.26"
 clikt = "4.4.0"
-okio = "3.9.1"
 spigot-api = "1.19.4-R0.1-SNAPSHOT"
 
 [libraries]
@@ -20,7 +19,6 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 kotlinx-uuid-core = { group = "app.softwork", name = "kotlinx-uuid-core", version.ref = "kotlinx-uuid" }
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt" }
-okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
 
 [plugins]
