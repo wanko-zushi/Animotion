@@ -14,7 +14,7 @@ import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
 import java.io.IOException
 
-class AnimotionConverterCommand(version: String, commit: String) : CliktCommand(name = "animotion-converter") {
+class AnimotionConverterCommand(version: String) : CliktCommand(name = "animotion-converter") {
     private val directory by option("--directory", "-d", completionCandidates = CompletionCandidates.Path, help = "Resource pack path").file(true, canBeFile = false, canBeDir = true)
     private val output by option("--output", "-o", completionCandidates = CompletionCandidates.Path, help = "Output destination path").file(false, canBeFile = false, canBeDir = true)
     private val force by option("--force", "-f", help = "Answer yes to all confirmations").flag()
@@ -22,7 +22,7 @@ class AnimotionConverterCommand(version: String, commit: String) : CliktCommand(
     private val ignorePackFormat by option("--ignore-pack-format", help = "Ignore unsupported pack_format error").flag()
 
     init {
-        versionOption("$version ($commit)", names = setOf("--version", "-v")) { it }
+        versionOption(version, names = setOf("--version", "-v")) { it }
     }
 
     override fun run() {
