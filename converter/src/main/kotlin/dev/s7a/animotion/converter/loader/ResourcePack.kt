@@ -7,7 +7,11 @@ import java.io.File
 
 data class ResourcePack(val meta: PackMeta, val animotion: Animotion) {
     companion object {
-        fun load(directory: File, json: Json = Json.Default, onErrorAction: (Exception) -> Unit = { exception -> throw exception }): ResourcePack {
+        fun load(
+            directory: File,
+            json: Json = Json.Default,
+            onErrorAction: (Exception) -> Unit = { exception -> throw exception },
+        ): ResourcePack {
             val meta = json.decodeFromString<PackMeta>(directory.resolve("pack.mcmeta").readText())
             if (meta.pack.packFormat < 13) {
                 onErrorAction(UnsupportedPackFormatException(meta.pack.packFormat, "< 13"))

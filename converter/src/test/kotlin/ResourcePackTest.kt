@@ -12,9 +12,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 sealed class ResourcePackTest(private val name: String) {
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
+    private val json =
+        Json {
+            ignoreUnknownKeys = true
+        }
 
     protected fun resourcePack(): ResourcePack = ResourcePack.load(File("src/test/resources/packs/$name"), json)
 
@@ -28,9 +29,10 @@ sealed class ResourcePackTest(private val name: String) {
                 assertEquals(
                     listOf(("kelp" to kelpItem) to listOf("robit" to robitParts)),
                     items.map { (key, value) ->
-                        key to value.map { (bbmodel, parts) ->
-                            bbmodel.name to parts.map { it.name }
-                        }
+                        key to
+                            value.map { (bbmodel, parts) ->
+                                bbmodel.name to parts.map { it.name }
+                            }
                     },
                 )
                 save(createTempDirectory().toFile())

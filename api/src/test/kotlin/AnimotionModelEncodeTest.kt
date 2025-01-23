@@ -18,13 +18,13 @@ class AnimotionModelEncodeTest {
     fun empty() {
         assertEquals(
             """
-                {
-                    "version": 1,
-                    "data": {
-                        "parts": [
-                        ]
-                    }
+            {
+                "version": 1,
+                "data": {
+                    "parts": [
+                    ]
                 }
+            }
             """.trimIndent(),
             AnimotionModel.new<String>(listOf(), mapOf()).save(),
         )

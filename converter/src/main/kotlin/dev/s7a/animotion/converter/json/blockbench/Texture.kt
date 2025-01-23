@@ -7,7 +7,12 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Serializable
 data class Texture(val source: String) {
-    fun getDestinationFile(directory: File, namespace: String, modelName: String, index: Int) = directory.resolve("assets/$namespace/textures/item/$modelName/$index.png")
+    fun getDestinationFile(
+        directory: File,
+        namespace: String,
+        modelName: String,
+        index: Int,
+    ) = directory.resolve("assets/$namespace/textures/item/$modelName/$index.png")
 
     @OptIn(ExperimentalEncodingApi::class)
     fun saveTo(file: File) {

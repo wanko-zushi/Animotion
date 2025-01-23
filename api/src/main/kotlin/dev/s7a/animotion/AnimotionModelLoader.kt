@@ -14,11 +14,15 @@ public inline fun <reified Material> AnimotionModelLoader(
 
 public interface AnimotionModelLoader<Material> {
     public companion object {
-        public fun <Material> new(json: Json, materialSerializer: KSerializer<Material>): AnimotionModelLoader<Material> {
+        public fun <Material> new(
+            json: Json,
+            materialSerializer: KSerializer<Material>,
+        ): AnimotionModelLoader<Material> {
             return AnimotionModelLoaderImpl(json, materialSerializer)
         }
     }
 
     public fun load(text: String): AnimotionModel<Material>
+
     public fun save(value: AnimotionModel<Material>): String
 }

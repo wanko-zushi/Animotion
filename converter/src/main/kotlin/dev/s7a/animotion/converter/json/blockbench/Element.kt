@@ -33,7 +33,10 @@ data class Element(
         return rotation[index] to Rotation.Axis.entries[index]
     }
 
-    fun toMinecraftElement(outliner: Outliner, resolution: Resolution): MinecraftElement {
+    fun toMinecraftElement(
+        outliner: Outliner,
+        resolution: Resolution,
+    ): MinecraftElement {
         val (angle, axis) = rotationAngle(outliner)
         val center = listOf(8.0, 0.0, 8.0)
         return MinecraftElement(
@@ -45,7 +48,10 @@ data class Element(
     }
 
     companion object {
-        fun List<Element>.toMinecraftElements(outliner: Outliner, resolution: Resolution): List<MinecraftElement> {
+        fun List<Element>.toMinecraftElements(
+            outliner: Outliner,
+            resolution: Resolution,
+        ): List<MinecraftElement> {
             return map {
                 it.toMinecraftElement(outliner, resolution)
             }

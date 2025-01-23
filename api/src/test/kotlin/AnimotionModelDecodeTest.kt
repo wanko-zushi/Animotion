@@ -17,13 +17,13 @@ class AnimotionModelDecodeTest {
             AnimotionModel.new(listOf(), mapOf()),
             load<String>(
                 """
-                    {
-                        "version": 1,
-                        "data": {
-                            "parts": [
-                            ]
-                        }
+                {
+                    "version": 1,
+                    "data": {
+                        "parts": [
+                        ]
                     }
+                }
                 """.trimIndent(),
             ),
         )
@@ -34,9 +34,9 @@ class AnimotionModelDecodeTest {
         assertFailsWith<UnsupportedVersionException> {
             load<String>(
                 """
-                    {
-                        "version": 0
-                    }
+                {
+                    "version": 0
+                }
                 """.trimIndent(),
             )
         }.let {

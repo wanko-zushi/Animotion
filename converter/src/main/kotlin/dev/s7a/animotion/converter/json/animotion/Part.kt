@@ -8,7 +8,12 @@ import java.io.File
 
 @Serializable
 data class Part(val name: String, val model: MinecraftModel) {
-    fun save(destination: File, namespace: String, modelName: String, index: Int) {
+    fun save(
+        destination: File,
+        namespace: String,
+        modelName: String,
+        index: Int,
+    ) {
         destination.resolve("assets/$namespace/models/$modelName/$index.json").run {
             parentFile?.mkdirs()
             writeText(Json.encodeToString(model))

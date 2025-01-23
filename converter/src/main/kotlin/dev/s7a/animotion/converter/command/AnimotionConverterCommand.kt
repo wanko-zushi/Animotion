@@ -15,8 +15,18 @@ import kotlinx.serialization.json.Json
 import java.io.IOException
 
 class AnimotionConverterCommand(version: String) : CliktCommand(name = "animotion-converter") {
-    private val directory by option("--directory", "-d", completionCandidates = CompletionCandidates.Path, help = "Resource pack path").file(true, canBeFile = false, canBeDir = true)
-    private val output by option("--output", "-o", completionCandidates = CompletionCandidates.Path, help = "Output destination path").file(false, canBeFile = false, canBeDir = true)
+    private val directory by option(
+        "--directory",
+        "-d",
+        completionCandidates = CompletionCandidates.Path,
+        help = "Resource pack path",
+    ).file(true, canBeFile = false, canBeDir = true)
+    private val output by option(
+        "--output",
+        "-o",
+        completionCandidates = CompletionCandidates.Path,
+        help = "Output destination path",
+    ).file(false, canBeFile = false, canBeDir = true)
     private val force by option("--force", "-f", help = "Answer yes to all confirmations").flag()
     private val convertOnly by option("--convert-only", help = "Without a copy of the resource pack").flag()
     private val ignorePackFormat by option("--ignore-pack-format", help = "Ignore unsupported pack_format error").flag()
@@ -32,23 +42,28 @@ class AnimotionConverterCommand(version: String) : CliktCommand(name = "animotio
                 existWithErrorMessage("The directory doesn't exists: $directory")
             }
 
-            val json = Json {
-                ignoreUnknownKeys = true
-            }
-            val resourcePack = ResourcePack.load(directory, json) { error ->
-                when (error) {
-                    is UnsupportedPackFormatException -> {
-                        if (ignorePackFormat) {
-                            warnMessage("Unsupported pack_format: ${error.packFormat} (${error.required})", newline = false)
-                        } else {
-                            existWithErrorMessage("Unsupported pack_format: ${error.packFormat} (${error.required})", "Use --ignore-pack-format to force processing")
+            val json =
+                Json {
+                    ignoreUnknownKeys = true
+                }
+            val resourcePack =
+                ResourcePack.load(directory, json) { error ->
+                    when (error) {
+                        is UnsupportedPackFormatException -> {
+                            if (ignorePackFormat) {
+                                warnMessage("Unsupported pack_format: ${error.packFormat} (${error.required})", newline = false)
+                            } else {
+                                existWithErrorMessage(
+                                    "Unsupported pack_format: ${error.packFormat} (${error.required})",
+                                    "Use --ignore-pack-format to force processing",
+                                )
+                            }
+                        }
+                        else -> {
+                            throw error
                         }
                     }
-                    else -> {
-                        throw error
-                    }
                 }
-            }
 
             if (!force) {
                 val output = output
@@ -99,12 +114,18 @@ class AnimotionConverterCommand(version: String) : CliktCommand(name = "animotio
         terminal.success(message)
     }
 
-    private fun infoMessage(message: String, newline: Boolean = true) {
+    private fun infoMessage(
+        message: String,
+        newline: Boolean = true,
+    ) {
         terminal.info("INFO: $message")
         if (newline) terminal.println()
     }
 
-    private fun warnMessage(message: String, newline: Boolean = true) {
+    private fun warnMessage(
+        message: String,
+        newline: Boolean = true,
+    ) {
         terminal.warning("WARN: $message")
         if (newline) terminal.println()
     }
