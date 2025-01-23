@@ -87,7 +87,7 @@ class Converter(
                             "Invalid outliner origin length: (Model: ${model.name}, Outliner: ${outliner.name})",
                         )
                     }
-                    val position = Vector3(outliner.origin[0], outliner.origin[1], outliner.origin[2])
+                    val position = Vector3(outliner.origin[0], outliner.origin[1], outliner.origin[2]).divide(16.0)
                     val rotation =
                         outliner.rotation?.let {
                             if (outliner.rotation.size != 3) {
@@ -138,7 +138,14 @@ class Converter(
                                             Keyframes.Channel.Position -> AnimatorFrameType.Position
                                             Keyframes.Channel.Scale -> AnimatorFrameType.Scale
                                         }
-                                    val point = Vector3(frame.dataPoints[0].x, frame.dataPoints[0].y, frame.dataPoints[0].z)
+                                    val point =
+                                        Vector3(frame.dataPoints[0].x, frame.dataPoints[0].y, frame.dataPoints[0].z).let {
+                                            if (frameType == AnimatorFrameType.Position) {
+                                                it.divide(16.0)
+                                            } else {
+                                                it
+                                            }
+                                        }
                                     AnimatorFrame(frameType, point, frame.time)
                                 }
                             index to Animator(frames)

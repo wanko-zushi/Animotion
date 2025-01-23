@@ -8,6 +8,8 @@ public data class Vector3(
     val y: Double,
     val z: Double,
 ) {
+    public fun divide(value: Double): Vector3 = Vector3(x / value, y / value, z / value)
+
     public companion object {
         public val Zero: Vector3 = Vector3(0.0, 0.0, 0.0)
     }
