@@ -20,8 +20,7 @@ class AnimotionModelEncodeTest {
             {
                 "version": 1,
                 "data": {
-                    "parts": [
-                    ]
+                    "parts": []
                 }
             }
             """.trimIndent(),

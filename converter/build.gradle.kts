@@ -18,7 +18,6 @@ dependencies {
     api(project(":api"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.clikt)
-    implementation(libs.kotlinx.uuid.core)
     testImplementation(libs.kotlin.test)
 }
 

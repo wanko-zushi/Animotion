@@ -2,9 +2,11 @@ package dev.s7a.animotion.converter.json.blockbench
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.uuid.UUID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Serializable
+@OptIn(ExperimentalUuidApi::class)
 data class Animation(
     val name: String,
     val loop: LoopType,
@@ -13,7 +15,7 @@ data class Animation(
     @SerialName("blend_weight") val blendWeight: String = "",
     @SerialName("start_delay") val startDelay: String = "",
     @SerialName("loop_delay") val loopDelay: String = "",
-    @SerialName("animators") val animators: Map<UUID, Animator> = mapOf(),
+    @SerialName("animators") val animators: Map<Uuid, Animator> = mapOf(),
 ) {
     @Serializable
     enum class LoopType {

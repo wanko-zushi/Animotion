@@ -18,9 +18,9 @@ import dev.s7a.animotion.model.Animator
 import dev.s7a.animotion.model.AnimatorFrame
 import dev.s7a.animotion.model.AnimatorFrameType
 import dev.s7a.animotion.model.Vector3
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
+import kotlin.uuid.ExperimentalUuidApi
 import dev.s7a.animotion.converter.json.blockbench.Animation.LoopType as BlockbenchAnimationLoopType
 import dev.s7a.animotion.converter.json.blockbench.Animator.Type as BlockbenchAnimatorType
 import dev.s7a.animotion.model.Part as AnimotionModelPart
@@ -48,6 +48,7 @@ class Converter(
             }
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     fun save(destination: File) {
         // Key(Model): name & outliner name
         // Value(Item): material & customModelData

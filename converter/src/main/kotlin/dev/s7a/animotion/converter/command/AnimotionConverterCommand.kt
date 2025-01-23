@@ -8,6 +8,11 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.versionOption
 import com.github.ajalt.clikt.parameters.types.file
+import com.github.ajalt.mordant.terminal.danger
+import com.github.ajalt.mordant.terminal.info
+import com.github.ajalt.mordant.terminal.prompt
+import com.github.ajalt.mordant.terminal.success
+import com.github.ajalt.mordant.terminal.warning
 import dev.s7a.animotion.converter.Converter
 import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.converter.loader.ResourcePack

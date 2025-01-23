@@ -5,6 +5,7 @@ import dev.s7a.animotion.converter.json.animotion.Part
 import dev.s7a.animotion.converter.json.blockbench.Element.Companion.toMinecraftElements
 import dev.s7a.animotion.converter.json.minecraft.model.MinecraftModel
 import kotlinx.serialization.Serializable
+import kotlin.uuid.ExperimentalUuidApi
 
 @Serializable
 data class BlockBenchModel(
@@ -17,6 +18,7 @@ data class BlockBenchModel(
     val textures: List<Texture>,
     val animations: List<Animation>,
 ) {
+    @OptIn(ExperimentalUuidApi::class)
     fun toParts(settings: AnimotionSettings): List<Part> {
         val elementByUuid = elements.associateBy(Element::uuid)
 

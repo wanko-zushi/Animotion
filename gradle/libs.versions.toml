@@ -1,23 +1,21 @@
 [versions]
 # Plugins
-kotlin = "1.9.25"
+kotlin = "2.1.0"
 kotlinter = "5.0.1"
-kotlinx-kover = "0.9.0"
+kotlinx-kover = "0.9.1"
 git-version = "3.1.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
 minecraft-server = "3.2.1"
 
 # Libraries
-kotlinx-serialization = "1.6.2"
-kotlinx-uuid = "0.0.26"
-clikt = "4.4.0"
+kotlinx-serialization = "1.8.0"
+clikt = "5.0.2"
 spigot-api = "1.19.4-R0.1-SNAPSHOT"
 
 [libraries]
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
-kotlinx-uuid-core = { group = "app.softwork", name = "kotlinx-uuid-core", version.ref = "kotlinx-uuid" }
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt" }
 spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
 

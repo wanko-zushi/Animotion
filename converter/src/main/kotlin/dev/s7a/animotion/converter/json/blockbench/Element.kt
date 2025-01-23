@@ -7,10 +7,12 @@ import dev.s7a.animotion.converter.util.eachMinus
 import dev.s7a.animotion.converter.util.eachPlus
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.uuid.UUID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import dev.s7a.animotion.converter.json.minecraft.model.Element as MinecraftElement
 
 @Serializable
+@OptIn(ExperimentalUuidApi::class)
 data class Element(
     val from: List<Double>,
     val to: List<Double>,
@@ -18,7 +20,7 @@ data class Element(
     val origin: List<Double>,
     val faces: Map<FaceType, Face>,
     val type: Type,
-    val uuid: UUID,
+    val uuid: Uuid,
 ) {
     @Serializable
     enum class Type {
