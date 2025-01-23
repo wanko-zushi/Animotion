@@ -95,7 +95,7 @@ class Converter(
                                     "Invalid outliner rotation length: ${outliner.rotation.size} (Model: ${model.name}, Outliner: ${outliner.name})",
                                 )
                             }
-                            Vector3(outliner.rotation[0], outliner.rotation[1], outliner.rotation[2])
+                            Vector3(outliner.rotation[0], outliner.rotation[1], outliner.rotation[2]).toRadians()
                         } ?: Vector3.Zero
                     AnimotionModelPart(outliner.name, material, customModelData, position, rotation)
                 }
@@ -140,10 +140,16 @@ class Converter(
                                         }
                                     val point =
                                         Vector3(frame.dataPoints[0].x, frame.dataPoints[0].y, frame.dataPoints[0].z).let {
-                                            if (frameType == AnimatorFrameType.Position) {
-                                                it.divide(16.0)
-                                            } else {
-                                                it
+                                            when (frameType) {
+                                                AnimatorFrameType.Position -> {
+                                                    it.divide(16.0)
+                                                }
+                                                AnimatorFrameType.Rotation -> {
+                                                    it.toRadians()
+                                                }
+                                                AnimatorFrameType.Scale -> {
+                                                    it
+                                                }
                                             }
                                         }
                                     AnimatorFrame(frameType, point, frame.time)

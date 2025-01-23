@@ -10,6 +10,8 @@ public data class Vector3(
 ) {
     public fun divide(value: Double): Vector3 = Vector3(x / value, y / value, z / value)
 
+    public fun toRadians(): Vector3 = Vector3(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
+
     public companion object {
         public val Zero: Vector3 = Vector3(0.0, 0.0, 0.0)
     }
