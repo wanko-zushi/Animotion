@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.palantir.gradle.gitversion.VersionDetails
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask.JarUrl
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.git.version)
     alias(libs.plugins.plugin.yml.bukkit)
     alias(libs.plugins.minecraft.server)
+    alias(libs.plugins.shadow)
 }
 
 val versionDetails: Closure<VersionDetails> by extra
@@ -42,6 +44,19 @@ configure<BukkitPluginDescription> {
     author = "sya_ri"
 }
 
+tasks.jar {
+    enabled = false
+}
+
+tasks.build {
+    dependsOn("shadowJar")
+}
+
+tasks.withType<ShadowJar> {
+    archiveClassifier.set("")
+    archiveBaseName.set("Animotion")
+}
+
 listOf(
     "19" to "1.19.4",
     "20" to "1.20.4",
@@ -52,12 +67,25 @@ listOf(
 
         doFirst {
             copy {
-                from(layout.buildDirectory.asFile.get().resolve("libs/${project.name}.jar"))
-                into(layout.buildDirectory.asFile.get().resolve("MinecraftServer$name/plugins"))
+                from(
+                    layout.buildDirectory.asFile
+                        .get()
+                        .resolve("libs/Animotion-${project.version}.jar"),
+                )
+                into(
+                    layout.buildDirectory.asFile
+                        .get()
+                        .resolve("MinecraftServer$name/plugins"),
+                )
             }
         }
 
-        serverDirectory.set(layout.buildDirectory.asFile.get().resolve("MinecraftServer$name").absolutePath)
+        serverDirectory.set(
+            layout.buildDirectory.asFile
+                .get()
+                .resolve("MinecraftServer$name")
+                .absolutePath,
+        )
         jarUrl.set(JarUrl.Paper(version))
         agreeEula.set(true)
     }
