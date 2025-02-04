@@ -1,4 +1,4 @@
-package dev.s7a.animotion.spigot
+package dev.s7a.animotion
 
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes

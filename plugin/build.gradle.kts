@@ -18,7 +18,7 @@ val versionDetails: Closure<VersionDetails> by extra
 val details = versionDetails()
 
 dependencies {
-    api(project(":spigot-api"))
+    api(project(":api"))
     compileOnly(libs.spigot.api)
 }
 
@@ -35,7 +35,7 @@ kotlin {
 
 configure<BukkitPluginDescription> {
     name = "Animotion"
-    main = "dev.s7a.animotion.spigot.AnimotionPlugin"
+    main = "dev.s7a.animotion.AnimotionPlugin"
     version = "${project.version} (${details.gitHash})"
     apiVersion = "1.19"
     author = "sya_ri"

@@ -1,4 +1,4 @@
-package dev.s7a.animotion.spigot
+package dev.s7a.animotion
 
 import org.bukkit.Material
 

@@ -1,4 +1,4 @@
-package dev.s7a.animotion.spigot
+package dev.s7a.animotion
 
 data class Rotation(
     val x: Double,
