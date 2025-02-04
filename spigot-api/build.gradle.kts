@@ -5,7 +5,6 @@ plugins {
 }
 
 dependencies {
-    api(project(":api"))
     compileOnly(libs.spigot.api)
     implementation(libs.packetevents.spigot)
 }

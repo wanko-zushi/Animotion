@@ -15,7 +15,6 @@ val versionDetails: Closure<VersionDetails> by extra
 val details = versionDetails()
 
 dependencies {
-    api(project(":api"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.clikt)
     testImplementation(libs.kotlin.test)
