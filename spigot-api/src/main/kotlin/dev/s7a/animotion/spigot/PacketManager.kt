@@ -1,4 +1,4 @@
-package dev.s7a.animotion.spigot.impl
+package dev.s7a.animotion.spigot
 
 import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.wrapper.PacketWrapper

@@ -1,9 +1,8 @@
 package dev.s7a.animotion.spigot
 
-import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.AsyncPlayerChatEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 
 @Suppress("unused")
@@ -19,11 +18,11 @@ class AnimotionPlugin : JavaPlugin() {
         server.pluginManager.registerEvents(
             object : Listener {
                 @EventHandler
-                fun on(event: AsyncPlayerChatEvent) {
-                    val part = animotion.createPart(Material.KELP, 2)
+                fun on(event: PlayerJoinEvent) {
+                    val robit = Robit(animotion)
                     val player = event.player
                     val location = player.location
-                    part.spawn(location, player)
+                    robit.spawn(location, player)
                 }
             },
             this,
