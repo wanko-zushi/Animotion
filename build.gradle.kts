@@ -7,7 +7,12 @@ plugins {
 
 allprojects {
     afterEvaluate {
-        apply(plugin = libs.plugins.kotlinter.get().pluginId)
+        apply(
+            plugin =
+                libs.plugins.kotlinter
+                    .get()
+                    .pluginId,
+        )
     }
 
     group = "dev.s7a"
@@ -15,5 +20,11 @@ allprojects {
 
     repositories {
         mavenCentral()
+
+        // spigot-api
+        maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+
+        // PacketEvents
+        maven(url = "https://repo.codemc.io/repository/maven-releases/")
     }
 }

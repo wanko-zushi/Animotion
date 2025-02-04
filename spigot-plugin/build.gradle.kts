@@ -17,10 +17,6 @@ plugins {
 val versionDetails: Closure<VersionDetails> by extra
 val details = versionDetails()
 
-repositories {
-    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-}
-
 dependencies {
     api(project(":spigot-api"))
     compileOnly(libs.spigot.api)
@@ -38,6 +34,7 @@ kotlin {
 }
 
 configure<BukkitPluginDescription> {
+    name = "Animotion"
     main = "dev.s7a.animotion.spigot.AnimotionPlugin"
     version = "${project.version} (${details.gitHash})"
     apiVersion = "1.19"

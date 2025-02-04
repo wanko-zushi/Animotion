@@ -12,12 +12,14 @@ minecraft-server = "3.2.1"
 kotlinx-serialization = "1.8.0"
 clikt = "5.0.2"
 spigot-api = "1.19.4-R0.1-SNAPSHOT"
+packetevents = "2.7.0"
 
 [libraries]
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt" }
 spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
+packetevents-spigot = { group = "com.github.retrooper", name = "packetevents-spigot", version.ref = "packetevents" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
