@@ -3,14 +3,17 @@ package dev.s7a.animotion
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes
+import com.github.retrooper.packetevents.protocol.item.ItemStack
+import com.github.retrooper.packetevents.protocol.nbt.NBTInt
+import com.github.retrooper.packetevents.protocol.nbt.NBTString
 import com.github.retrooper.packetevents.util.Quaternion4f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.util.UUID
 import kotlin.math.cos
 import kotlin.math.sin
@@ -46,14 +49,7 @@ internal class AnimotionPartEntity(
                             EntityData(
                                 Field.ITEM,
                                 EntityDataTypes.ITEMSTACK,
-                                SpigotConversionUtil.fromBukkitItemStack(
-                                    ItemStack(part.material).apply {
-                                        itemMeta =
-                                            itemMeta?.apply {
-                                                setCustomModelData(part.model)
-                                            }
-                                    },
-                                ),
+                                part.model.itemStack(),
                             ),
                         )
 
@@ -72,6 +68,35 @@ internal class AnimotionPartEntity(
         )
         return true
     }
+
+    private fun AnimotionPart.Model.itemStack() =
+        when (this) {
+            is AnimotionPart.Model.ItemModel -> {
+                ItemStack
+                    .builder()
+                    .type(
+                        SpigotConversionUtil.fromBukkitItemMaterial(Material.STICK),
+                    ).nbt("item_model", NBTString(itemModel))
+                    .build()
+            }
+            is AnimotionPart.Model.CustomModelData -> {
+                ItemStack
+                    .builder()
+                    .type(
+                        SpigotConversionUtil.fromBukkitItemMaterial(material),
+                    ).nbt("CustomModelData", NBTInt(customModelData))
+                    .build()
+            }
+            is AnimotionPart.Model.Both -> {
+                ItemStack
+                    .builder()
+                    .type(
+                        SpigotConversionUtil.fromBukkitItemMaterial(material),
+                    ).nbt("item_model", NBTString(itemModel))
+                    .nbt("CustomModelData", NBTInt(customModelData))
+                    .build()
+            }
+        }
 
     private fun Location.offset(position: Position) = Location(world, x + position.x, y + position.y, z + position.z)
 

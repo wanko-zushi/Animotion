@@ -12,11 +12,25 @@ abstract class AnimotionModel(
     private fun register(part: AnimotionPart) = parts.put(part, AnimotionPartEntity(animotion))
 
     fun part(
-        material: Material,
-        model: Int,
+        itemModel: String,
         position: Position = Position.Zero,
         rotation: Rotation = Rotation.Zero,
-    ) = AnimotionPart(material, model, position, rotation).apply(::register)
+    ) = AnimotionPart(AnimotionPart.Model.ItemModel(itemModel), position, rotation).apply(::register)
+
+    fun part(
+        material: Material,
+        customModelData: Int,
+        position: Position = Position.Zero,
+        rotation: Rotation = Rotation.Zero,
+    ) = AnimotionPart(AnimotionPart.Model.CustomModelData(material, customModelData), position, rotation).apply(::register)
+
+    fun part(
+        itemModel: String,
+        material: Material,
+        customModelData: Int,
+        position: Position = Position.Zero,
+        rotation: Rotation = Rotation.Zero,
+    ) = AnimotionPart(AnimotionPart.Model.Both(itemModel, material, customModelData), position, rotation).apply(::register)
 
     fun spawn(
         location: Location,
