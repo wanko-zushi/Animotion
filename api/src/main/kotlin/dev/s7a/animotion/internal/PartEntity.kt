@@ -1,4 +1,4 @@
-package dev.s7a.animotion
+package dev.s7a.animotion.internal
 
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes
@@ -10,6 +10,9 @@ import com.github.retrooper.packetevents.util.Quaternion4f
 import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
+import dev.s7a.animotion.Animotion
+import dev.s7a.animotion.data.Part
+import dev.s7a.animotion.data.Transformation
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location
@@ -20,7 +23,7 @@ import java.util.UUID
 import kotlin.math.cos
 import kotlin.math.sin
 
-internal class AnimotionPartEntity(
+internal class PartEntity(
     private val animotion: Animotion,
 ) {
     private val entityId = SpigotReflectionUtil.generateEntityId()
@@ -29,7 +32,7 @@ internal class AnimotionPartEntity(
     fun spawn(
         location: Location,
         player: Player,
-        part: AnimotionPart,
+        part: Part,
     ): Boolean {
         if (location.world != player.world) return false
         animotion.packetManager.sendPacket(
@@ -73,7 +76,7 @@ internal class AnimotionPartEntity(
 
     fun transform(
         player: Player,
-        transformation: AnimotionTransformation,
+        transformation: Transformation,
     ) {
         animotion.packetManager.sendPacket(
             player,
@@ -112,9 +115,9 @@ internal class AnimotionPartEntity(
         )
     }
 
-    private fun AnimotionPart.Model.itemStack() =
+    private fun Part.Model.itemStack() =
         when (this) {
-            is AnimotionPart.Model.ItemModel -> {
+            is Part.Model.ItemModel -> {
                 ItemStack
                     .builder()
                     .type(
@@ -122,7 +125,7 @@ internal class AnimotionPartEntity(
                     ).nbt("item_model", NBTString(itemModel))
                     .build()
             }
-            is AnimotionPart.Model.CustomModelData -> {
+            is Part.Model.CustomModelData -> {
                 ItemStack
                     .builder()
                     .type(
@@ -130,7 +133,7 @@ internal class AnimotionPartEntity(
                     ).nbt("CustomModelData", NBTInt(customModelData))
                     .build()
             }
-            is AnimotionPart.Model.Both -> {
+            is Part.Model.Both -> {
                 ItemStack
                     .builder()
                     .type(

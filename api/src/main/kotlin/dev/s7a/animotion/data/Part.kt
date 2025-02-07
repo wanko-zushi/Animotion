@@ -1,9 +1,9 @@
-package dev.s7a.animotion
+package dev.s7a.animotion.data
 
 import org.bukkit.Material
 import org.bukkit.util.Vector
 
-data class AnimotionPart(
+data class Part(
     val model: Model,
     val position: Vector,
     val rotation: Vector,

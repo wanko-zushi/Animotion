@@ -1,5 +1,6 @@
 package dev.s7a.animotion
 
+import dev.s7a.animotion.internal.PacketManager
 import org.bukkit.plugin.Plugin
 
 class Animotion(

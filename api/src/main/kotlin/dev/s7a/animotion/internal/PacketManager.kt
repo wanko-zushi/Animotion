@@ -1,4 +1,4 @@
-package dev.s7a.animotion
+package dev.s7a.animotion.internal
 
 import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.wrapper.PacketWrapper
