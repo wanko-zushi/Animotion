@@ -71,11 +71,11 @@ abstract class AnimotionModel(
     ) = Keyframe(Keyframe.Channel.Scale, Vector(x, y, z))
 
     fun spawn(
-        location: Location,
         player: Player,
+        location: Location,
     ) {
         parts.forEach { (part, entity) ->
-            entity.spawn(location, player, part)
+            entity.spawn(player, location, part)
         }
     }
 }

@@ -22,7 +22,7 @@ class AnimotionPlugin : JavaPlugin() {
                     val robit = Robit(animotion)
                     val player = event.player
                     val location = player.location
-                    robit.spawn(location, player)
+                    robit.spawn(player, location)
                 }
             },
             this,

@@ -30,8 +30,8 @@ internal class PartEntity(
     private val uniqueId = UUID.randomUUID()
 
     fun spawn(
-        location: Location,
         player: Player,
+        location: Location,
         part: Part,
     ): Boolean {
         if (location.world != player.world) return false
