@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.nbt.NBTInt
 import com.github.retrooper.packetevents.protocol.nbt.NBTString
 import com.github.retrooper.packetevents.util.Quaternion4f
+import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
@@ -14,6 +15,7 @@ import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
 import java.util.UUID
 import kotlin.math.cos
 import kotlin.math.sin
@@ -53,10 +55,10 @@ internal class AnimotionPartEntity(
                             ),
                         )
 
-                        if (part.rotation != Rotation.Zero) {
+                        if (part.rotation.isZero.not()) {
                             add(
                                 EntityData(
-                                    Field.RIGHT_ROTATION,
+                                    Field.LEFT_ROTATION,
                                     EntityDataTypes.QUATERNION,
                                     part.rotation.quaternion(),
                                 ),
@@ -67,6 +69,47 @@ internal class AnimotionPartEntity(
             ),
         )
         return true
+    }
+
+    fun transform(
+        player: Player,
+        transformation: AnimotionTransformation,
+    ) {
+        animotion.packetManager.sendPacket(
+            player,
+            buildList {
+                if (transformation.translation != null) {
+                    add(
+                        WrapperPlayServerEntityMetadata(
+                            entityId,
+                            listOf(
+                                EntityData(Field.TRANSLATION, EntityDataTypes.VECTOR3F, transformation.translation.vector3f()),
+                            ),
+                        ),
+                    )
+                }
+                if (transformation.scale != null) {
+                    add(
+                        WrapperPlayServerEntityMetadata(
+                            entityId,
+                            listOf(
+                                EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, transformation.scale.vector3f()),
+                            ),
+                        ),
+                    )
+                }
+                if (transformation.rotation != null) {
+                    add(
+                        WrapperPlayServerEntityMetadata(
+                            entityId,
+                            listOf(
+                                EntityData(Field.LEFT_ROTATION, EntityDataTypes.QUATERNION, transformation.rotation.quaternion()),
+                            ),
+                        ),
+                    )
+                }
+            },
+        )
     }
 
     private fun AnimotionPart.Model.itemStack() =
@@ -98,9 +141,11 @@ internal class AnimotionPartEntity(
             }
         }
 
-    private fun Location.offset(position: Position) = Location(world, x + position.x, y + position.y, z + position.z)
+    private fun Location.offset(position: Vector) = Location(world, x + position.x, y + position.y, z + position.z)
 
-    private fun Rotation.quaternion(): Quaternion4f {
+    private fun Vector.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
+
+    private fun Vector.quaternion(): Quaternion4f {
         val cx = cos(x / 2)
         val cy = cos(y / 2)
         val cz = cos(z / 2)
@@ -121,7 +166,6 @@ internal class AnimotionPartEntity(
         const val TRANSLATION = 11
         const val SCALE = 12
         const val LEFT_ROTATION = 13
-        const val RIGHT_ROTATION = 14
 
         // https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Item_Display
         const val ITEM = 23
