@@ -1,5 +1,7 @@
 package dev.s7a.animotion
 
+import dev.s7a.animotion.data.Animation
+import dev.s7a.animotion.data.Keyframe
 import dev.s7a.animotion.data.Part
 import dev.s7a.animotion.internal.PartEntity
 import org.bukkit.Location
@@ -34,6 +36,39 @@ abstract class AnimotionModel(
         position: Vector = Vector(),
         rotation: Vector = Vector(),
     ) = Part(Part.Model.Both(itemModel, material, customModelData), position, rotation).apply(::register)
+
+    fun loopAnimation(
+        length: Double,
+        vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
+    ) = Animation(Animation.Type.Loop, length, animators.toMap())
+
+    fun holdAnimation(
+        length: Double,
+        vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
+    ) = Animation(Animation.Type.Hold, length, animators.toMap())
+
+    fun onceAnimation(
+        length: Double,
+        vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
+    ) = Animation(Animation.Type.Once, length, animators.toMap())
+
+    fun position(
+        x: Double,
+        y: Double,
+        z: Double,
+    ) = Keyframe(Keyframe.Channel.Position, Vector(x, y, z))
+
+    fun rotation(
+        x: Double,
+        y: Double,
+        z: Double,
+    ) = Keyframe(Keyframe.Channel.Rotation, Vector(x, y, z))
+
+    fun scale(
+        x: Double,
+        y: Double,
+        z: Double,
+    ) = Keyframe(Keyframe.Channel.Scale, Vector(x, y, z))
 
     fun spawn(
         location: Location,

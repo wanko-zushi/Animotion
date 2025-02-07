@@ -11,8 +11,8 @@ import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import dev.s7a.animotion.Animotion
+import dev.s7a.animotion.data.Keyframe
 import dev.s7a.animotion.data.Part
-import dev.s7a.animotion.data.Transformation
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location
@@ -63,7 +63,7 @@ internal class PartEntity(
                                 EntityData(
                                     Field.LEFT_ROTATION,
                                     EntityDataTypes.QUATERNION,
-                                    part.rotation.quaternion(),
+                                    part.rotation.radians().quaternion(),
                                 ),
                             )
                         }
@@ -76,41 +76,36 @@ internal class PartEntity(
 
     fun transform(
         player: Player,
-        transformation: Transformation,
+        keyframe: Keyframe,
     ) {
         animotion.packetManager.sendPacket(
             player,
-            buildList {
-                if (transformation.translation != null) {
-                    add(
-                        WrapperPlayServerEntityMetadata(
-                            entityId,
-                            listOf(
-                                EntityData(Field.TRANSLATION, EntityDataTypes.VECTOR3F, transformation.translation.vector3f()),
+            when (keyframe.channel) {
+                Keyframe.Channel.Position ->
+                    WrapperPlayServerEntityMetadata(
+                        entityId,
+                        listOf(
+                            EntityData(Field.TRANSLATION, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
+                        ),
+                    )
+                Keyframe.Channel.Rotation ->
+                    WrapperPlayServerEntityMetadata(
+                        entityId,
+                        listOf(
+                            EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
+                        ),
+                    )
+                Keyframe.Channel.Scale ->
+                    WrapperPlayServerEntityMetadata(
+                        entityId,
+                        listOf(
+                            EntityData(
+                                Field.LEFT_ROTATION,
+                                EntityDataTypes.QUATERNION,
+                                keyframe.value.radians().quaternion(),
                             ),
                         ),
                     )
-                }
-                if (transformation.scale != null) {
-                    add(
-                        WrapperPlayServerEntityMetadata(
-                            entityId,
-                            listOf(
-                                EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, transformation.scale.vector3f()),
-                            ),
-                        ),
-                    )
-                }
-                if (transformation.rotation != null) {
-                    add(
-                        WrapperPlayServerEntityMetadata(
-                            entityId,
-                            listOf(
-                                EntityData(Field.LEFT_ROTATION, EntityDataTypes.QUATERNION, transformation.rotation.quaternion()),
-                            ),
-                        ),
-                    )
-                }
             },
         )
     }
@@ -147,6 +142,8 @@ internal class PartEntity(
     private fun Location.offset(position: Vector) = Location(world, x + position.x, y + position.y, z + position.z)
 
     private fun Vector.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
+
+    private fun Vector.radians() = Vector(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
 
     private fun Vector.quaternion(): Quaternion4f {
         val cx = cos(x / 2)
