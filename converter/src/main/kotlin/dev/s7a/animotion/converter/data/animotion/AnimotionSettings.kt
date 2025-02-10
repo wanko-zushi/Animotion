@@ -5,5 +5,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AnimotionSettings(
     val namespace: String = "animotion",
-    val items: Map<String, List<String>>,
-)
+    val item: Item = Item("stick", "STICK"),
+) {
+    @Serializable
+    data class Item(
+        val minecraft: String,
+        val bukkit: String,
+    )
+}

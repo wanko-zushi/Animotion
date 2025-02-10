@@ -13,8 +13,8 @@ import com.github.ajalt.mordant.terminal.info
 import com.github.ajalt.mordant.terminal.prompt
 import com.github.ajalt.mordant.terminal.success
 import com.github.ajalt.mordant.terminal.warning
-import dev.s7a.animotion.converter.Converter
 import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
+import dev.s7a.animotion.converter.generator.PackGenerator
 import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
 import java.io.IOException
@@ -103,7 +103,7 @@ class AnimotionConverterCommand(
                 warnMessage("--convertOnly is ignored unless --output is specified.")
             }
 
-            Converter(resourcePack).save(destination)
+            PackGenerator(resourcePack).save(destination)
             successMessage("Generate resource pack: $destination")
         } else {
             echoFormattedHelp()
