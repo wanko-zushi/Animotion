@@ -2,6 +2,7 @@ import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.converter.generator.PackGenerator
 import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
+import util.assertFileContent
 import java.io.File
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
@@ -16,13 +17,25 @@ sealed class ResourcePackTest(
             ignoreUnknownKeys = true
         }
 
+    protected val destination: File = createTempDirectory().toFile()
+
     protected fun resourcePack(): ResourcePack = ResourcePack.load(File("src/test/resources/packs/$name"), json)
+
+    protected fun assertGeneratedPack() {
+        val expected = File("src/test/resources/expected/$name")
+        expected.walk().forEach { file ->
+            if (file.isFile) {
+                assertFileContent(file, destination.resolve(file.toRelativeString(expected)))
+            }
+        }
+    }
 
     class Robit : ResourcePackTest("robit") {
         @Test
         fun load() {
             PackGenerator(resourcePack()).run {
-                save(createTempDirectory().toFile())
+                save(destination)
+                assertGeneratedPack()
             }
         }
     }
