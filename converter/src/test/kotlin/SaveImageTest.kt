@@ -1,4 +1,4 @@
-import dev.s7a.animotion.converter.json.blockbench.Texture
+import dev.s7a.animotion.converter.data.blockbench.Texture
 import util.assertFileContent
 import java.io.File
 import kotlin.io.path.createTempDirectory

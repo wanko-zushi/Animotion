@@ -1,12 +1,13 @@
 package dev.s7a.animotion.converter
 
+import dev.s7a.animotion.converter.data.animotion.ModelOperator
+import dev.s7a.animotion.converter.data.animotion.Part
+import dev.s7a.animotion.converter.data.blockbench.BlockBenchModel
+import dev.s7a.animotion.converter.data.minecraft.item.MinecraftItem
+import dev.s7a.animotion.converter.data.minecraft.item.Override
+import dev.s7a.animotion.converter.data.minecraft.item.Predicate
 import dev.s7a.animotion.converter.exception.MinecraftItemNotFoundException
 import dev.s7a.animotion.converter.exception.ModelNotFoundException
-import dev.s7a.animotion.converter.json.animotion.Part
-import dev.s7a.animotion.converter.json.blockbench.BlockBenchModel
-import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
-import dev.s7a.animotion.converter.json.minecraft.item.Override
-import dev.s7a.animotion.converter.json.minecraft.item.Predicate
 import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -15,6 +16,7 @@ class Converter(
     private val resourcePack: ResourcePack,
 ) {
     val items: Map<Pair<String, MinecraftItem>, List<Pair<BlockBenchModel, List<Part>>>>
+    val modelOperators: List<ModelOperator>
 
     init {
         val modelByName = resourcePack.animotion.models.associateBy(BlockBenchModel::name)
@@ -29,6 +31,13 @@ class Converter(
                     models.map { model ->
                         model to model.toParts(resourcePack.animotion.settings)
                     }
+            }
+        modelOperators =
+            items.flatMap { (key, value) ->
+                val (itemName, item) = key
+                value.map { (model, parts) ->
+                    ModelOperator(itemName, model, parts)
+                }
             }
     }
 
@@ -52,6 +61,9 @@ class Converter(
                 parentFile?.mkdirs()
                 writeText(Json.encodeToString(item.copy(overrides = overrides)))
             }
+        }
+        modelOperators.forEach {
+            it.generate(destination)
         }
     }
 }

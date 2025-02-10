@@ -1,6 +1,6 @@
-package dev.s7a.animotion.converter.json.minecraft.model
+package dev.s7a.animotion.converter.data.minecraft.model
 
-import dev.s7a.animotion.converter.json.common.FaceType
+import dev.s7a.animotion.converter.data.common.FaceType
 import kotlinx.serialization.Serializable
 
 @Serializable

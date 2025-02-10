@@ -1,8 +1,8 @@
 import dev.s7a.animotion.converter.Converter
+import dev.s7a.animotion.converter.data.minecraft.item.MinecraftItem
 import dev.s7a.animotion.converter.exception.MinecraftItemNotFoundException
 import dev.s7a.animotion.converter.exception.ModelNotFoundException
 import dev.s7a.animotion.converter.exception.UnsupportedPackFormatException
-import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
 import dev.s7a.animotion.converter.loader.ResourcePack
 import kotlinx.serialization.json.Json
 import java.io.File

@@ -1,8 +1,8 @@
 package dev.s7a.animotion.converter.loader
 
-import dev.s7a.animotion.converter.json.animotion.AnimotionSettings
-import dev.s7a.animotion.converter.json.blockbench.BlockBenchModel
-import dev.s7a.animotion.converter.json.minecraft.item.MinecraftItem
+import dev.s7a.animotion.converter.data.animotion.AnimotionSettings
+import dev.s7a.animotion.converter.data.blockbench.BlockBenchModel
+import dev.s7a.animotion.converter.data.minecraft.item.MinecraftItem
 import kotlinx.serialization.json.Json
 import java.io.File
 

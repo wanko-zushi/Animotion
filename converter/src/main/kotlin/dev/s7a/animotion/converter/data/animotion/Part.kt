@@ -1,8 +1,7 @@
-package dev.s7a.animotion.converter.json.animotion
+package dev.s7a.animotion.converter.data.animotion
 
-import dev.s7a.animotion.converter.json.minecraft.model.MinecraftModel
+import dev.s7a.animotion.converter.data.minecraft.model.MinecraftModel
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 

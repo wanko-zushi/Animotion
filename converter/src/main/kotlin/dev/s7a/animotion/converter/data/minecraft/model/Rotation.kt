@@ -1,4 +1,4 @@
-package dev.s7a.animotion.converter.json.minecraft.model
+package dev.s7a.animotion.converter.data.minecraft.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

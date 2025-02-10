@@ -16,6 +16,7 @@ val details = versionDetails()
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinpoet)
     implementation(libs.clikt)
     testImplementation(libs.kotlin.test)
 }

@@ -1,9 +1,9 @@
-package dev.s7a.animotion.converter.json.blockbench
+package dev.s7a.animotion.converter.data.blockbench
 
-import dev.s7a.animotion.converter.json.animotion.AnimotionSettings
-import dev.s7a.animotion.converter.json.animotion.Part
-import dev.s7a.animotion.converter.json.blockbench.Element.Companion.toMinecraftElements
-import dev.s7a.animotion.converter.json.minecraft.model.MinecraftModel
+import dev.s7a.animotion.converter.data.animotion.AnimotionSettings
+import dev.s7a.animotion.converter.data.animotion.Part
+import dev.s7a.animotion.converter.data.blockbench.Element.Companion.toMinecraftElements
+import dev.s7a.animotion.converter.data.minecraft.model.MinecraftModel
 import kotlinx.serialization.Serializable
 import kotlin.uuid.ExperimentalUuidApi
 

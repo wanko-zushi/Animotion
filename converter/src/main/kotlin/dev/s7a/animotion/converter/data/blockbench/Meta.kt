@@ -1,4 +1,4 @@
-package dev.s7a.animotion.converter.json.blockbench
+package dev.s7a.animotion.converter.data.blockbench
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

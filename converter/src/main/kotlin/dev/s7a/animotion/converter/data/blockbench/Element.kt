@@ -1,15 +1,15 @@
-package dev.s7a.animotion.converter.json.blockbench
+package dev.s7a.animotion.converter.data.blockbench
 
-import dev.s7a.animotion.converter.json.blockbench.Face.Companion.toMinecraftFaces
-import dev.s7a.animotion.converter.json.common.FaceType
-import dev.s7a.animotion.converter.json.minecraft.model.Rotation
+import dev.s7a.animotion.converter.data.blockbench.Face.Companion.toMinecraftFaces
+import dev.s7a.animotion.converter.data.common.FaceType
+import dev.s7a.animotion.converter.data.minecraft.model.Rotation
 import dev.s7a.animotion.converter.util.eachMinus
 import dev.s7a.animotion.converter.util.eachPlus
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
-import dev.s7a.animotion.converter.json.minecraft.model.Element as MinecraftElement
+import dev.s7a.animotion.converter.data.minecraft.model.Element as MinecraftElement
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
