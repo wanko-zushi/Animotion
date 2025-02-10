@@ -8,6 +8,7 @@ import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.fail
 
 sealed class ResourcePackTest(
     private val name: String,
@@ -23,10 +24,20 @@ sealed class ResourcePackTest(
 
     protected fun assertGeneratedPack() {
         val expected = File("src/test/resources/expected/$name")
-        expected.walk().forEach { file ->
-            if (file.isFile) {
-                assertFileContent(file, destination.resolve(file.toRelativeString(expected)))
+        val files =
+            destination
+                .walk()
+                .filter { it.isFile }
+                .associateBy { it.toRelativeString(destination) }
+                .toMutableMap()
+        expected
+            .walk()
+            .filter { it.isFile }
+            .forEach {
+                assertFileContent(it, files.remove(it.toRelativeString(expected)) ?: fail("File $it does not exist"))
             }
+        if (files.isNotEmpty()) {
+            fail("File is not generated: ${files.keys}")
         }
     }
 
