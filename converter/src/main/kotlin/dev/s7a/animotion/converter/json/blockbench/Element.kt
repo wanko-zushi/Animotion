@@ -40,7 +40,7 @@ data class Element(
         resolution: Resolution,
     ): MinecraftElement {
         val (angle, axis) = rotationAngle(outliner)
-        val center = listOf(8.0, 0.0, 8.0)
+        val center = listOf(8.0, 8.0, 8.0)
         return MinecraftElement(
             from.eachPlus(center).eachMinus(outliner.origin),
             to.eachPlus(center).eachMinus(outliner.origin),
