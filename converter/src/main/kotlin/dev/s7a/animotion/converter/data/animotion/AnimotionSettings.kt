@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class AnimotionSettings(
     val namespace: String = "animotion",
     val item: Item = Item("stick", "STICK"),
+    val `package`: String = "",
 ) {
     @Serializable
     data class Item(

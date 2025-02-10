@@ -1,13 +1,14 @@
 package dev.s7a.animotion.converter.loader
 
 import dev.s7a.animotion.converter.data.animotion.AnimotionSettings
+import dev.s7a.animotion.converter.data.animotion.Part
 import dev.s7a.animotion.converter.data.blockbench.BlockBenchModel
 import kotlinx.serialization.json.Json
 import java.io.File
 
 data class Animotion(
     val settings: AnimotionSettings,
-    val models: List<BlockBenchModel>,
+    val models: Map<BlockBenchModel, List<Part>>,
 ) {
     companion object {
         fun load(
@@ -22,8 +23,9 @@ data class Animotion(
                     AnimotionSettings()
                 }
             val models =
-                directory.listFiles().orEmpty().filter { it.extension == "bbmodel" }.map {
-                    json.decodeFromString<BlockBenchModel>(it.readText())
+                directory.listFiles().orEmpty().filter { it.extension == "bbmodel" }.associate {
+                    val model = json.decodeFromString<BlockBenchModel>(it.readText())
+                    model to Part.from(model, settings.namespace)
                 }
             return Animotion(settings, models)
         }

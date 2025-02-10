@@ -14,12 +14,12 @@ class PackGenerator(
         var customModelData = 0
         val overrides =
             buildList {
-                resourcePack.animotion.models.forEach { model ->
+                resourcePack.animotion.models.forEach { (model, parts) ->
                     model.textures.forEachIndexed { index, texture ->
                         val file = texture.getDestinationFile(destination, resourcePack.animotion.settings.namespace, model.name, index)
                         texture.saveTo(file)
                     }
-                    model.toParts(resourcePack.animotion.settings).forEachIndexed { index, part ->
+                    parts.forEachIndexed { index, part ->
                         part.save(destination, resourcePack.animotion.settings.namespace, model.name, index)
                         customModelData += 1
                         add(Override(Predicate(customModelData), "${resourcePack.animotion.settings.namespace}:${model.name}/$index"))
