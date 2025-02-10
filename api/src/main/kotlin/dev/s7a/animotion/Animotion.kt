@@ -2,9 +2,10 @@ package dev.s7a.animotion
 
 import dev.s7a.animotion.internal.PacketManager
 import org.bukkit.plugin.Plugin
+import org.bukkit.scheduler.BukkitTask
 
 class Animotion(
-    plugin: Plugin,
+    private val plugin: Plugin,
 ) {
     internal val packetManager = PacketManager(plugin)
 
@@ -19,4 +20,9 @@ class Animotion(
     fun onDisable() {
         packetManager.onDisable()
     }
+
+    fun runTaskLaterAsync(
+        delay: Long,
+        task: () -> Unit,
+    ): BukkitTask = plugin.server.scheduler.runTaskLaterAsynchronously(plugin, task, delay)
 }

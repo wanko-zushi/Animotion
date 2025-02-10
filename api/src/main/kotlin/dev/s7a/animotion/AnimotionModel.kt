@@ -3,18 +3,24 @@ package dev.s7a.animotion
 import dev.s7a.animotion.data.Animation
 import dev.s7a.animotion.data.Keyframe
 import dev.s7a.animotion.data.Part
+import dev.s7a.animotion.exception.PartNotFoundException
+import dev.s7a.animotion.internal.AnimationPlayTask
 import dev.s7a.animotion.internal.PartEntity
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
+import java.util.UUID
 
 abstract class AnimotionModel(
-    private val animotion: Animotion,
+    internal val animotion: Animotion,
 ) {
     private val parts = mutableMapOf<Part, PartEntity>()
+    private val playTasks = mutableMapOf<UUID, AnimationPlayTask>()
 
     private fun register(part: Part) = parts.put(part, PartEntity(animotion))
+
+    internal fun get(part: Part) = parts[part] ?: throw PartNotFoundException()
 
     fun part(
         itemModel: String,
@@ -40,17 +46,17 @@ abstract class AnimotionModel(
     fun loopAnimation(
         length: Double,
         vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
-    ) = Animation(Animation.Type.Loop, length, animators.toMap())
+    ) = Animation(this, Animation.Type.Loop, length, animators.toMap())
 
     fun holdAnimation(
         length: Double,
         vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
-    ) = Animation(Animation.Type.Hold, length, animators.toMap())
+    ) = Animation(this, Animation.Type.Hold, length, animators.toMap())
 
     fun onceAnimation(
         length: Double,
         vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
-    ) = Animation(Animation.Type.Once, length, animators.toMap())
+    ) = Animation(this, Animation.Type.Once, length, animators.toMap())
 
     fun position(
         x: Double,
@@ -77,5 +83,37 @@ abstract class AnimotionModel(
         parts.forEach { (part, entity) ->
             entity.spawn(player, location, part)
         }
+    }
+
+    fun isPlay(player: Player) = playTasks.contains(player.uniqueId)
+
+    fun isPlay(
+        player: Player,
+        animation: Animation,
+    ) = getPlay(player) == animation
+
+    fun getPlay(player: Player) = playTasks[player.uniqueId]?.animation
+
+    fun play(
+        player: Player,
+        animation: Animation,
+    ) {
+        reset(player)
+        playTasks[player.uniqueId] = AnimationPlayTask(player, animation)
+    }
+
+    fun reset(player: Player) {
+        playTasks.remove(player.uniqueId)?.cancel()
+        parts.forEach { (part, entity) ->
+            entity.resetTransform(player, part)
+        }
+    }
+
+    fun reset(
+        player: Player,
+        animation: Animation,
+    ) {
+        if (isPlay(player, animation).not()) return
+        reset(player)
     }
 }

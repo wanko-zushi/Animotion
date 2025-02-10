@@ -74,8 +74,38 @@ internal class PartEntity(
         return true
     }
 
+    fun resetTransform(
+        player: Player,
+        part: Part,
+    ) {
+        animotion.packetManager.sendPacket(
+            player,
+            WrapperPlayServerEntityMetadata(
+                entityId,
+                listOf(
+                    EntityData(
+                        Field.TRANSLATION,
+                        EntityDataTypes.VECTOR3F,
+                        Vector3f.zero(),
+                    ),
+                    EntityData(
+                        Field.SCALE,
+                        EntityDataTypes.VECTOR3F,
+                        Vector3f(1f, 1f, 1f),
+                    ),
+                    EntityData(
+                        Field.LEFT_ROTATION,
+                        EntityDataTypes.QUATERNION,
+                        part.rotation.radians().quaternion(),
+                    ),
+                ),
+            ),
+        )
+    }
+
     fun transform(
         player: Player,
+        part: Part,
         keyframe: Keyframe,
     ) {
         animotion.packetManager.sendPacket(
@@ -88,21 +118,24 @@ internal class PartEntity(
                             EntityData(Field.TRANSLATION, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
                         ),
                     )
-                Keyframe.Channel.Rotation ->
+                Keyframe.Channel.Scale ->
                     WrapperPlayServerEntityMetadata(
                         entityId,
                         listOf(
                             EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
                         ),
                     )
-                Keyframe.Channel.Scale ->
+                Keyframe.Channel.Rotation ->
                     WrapperPlayServerEntityMetadata(
                         entityId,
                         listOf(
                             EntityData(
                                 Field.LEFT_ROTATION,
                                 EntityDataTypes.QUATERNION,
-                                keyframe.value.radians().quaternion(),
+                                keyframe.value
+                                    .offset(part.rotation)
+                                    .radians()
+                                    .quaternion(),
                             ),
                         ),
                     )
@@ -140,6 +173,8 @@ internal class PartEntity(
         }
 
     private fun Location.offset(position: Vector) = Location(world, x + position.x, y + position.y, z + position.z)
+
+    private fun Vector.offset(position: Vector) = clone().add(position)
 
     private fun Vector.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
