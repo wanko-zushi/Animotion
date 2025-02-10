@@ -11,7 +11,6 @@ class PackGenerator(
     private val resourcePack: ResourcePack,
 ) {
     fun save(destination: File) {
-        var customModelData = 0
         val overrides =
             buildList {
                 resourcePack.animotion.models.forEach { (model, parts) ->
@@ -21,8 +20,7 @@ class PackGenerator(
                     }
                     parts.forEachIndexed { index, part ->
                         part.save(destination, resourcePack.animotion.settings.namespace, model.name, index)
-                        customModelData += 1
-                        add(Override(Predicate(customModelData), "${resourcePack.animotion.settings.namespace}:${model.name}/$index"))
+                        add(Override(Predicate(part.customModelData), "${resourcePack.animotion.settings.namespace}:${model.name}/$index"))
                     }
                 }
             }

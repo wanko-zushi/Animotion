@@ -3,9 +3,7 @@ package dev.s7a.animotion
 import dev.s7a.animotion.data.Animation
 import dev.s7a.animotion.data.Keyframe
 import dev.s7a.animotion.data.Part
-import dev.s7a.animotion.exception.PartNotFoundException
 import dev.s7a.animotion.internal.AnimationPlayTask
-import dev.s7a.animotion.internal.PartEntity
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -15,25 +13,21 @@ import java.util.UUID
 abstract class AnimotionModel(
     internal val animotion: Animotion,
 ) {
-    private val parts = mutableMapOf<Part, PartEntity>()
+    private val parts = mutableListOf<Part>()
     private val playTasks = mutableMapOf<UUID, AnimationPlayTask>()
 
-    private fun register(part: Part) = parts.put(part, PartEntity(animotion))
-
-    internal fun get(part: Part) = parts[part] ?: throw PartNotFoundException()
-
     fun part(
         itemModel: String,
         position: Vector = Vector(),
         rotation: Vector = Vector(),
-    ) = Part(Part.Model.ItemModel(itemModel), position, rotation).apply(::register)
+    ) = Part(animotion, Part.Model.ItemModel(itemModel), position, rotation).apply(parts::add)
 
     fun part(
         material: Material,
         customModelData: Int,
         position: Vector = Vector(),
         rotation: Vector = Vector(),
-    ) = Part(Part.Model.CustomModelData(material, customModelData), position, rotation).apply(::register)
+    ) = Part(animotion, Part.Model.CustomModelData(material, customModelData), position, rotation).apply(parts::add)
 
     fun part(
         itemModel: String,
@@ -41,7 +35,7 @@ abstract class AnimotionModel(
         customModelData: Int,
         position: Vector = Vector(),
         rotation: Vector = Vector(),
-    ) = Part(Part.Model.Both(itemModel, material, customModelData), position, rotation).apply(::register)
+    ) = Part(animotion, Part.Model.Both(itemModel, material, customModelData), position, rotation).apply(parts::add)
 
     fun loopAnimation(
         length: Double,
@@ -80,8 +74,8 @@ abstract class AnimotionModel(
         player: Player,
         location: Location,
     ) {
-        parts.forEach { (part, entity) ->
-            entity.spawn(player, location, part)
+        parts.forEach { part ->
+            part.entity.spawn(player, location)
         }
     }
 
@@ -104,8 +98,8 @@ abstract class AnimotionModel(
 
     fun reset(player: Player) {
         playTasks.remove(player.uniqueId)?.cancel()
-        parts.forEach { (part, entity) ->
-            entity.resetTransform(player, part)
+        parts.forEach { part ->
+            part.entity.resetTransform(player)
         }
     }
 

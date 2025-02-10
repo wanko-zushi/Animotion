@@ -5,6 +5,7 @@ import dev.s7a.animotion.converter.data.animotion.Part
 import dev.s7a.animotion.converter.data.blockbench.BlockBenchModel
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.util.concurrent.atomic.AtomicInteger
 
 data class Animotion(
     val settings: AnimotionSettings,
@@ -22,10 +23,11 @@ data class Animotion(
                 } else {
                     AnimotionSettings()
                 }
+            val customModelData = AtomicInteger()
             val models =
                 directory.listFiles().orEmpty().filter { it.extension == "bbmodel" }.associate {
                     val model = json.decodeFromString<BlockBenchModel>(it.readText())
-                    model to Part.from(model, settings.namespace)
+                    model to Part.from(model, settings.namespace, customModelData)
                 }
             return Animotion(settings, models)
         }

@@ -14,13 +14,12 @@ internal class AnimationPlayTask(
             // Animator
             animation.animators
                 .forEach { (part, keyframes) ->
-                    val entity = animation.model.get(part)
                     var previousTicks = 0
                     keyframes.forEach { (time, keyframe) ->
                         val ticks = time.toTicks()
                         val duration = ticks - previousTicks
                         previousTicks = ticks
-                        add(ticks to { entity.transform(player, part, keyframe, duration) })
+                        add(ticks to { part.entity.transform(player, keyframe, duration) })
                     }
                 }
 

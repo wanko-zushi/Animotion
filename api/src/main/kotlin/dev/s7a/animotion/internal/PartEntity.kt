@@ -25,6 +25,7 @@ import kotlin.math.sin
 
 internal class PartEntity(
     private val animotion: Animotion,
+    private val part: Part,
 ) {
     private val entityId = SpigotReflectionUtil.generateEntityId()
     private val uniqueId = UUID.randomUUID()
@@ -32,7 +33,6 @@ internal class PartEntity(
     fun spawn(
         player: Player,
         location: Location,
-        part: Part,
     ): Boolean {
         if (location.world != player.world) return false
         animotion.packetManager.sendPacket(
@@ -42,7 +42,7 @@ internal class PartEntity(
                     entityId,
                     uniqueId,
                     EntityTypes.ITEM_DISPLAY,
-                    SpigotConversionUtil.fromBukkitLocation(location.offset(part.position)),
+                    SpigotConversionUtil.fromBukkitLocation(location.offset(part.position.multiply(1 / 16.0))),
                     0F,
                     0,
                     null,
@@ -74,10 +74,7 @@ internal class PartEntity(
         return true
     }
 
-    fun resetTransform(
-        player: Player,
-        part: Part,
-    ) {
+    fun resetTransform(player: Player) {
         animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerEntityMetadata(
@@ -105,7 +102,6 @@ internal class PartEntity(
 
     fun transform(
         player: Player,
-        part: Part,
         keyframe: Keyframe,
         interpolationDuration: Int?,
     ) {
@@ -120,7 +116,7 @@ internal class PartEntity(
                                 EntityData(
                                     Field.TRANSLATION,
                                     EntityDataTypes.VECTOR3F,
-                                    keyframe.value.vector3f(),
+                                    keyframe.value.multiply(1 / 16.0).vector3f(),
                                 ),
                             )
                         }
