@@ -3,7 +3,7 @@ package dev.s7a.animotion.internal
 import dev.s7a.animotion.data.Animation
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
-import kotlin.math.roundToLong
+import kotlin.math.roundToInt
 
 internal class AnimationPlayTask(
     private val player: Player,
@@ -15,8 +15,12 @@ internal class AnimationPlayTask(
             animation.animators
                 .forEach { (part, keyframes) ->
                     val entity = animation.model.get(part)
+                    var previousTicks = 0
                     keyframes.forEach { (time, keyframe) ->
-                        add(time.toTicks() to { entity.transform(player, part, keyframe) })
+                        val ticks = time.toTicks()
+                        val duration = ticks - previousTicks
+                        previousTicks = ticks
+                        add(ticks to { entity.transform(player, part, keyframe, duration) })
                     }
                 }
 
@@ -50,17 +54,17 @@ internal class AnimationPlayTask(
     private fun next(cursor: Int) {
         val (delay, actions) = schedules.getOrNull(cursor) ?: return
         currentTask =
-            animation.model.animotion.runTaskLaterAsync(delay) {
+            animation.model.animotion.runTaskLaterAsync(delay.toLong()) {
                 actions.forEach { it() }
                 next(cursor + 1)
             }
     }
 
-    private fun Double.toTicks() = (this * 20).roundToLong()
+    private fun Double.toTicks() = (this * 20).roundToInt()
 
-    private fun <T> Map<Long, T>.toDelays() =
-        buildList<Pair<Long, T>> {
-            var previousTime = 0L
+    private fun <T> Map<Int, T>.toDelays() =
+        buildList<Pair<Int, T>> {
+            var previousTime = 0
             toSortedMap().forEach { (time, actions) ->
                 val delay = time - previousTime
                 add(delay to actions)

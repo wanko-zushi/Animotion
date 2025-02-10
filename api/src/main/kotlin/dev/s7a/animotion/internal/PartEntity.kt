@@ -107,39 +107,49 @@ internal class PartEntity(
         player: Player,
         part: Part,
         keyframe: Keyframe,
+        interpolationDuration: Int?,
     ) {
         animotion.packetManager.sendPacket(
             player,
-            when (keyframe.channel) {
-                Keyframe.Channel.Position ->
-                    WrapperPlayServerEntityMetadata(
-                        entityId,
-                        listOf(
-                            EntityData(Field.TRANSLATION, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
-                        ),
-                    )
-                Keyframe.Channel.Scale ->
-                    WrapperPlayServerEntityMetadata(
-                        entityId,
-                        listOf(
-                            EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
-                        ),
-                    )
-                Keyframe.Channel.Rotation ->
-                    WrapperPlayServerEntityMetadata(
-                        entityId,
-                        listOf(
-                            EntityData(
-                                Field.LEFT_ROTATION,
-                                EntityDataTypes.QUATERNION,
-                                keyframe.value
-                                    .offset(part.rotation)
-                                    .radians()
-                                    .quaternion(),
-                            ),
-                        ),
-                    )
-            },
+            WrapperPlayServerEntityMetadata(
+                entityId,
+                buildList {
+                    when (keyframe.channel) {
+                        Keyframe.Channel.Position -> {
+                            add(
+                                EntityData(
+                                    Field.TRANSLATION,
+                                    EntityDataTypes.VECTOR3F,
+                                    keyframe.value.vector3f(),
+                                ),
+                            )
+                        }
+                        Keyframe.Channel.Scale -> {
+                            add(
+                                EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
+                            )
+                        }
+                        Keyframe.Channel.Rotation ->
+                            {
+                                add(
+                                    EntityData(
+                                        Field.LEFT_ROTATION,
+                                        EntityDataTypes.QUATERNION,
+                                        keyframe.value
+                                            .offset(part.rotation)
+                                            .radians()
+                                            .quaternion(),
+                                    ),
+                                )
+                            }
+                    }
+
+                    add(EntityData(Field.INTERPOLATION_DELAY, EntityDataTypes.INT, 0))
+                    if (interpolationDuration != null) {
+                        add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, interpolationDuration))
+                    }
+                },
+            ),
         )
     }
 
@@ -198,6 +208,8 @@ internal class PartEntity(
 
     private object Field {
         // https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display
+        const val INTERPOLATION_DELAY = 8
+        const val INTERPOLATION_DURATION = 9
         const val TRANSLATION = 11
         const val SCALE = 12
         const val LEFT_ROTATION = 13
