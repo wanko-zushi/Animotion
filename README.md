@@ -54,6 +54,42 @@ $ java -jar animotion-converter-1.0.0-SNAPSHOT.jar -d path/to/resourcepack -c pa
 
 This command generates Kotlin code based on the specified resource pack and outputs it to `path/to/code`.
 
+## Installation
+
+To use the generated code, add the following dependency to your project:
+
+### build.gradle.kts
+
+```kotlin
+repositories {
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
+
+dependencies {
+    implementation("dev.s7a:Animotion:1.0.0-SNAPSHOT")
+}
+```
+
+### Main class
+
+```kotlin
+class ExamplePlugin : JavaPlugin() {
+    private val animotion = Animotion(this)
+
+    override fun onLoad() {
+        animotion.onLoad()
+    }
+
+    override fun onEnable() {
+        animotion.onEnable()
+    }
+
+    override fun onDisable() {
+        animotion.onDisable()
+    }
+}
+```
+
 ## Example (robit)
 
 ![](assets/example.png)
@@ -207,42 +243,6 @@ robit.standing.play(player)
 robit.walking.play(player)
 robit.question.play(player)
 robit.freeze.play(player)
-```
-
-## Installation
-
-To use the generated code, add the following dependency to your project:
-
-### build.gradle.kts
-
-```kotlin
-repositories {
-    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
-}
-
-dependencies {
-    implementation("dev.s7a:Animotion:1.0.0-SNAPSHOT")
-}
-```
-
-### Main class
-
-```kotlin
-class ExamplePlugin : JavaPlugin() {
-    private val animotion = Animotion(this)
-
-    override fun onLoad() {
-        animotion.onLoad()
-    }
-
-    override fun onEnable() {
-        animotion.onEnable()
-    }
-
-    override fun onDisable() {
-        animotion.onDisable()
-    }
-}
 ```
 
 ## License
