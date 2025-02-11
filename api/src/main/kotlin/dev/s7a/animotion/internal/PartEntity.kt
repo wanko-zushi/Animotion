@@ -116,7 +116,11 @@ internal class PartEntity(
                                 EntityData(
                                     Field.TRANSLATION,
                                     EntityDataTypes.VECTOR3F,
-                                    keyframe.value.multiply(1 / 16.0).vector3f(),
+                                    keyframe.value
+                                        .clone()
+                                        .multiply(1 / 16.0)
+                                        .multiply(Vector(-1, 1, -1))
+                                        .vector3f(),
                                 ),
                             )
                         }
