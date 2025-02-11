@@ -1,6 +1,9 @@
 package dev.s7a.animotion.converter.generator
 
-import com.squareup.kotlinpoet.AnnotationSpec
+import com.pinterest.ktlint.rule.engine.api.Code
+import com.pinterest.ktlint.rule.engine.api.KtLintRuleEngine
+import com.pinterest.ktlint.rule.engine.core.api.AutocorrectDecision
+import com.pinterest.ktlint.ruleset.standard.StandardRuleSetProvider
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -30,15 +33,16 @@ class CodeGenerator(
         val partClass = ClassName("dev.s7a.animotion.data", "Part")
         val materialClass = ClassName("org.bukkit", "Material")
         val vectorClass = ClassName("org.bukkit.util", "Vector")
-        val animationClass = ClassName("dev.s7a.animotion.data", "Animation")
+        val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())
 
+        parent.mkdirs()
         resourcePack.animotion.models.forEach { (model, parts) ->
             val className = model.name.toPascalCase()
+            val file = parent.resolve("$className.kt")
             val partByUuid = mutableMapOf<Uuid, Pair<Part, String>>()
 
             FileSpec
                 .builder(resourcePack.animotion.settings.`package`, className)
-                .addAnnotation(AnnotationSpec.builder(Suppress::class).addMember("%S", "ktlint").build())
                 .addType(
                     TypeSpec
                         .classBuilder(className)
@@ -105,7 +109,7 @@ class CodeGenerator(
                                                 part.customModelData
                                             }.map { (_, partName, animator) ->
                                                 CodeBlock.of(
-                                                    "%N to listOf(%L)",
+                                                    "%N to\nlistOf(\n%L)",
                                                     partName,
                                                     animator.keyframes
                                                         .sortedBy { it.time }
@@ -133,7 +137,21 @@ class CodeGenerator(
                             },
                         ).build(),
                 ).build()
-                .writeTo(parent)
+                .toString()
+                .let {
+                    val code =
+                        Code.fromSnippet(
+                            // Remove public modifier: https://github.com/square/kotlinpoet/issues/1001
+                            it.replace("public class", "class").replace("public val", "val"),
+                        )
+                    ktLintRuleEngine.format(code) { lintError ->
+                        if (lintError.canBeAutoCorrected) {
+                            AutocorrectDecision.ALLOW_AUTOCORRECT
+                        } else {
+                            AutocorrectDecision.NO_AUTOCORRECT
+                        }
+                    }
+                }.let(file::writeText)
         }
     }
 }

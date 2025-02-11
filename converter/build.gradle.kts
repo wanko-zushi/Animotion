@@ -18,6 +18,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinpoet)
     implementation(libs.clikt)
+    implementation(libs.ktlint.rule.engine)
+    implementation(libs.ktlint.rule.engine.core)
+    implementation(libs.ktlint.ruleset.standard)
+    runtimeOnly(libs.slf4j)
     testImplementation(libs.kotlin.test)
 }
 

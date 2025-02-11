@@ -12,6 +12,8 @@ minecraft-server = "3.2.1"
 kotlinx-serialization = "1.8.0"
 kotlinpoet = "2.0.0"
 clikt = "5.0.3"
+ktlint = "1.5.0"
+slf4j = "2.0.16"
 spigot-api = "1.19.4-R0.1-SNAPSHOT"
 packetevents = "2.7.0"
 
@@ -20,6 +22,10 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt" }
+ktlint-rule-engine = { group = "com.pinterest.ktlint", name = "ktlint-rule-engine", version.ref = "ktlint" }
+ktlint-rule-engine-core = { group = "com.pinterest.ktlint", name = "ktlint-rule-engine-core", version.ref = "ktlint" }
+ktlint-ruleset-standard = { group = "com.pinterest.ktlint", name = "ktlint-ruleset-standard", version.ref = "ktlint" }
+slf4j = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
 packetevents-spigot = { group = "com.github.retrooper", name = "packetevents-spigot", version.ref = "packetevents" }
 
