@@ -18,8 +18,8 @@ internal class AnimationPlayTask(
                     keyframes.forEach { (time, keyframe) ->
                         val ticks = time.toTicks()
                         val duration = ticks - previousTicks
+                        add(previousTicks to { part.entity.transform(player, keyframe, duration) })
                         previousTicks = ticks
-                        add(ticks to { part.entity.transform(player, keyframe, duration) })
                     }
                 }
 
