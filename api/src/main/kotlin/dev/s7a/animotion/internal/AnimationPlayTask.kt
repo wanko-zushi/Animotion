@@ -1,6 +1,6 @@
 package dev.s7a.animotion.internal
 
-import dev.s7a.animotion.data.Animation
+import dev.s7a.animotion.model.Animation
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 import kotlin.math.roundToInt
@@ -30,7 +30,7 @@ internal class AnimationPlayTask(
                     add(animation.length.toTicks() to { next(0) })
                 }
                 Animation.Type.Once -> {
-                    add(animation.length.toTicks() to { animation.model.reset(player) })
+                    add(animation.length.toTicks() to { animation.parent.reset(player) })
                 }
                 Animation.Type.Hold -> {
                     // Nothing
@@ -53,7 +53,7 @@ internal class AnimationPlayTask(
     private fun next(cursor: Int) {
         val (delay, actions) = schedules.getOrNull(cursor) ?: return
         currentTask =
-            animation.model.animotion.runTaskLaterAsync(delay.toLong()) {
+            animation.parent.animotion.runTaskLaterAsync(delay.toLong()) {
                 actions.forEach { it() }
                 next(cursor + 1)
             }

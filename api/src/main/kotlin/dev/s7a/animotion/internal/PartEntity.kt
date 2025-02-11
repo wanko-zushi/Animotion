@@ -11,8 +11,8 @@ import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import dev.s7a.animotion.Animotion
-import dev.s7a.animotion.data.Keyframe
-import dev.s7a.animotion.data.Part
+import dev.s7a.animotion.model.Keyframe
+import dev.s7a.animotion.model.Part
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location

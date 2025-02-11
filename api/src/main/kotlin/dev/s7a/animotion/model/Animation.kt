@@ -1,10 +1,10 @@
-package dev.s7a.animotion.data
+package dev.s7a.animotion.model
 
 import dev.s7a.animotion.AnimotionModel
 import org.bukkit.entity.Player
 
 data class Animation(
-    val model: AnimotionModel,
+    val parent: AnimotionModel,
     val type: Type,
     val length: Double,
     val animators: Map<Part, List<Pair<Double, Keyframe>>>,
@@ -15,9 +15,9 @@ data class Animation(
         Hold,
     }
 
-    fun play(player: Player) = model.play(player, this)
+    fun play(player: Player) = parent.play(player, this)
 
-    fun isPlay(player: Player) = model.isPlay(player, this)
+    fun isPlay(player: Player) = parent.isPlay(player, this)
 
-    fun reset(player: Player) = model.reset(player, this)
+    fun reset(player: Player) = parent.reset(player, this)
 }

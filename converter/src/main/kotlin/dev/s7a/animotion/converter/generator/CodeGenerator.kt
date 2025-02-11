@@ -30,7 +30,8 @@ class CodeGenerator(
     fun save(parent: File) {
         val animotionClass = ClassName("dev.s7a.animotion", "Animotion")
         val animotionModelClass = ClassName("dev.s7a.animotion", "AnimotionModel")
-        val partClass = ClassName("dev.s7a.animotion.data", "Part")
+        val partClass = ClassName("dev.s7a.animotion.model", "Part")
+        val animationClass = ClassName("dev.s7a.animotion.model", "Animation")
         val materialClass = ClassName("org.bukkit", "Material")
         val vectorClass = ClassName("org.bukkit.util", "Vector")
         val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())

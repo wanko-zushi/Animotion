@@ -1,9 +1,9 @@
 package dev.s7a.animotion
 
-import dev.s7a.animotion.data.Animation
-import dev.s7a.animotion.data.Keyframe
-import dev.s7a.animotion.data.Part
 import dev.s7a.animotion.internal.AnimationPlayTask
+import dev.s7a.animotion.model.Animation
+import dev.s7a.animotion.model.Keyframe
+import dev.s7a.animotion.model.Part
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -20,14 +20,14 @@ abstract class AnimotionModel(
         itemModel: String,
         position: Vector = Vector(),
         rotation: Vector = Vector(),
-    ) = Part(animotion, Part.Model.ItemModel(itemModel), position, rotation).apply(parts::add)
+    ) = Part(this, Part.Model.ItemModel(itemModel), position, rotation).apply(parts::add)
 
     fun part(
         material: Material,
         customModelData: Int,
         position: Vector = Vector(),
         rotation: Vector = Vector(),
-    ) = Part(animotion, Part.Model.CustomModelData(material, customModelData), position, rotation).apply(parts::add)
+    ) = Part(this, Part.Model.CustomModelData(material, customModelData), position, rotation).apply(parts::add)
 
     fun part(
         itemModel: String,
@@ -35,7 +35,7 @@ abstract class AnimotionModel(
         customModelData: Int,
         position: Vector = Vector(),
         rotation: Vector = Vector(),
-    ) = Part(animotion, Part.Model.Both(itemModel, material, customModelData), position, rotation).apply(parts::add)
+    ) = Part(this, Part.Model.Both(itemModel, material, customModelData), position, rotation).apply(parts::add)
 
     fun loopAnimation(
         length: Double,

@@ -1,4 +1,4 @@
-package dev.s7a.animotion.data
+package dev.s7a.animotion.model
 
 import org.bukkit.util.Vector
 

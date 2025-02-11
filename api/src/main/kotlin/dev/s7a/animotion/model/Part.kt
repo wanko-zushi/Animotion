@@ -1,17 +1,17 @@
-package dev.s7a.animotion.data
+package dev.s7a.animotion.model
 
-import dev.s7a.animotion.Animotion
+import dev.s7a.animotion.AnimotionModel
 import dev.s7a.animotion.internal.PartEntity
 import org.bukkit.Material
 import org.bukkit.util.Vector
 
-class Part internal constructor(
-    animotion: Animotion,
+data class Part(
+    val parent: AnimotionModel,
     val model: Model,
     val position: Vector,
     val rotation: Vector,
 ) {
-    internal val entity = PartEntity(animotion, this)
+    internal val entity = PartEntity(parent.animotion, this)
 
     sealed interface Model {
         data class ItemModel(

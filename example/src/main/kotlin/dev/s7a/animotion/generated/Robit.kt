@@ -2,8 +2,8 @@ package dev.s7a.animotion.generated
 
 import dev.s7a.animotion.Animotion
 import dev.s7a.animotion.AnimotionModel
-import dev.s7a.animotion.`data`.Animation
-import dev.s7a.animotion.`data`.Part
+import dev.s7a.animotion.model.Animation
+import dev.s7a.animotion.model.Part
 import org.bukkit.Material
 import org.bukkit.util.Vector
 
