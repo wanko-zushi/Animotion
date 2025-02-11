@@ -33,6 +33,7 @@ class AnimotionPlugin : JavaPlugin() {
                     val player = event.player
                     val message = event.message
                     when (message) {
+                        "move" -> robit.spawn(player, player.location)
                         "reset" -> robit.reset(player)
                         "standing" -> robit.standing.play(player)
                         "walking" -> robit.walking.play(player)

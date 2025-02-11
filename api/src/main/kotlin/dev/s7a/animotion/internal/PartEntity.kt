@@ -42,7 +42,9 @@ internal class PartEntity(
                     entityId,
                     uniqueId,
                     EntityTypes.ITEM_DISPLAY,
-                    SpigotConversionUtil.fromBukkitLocation(location.offset(part.position.multiply(1 / 16.0))),
+                    SpigotConversionUtil.fromBukkitLocation(
+                        location.offset(Rotation.fromLocation(location).rotate(part.position.clone().multiply(1 / 16.0))),
+                    ),
                     0F,
                     0,
                     null,
@@ -129,19 +131,18 @@ internal class PartEntity(
                                 EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
                             )
                         }
-                        Keyframe.Channel.Rotation ->
-                            {
-                                add(
-                                    EntityData(
-                                        Field.LEFT_ROTATION,
-                                        EntityDataTypes.QUATERNION,
-                                        keyframe.value
-                                            .offset(part.rotation)
-                                            .radians()
-                                            .quaternion(),
-                                    ),
-                                )
-                            }
+                        Keyframe.Channel.Rotation -> {
+                            add(
+                                EntityData(
+                                    Field.LEFT_ROTATION,
+                                    EntityDataTypes.QUATERNION,
+                                    keyframe.value
+                                        .offset(part.rotation)
+                                        .radians()
+                                        .quaternion(),
+                                ),
+                            )
+                        }
                     }
 
                     add(EntityData(Field.INTERPOLATION_DELAY, EntityDataTypes.INT, 0))
@@ -182,7 +183,7 @@ internal class PartEntity(
             }
         }
 
-    private fun Location.offset(position: Vector) = Location(world, x + position.x, y + position.y, z + position.z)
+    private fun Location.offset(position: Vector) = clone().add(position)
 
     private fun Vector.offset(position: Vector) = clone().add(position)
 
@@ -204,6 +205,33 @@ internal class PartEntity(
             (cx * cy * sz - sx * sy * cz).toFloat(),
             (cx * cy * cz + sx * sy * sz).toFloat(),
         )
+    }
+
+    private data class Rotation(
+        val yaw: Double,
+        val pitch: Double,
+    ) {
+        companion object {
+            fun fromLocation(location: Location) =
+                Rotation(Math.toRadians(location.yaw.toDouble()), Math.toRadians(location.pitch.toDouble()))
+        }
+
+        private val cosYaw = cos(yaw)
+        private val sinYaw = sin(yaw)
+        private val cosPitch = cos(pitch)
+        private val sinPitch = sin(pitch)
+
+        private fun rotate(
+            x: Double,
+            y: Double,
+            z: Double,
+        ) = Vector(
+            x * cosYaw - (y * sinPitch + z * cosPitch) * sinYaw,
+            y * cosPitch - z * sinPitch,
+            x * sinYaw + (y * sinPitch + z * cosPitch) * cosYaw,
+        )
+
+        fun rotate(vector: Vector) = rotate(vector.x, vector.y, vector.z)
     }
 
     private object Field {
