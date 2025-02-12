@@ -104,7 +104,7 @@ class CodeGenerator(
                                         animation.length,
                                         animation.animators
                                             .map { (uuid, animator) ->
-                                                val (part, partName) = partByUuid[uuid] ?: throw NotFoundPartException()
+                                                val (part, partName) = partByUuid[uuid] ?: throw NotFoundPartException(uuid)
                                                 Triple(part, partName, animator)
                                             }.sortedBy { (part) ->
                                                 part.customModelData
