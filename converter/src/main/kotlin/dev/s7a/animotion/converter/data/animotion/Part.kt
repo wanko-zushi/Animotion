@@ -39,7 +39,13 @@ data class Part(
             return model.outliner.map { outliner ->
                 val textureSize = listOf(model.resolution.width, model.resolution.height)
                 val textures = model.textures.indices.associate { "$it" to "$namespace:item/${model.name}/$it" }
-                val elements = outliner.children.mapNotNull(elementByUuid::get).toMinecraftElements(outliner, model.resolution)
+                val elements =
+                    outliner.children
+                        .filterIsInstance<Outliner.Child.UsePart>() // FIXME Support UseOutliner
+                        .map(Outliner.Child.UsePart::uuid)
+                        .mapNotNull(
+                            elementByUuid::get,
+                        ).toMinecraftElements(outliner, model.resolution)
                 Part(
                     customModelData.incrementAndGet(),
                     outliner,
