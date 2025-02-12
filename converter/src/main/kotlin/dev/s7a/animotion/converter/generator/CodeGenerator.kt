@@ -75,11 +75,16 @@ class CodeGenerator(
                                             // CustomModelData
                                             add(CodeBlock.of("%L", part.customModelData))
 
+                                            val hasPosition = part.outliner.origin.none { it == 0.0 }
+                                            val hasRotation = part.outliner.rotation.none { it == 0.0 }
+
                                             // position
-                                            add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.outliner.origin.toTypedArray()))
+                                            if (hasPosition || hasRotation) {
+                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.outliner.origin.toTypedArray()))
+                                            }
 
                                             // rotation
-                                            if (part.outliner.rotation != null) {
+                                            if (hasRotation) {
                                                 add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.outliner.rotation.toTypedArray()))
                                             }
                                         }.joinToCode(),
