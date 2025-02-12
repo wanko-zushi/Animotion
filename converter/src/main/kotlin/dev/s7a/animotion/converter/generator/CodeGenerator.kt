@@ -40,7 +40,7 @@ class CodeGenerator(
         resourcePack.animotion.models.forEach { (model, parts) ->
             val className = model.name.toPascalCase()
             val file = parent.resolve("$className.kt")
-            val partByUuid = mutableMapOf<Uuid, Pair<Part, String>>()
+            val partByUuid = mutableMapOf<Uuid, Part>()
 
             FileSpec
                 .builder(resourcePack.animotion.settings.`package`, className)
@@ -56,12 +56,11 @@ class CodeGenerator(
                         .addSuperclassConstructorParameter("%N", "animotion")
                         .addProperties(
                             parts.mapIndexed { index, part ->
-                                val partName = part.name.toCamelCase()
-                                partByUuid[part.uuid] = part to partName
+                                partByUuid[part.uuid] = part
 
                                 PropertySpec
                                     .builder(
-                                        partName,
+                                        part.name.toCamelCase(),
                                         partClass,
                                     ).initializer(
                                         "part(%L)",
@@ -108,15 +107,22 @@ class CodeGenerator(
                                         "$animationFunName(%L, %L)",
                                         animation.length,
                                         animation.animators
-                                            .map { (uuid, animator) ->
-                                                val (part, partName) = partByUuid[uuid] ?: throw NotFoundPartException(uuid)
-                                                Triple(part, partName, animator)
+                                            .flatMap { (uuid, animator) ->
+                                                val part = partByUuid[uuid] ?: throw NotFoundPartException(uuid)
+                                                listOf(
+                                                    part to animator,
+                                                    *part.children
+                                                        .map {
+                                                            it to animator
+                                                        }.toTypedArray(),
+                                                    // TODO merge & teleport
+                                                )
                                             }.sortedBy { (part) ->
                                                 part.customModelData
-                                            }.map { (_, partName, animator) ->
+                                            }.map { (part, animator) ->
                                                 CodeBlock.of(
                                                     "%N to\nlistOf(\n%L)",
-                                                    partName,
+                                                    part.name.toCamelCase(),
                                                     animator.keyframes
                                                         .sortedBy { it.time }
                                                         .map { keyframe ->

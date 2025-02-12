@@ -18,6 +18,7 @@ data class Part(
     val uuid: Uuid,
     val origin: List<Double>,
     val rotation: List<Double>,
+    val children: List<Part>,
     val model: MinecraftModel,
 ) {
     fun save(
@@ -70,6 +71,7 @@ data class Part(
                         outliner.uuid,
                         outliner.origin,
                         outliner.rotation,
+                        parts.toList(),
                         MinecraftModel(
                             textureSize,
                             textures,
