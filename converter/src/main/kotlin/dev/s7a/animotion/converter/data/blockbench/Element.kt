@@ -16,7 +16,7 @@ import dev.s7a.animotion.converter.data.minecraft.model.Element as MinecraftElem
 data class Element(
     val from: List<Double>,
     val to: List<Double>,
-    val rotation: List<Double>? = null,
+    val rotation: List<Double> = listOf(0.0, 0.0, 0.0),
     val origin: List<Double>,
     val faces: Map<FaceType, Face>,
     val type: Type,
@@ -29,7 +29,7 @@ data class Element(
     }
 
     private fun rotationAngle(outliner: Outliner): Pair<Double, Rotation.Axis> {
-        val rotation = rotation?.eachMinus(outliner.rotation ?: List(rotation.size) { 0.0 }) ?: return 0.0 to Rotation.Axis.Y
+        val rotation = rotation.eachMinus(outliner.rotation)
         val index = rotation.indexOfFirst { it != 0.0 }
         if (index == -1) return 0.0 to Rotation.Axis.Y
         return rotation[index] to Rotation.Axis.entries[index]

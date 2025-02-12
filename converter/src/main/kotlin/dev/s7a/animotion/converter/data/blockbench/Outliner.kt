@@ -13,7 +13,7 @@ import kotlin.uuid.Uuid
 data class Outliner(
     val name: String,
     val origin: List<Double>,
-    val rotation: List<Double>? = null,
+    val rotation: List<Double> = listOf(0.0, 0.0, 0.0),
     val uuid: Uuid,
     val children: List<Child>,
 ) {
