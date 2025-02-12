@@ -10,6 +10,5 @@ data class PackMeta(
     @Serializable
     data class Pack(
         @SerialName("pack_format") val packFormat: Int,
-        val description: String,
     )
 }
