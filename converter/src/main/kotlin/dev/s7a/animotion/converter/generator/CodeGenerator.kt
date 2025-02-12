@@ -56,8 +56,8 @@ class CodeGenerator(
                         .addSuperclassConstructorParameter("%N", "animotion")
                         .addProperties(
                             parts.mapIndexed { index, part ->
-                                val partName = part.outliner.name.toCamelCase()
-                                partByUuid[part.outliner.uuid] = part to partName
+                                val partName = part.name.toCamelCase()
+                                partByUuid[part.uuid] = part to partName
 
                                 PropertySpec
                                     .builder(
@@ -75,17 +75,17 @@ class CodeGenerator(
                                             // CustomModelData
                                             add(CodeBlock.of("%L", part.customModelData))
 
-                                            val hasPosition = part.outliner.origin.none { it == 0.0 }
-                                            val hasRotation = part.outliner.rotation.none { it == 0.0 }
+                                            val hasPosition = part.origin.any { it != 0.0 }
+                                            val hasRotation = part.rotation.any { it != 0.0 }
 
                                             // position
                                             if (hasPosition || hasRotation) {
-                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.outliner.origin.toTypedArray()))
+                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.origin.toTypedArray()))
                                             }
 
                                             // rotation
                                             if (hasRotation) {
-                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.outliner.rotation.toTypedArray()))
+                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.rotation.toTypedArray()))
                                             }
                                         }.joinToCode(),
                                     ).addModifiers(KModifier.PRIVATE)
