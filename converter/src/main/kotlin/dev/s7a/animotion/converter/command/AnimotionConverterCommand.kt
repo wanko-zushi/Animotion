@@ -98,7 +98,14 @@ class AnimotionConverterCommand(
                 }
 
                 try {
-                    directory.copyRecursively(output)
+                    listOf("assets", "pack.mcmeta").forEach {
+                        val file = directory.resolve(it)
+                        if (file.exists()) {
+                            val outputFile = output.resolve(it)
+                            file.copyRecursively(outputFile)
+                            infoMessage("Copy file: $file -> $outputFile", newline = false)
+                        }
+                    }
                 } catch (error: NoSuchFileException) {
                     existWithErrorMessage("Copy failed. The source file doesn't exists: ${error.file}")
                 } catch (error: FileAlreadyExistsException) {
