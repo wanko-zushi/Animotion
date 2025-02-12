@@ -26,5 +26,8 @@ data class Keyframes(
     enum class Interpolation {
         @SerialName("linear")
         Linear,
+
+        @SerialName("catmullrom")
+        Catmullrom,
     }
 }
