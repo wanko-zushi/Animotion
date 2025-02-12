@@ -43,7 +43,14 @@ internal class PartEntity(
                     uniqueId,
                     EntityTypes.ITEM_DISPLAY,
                     SpigotConversionUtil.fromBukkitLocation(
-                        location.offset(Rotation.fromLocation(location).rotate(part.position.clone().multiply(1 / 16.0))),
+                        location.offset(
+                            Rotation.fromLocation(location).rotate(
+                                part.position
+                                    .clone()
+                                    .multiply(1 / 16.0)
+                                    .multiply(Vector(-1, 1, -1)),
+                            ),
+                        ),
                     ),
                     0F,
                     0,
@@ -65,7 +72,10 @@ internal class PartEntity(
                                 EntityData(
                                     Field.LEFT_ROTATION,
                                     EntityDataTypes.QUATERNION,
-                                    part.rotation.radians().quaternion(),
+                                    part.rotation
+                                        .multiply(Vector(1, -1, -1))
+                                        .radians()
+                                        .quaternion(),
                                 ),
                             )
                         }
@@ -95,7 +105,10 @@ internal class PartEntity(
                     EntityData(
                         Field.LEFT_ROTATION,
                         EntityDataTypes.QUATERNION,
-                        part.rotation.radians().quaternion(),
+                        part.rotation
+                            .multiply(Vector(1, -1, -1))
+                            .radians()
+                            .quaternion(),
                     ),
                 ),
             ),
@@ -138,6 +151,7 @@ internal class PartEntity(
                                     EntityDataTypes.QUATERNION,
                                     keyframe.value
                                         .offset(part.rotation)
+                                        .multiply(Vector(1, -1, -1))
                                         .radians()
                                         .quaternion(),
                                 ),
