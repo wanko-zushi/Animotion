@@ -66,7 +66,7 @@ class CodeGenerator(
                                         part.name.toCamelCase(),
                                         partClass,
                                     ).initializer(
-                                        "part(%L)",
+                                        "part(\n%L)",
                                         buildList {
                                             // item_model
                                             add(CodeBlock.of("%S", "${resourcePack.animotion.settings.namespace}:${model.name}_$index"))

@@ -13,27 +13,68 @@ class Robit(
     baseScale: Float = 1.0F,
 ) : AnimotionModel(animotion, baseScale) {
     private val gear: Part =
-        part("animotion:robit_0", Material.STICK, 1, Vector(0.0, 1.4843749999999996, 0.0), Vector(0.0, -22.5, 0.0))
+        part(
+            "animotion:robit_0",
+            Material.STICK,
+            1,
+            Vector(0.0, 1.4843749999999996, 0.0),
+            Vector(0.0, -22.5, 0.0),
+        )
 
-    private val body: Part = part("animotion:robit_1", Material.STICK, 2)
+    private val body: Part =
+        part(
+            "animotion:robit_1",
+            Material.STICK,
+            2,
+        )
 
     private val leftShoulder: Part =
-        part("animotion:robit_2", Material.STICK, 3, Vector(-0.375, 0.90625, 0.0))
+        part(
+            "animotion:robit_2",
+            Material.STICK,
+            3,
+            Vector(-0.375, 0.90625, 0.0),
+        )
 
     private val leftArm: Part =
-        part("animotion:robit_3", Material.STICK, 4, Vector(-0.375, 0.90625, 0.0))
+        part(
+            "animotion:robit_3",
+            Material.STICK,
+            4,
+            Vector(-0.375, 0.90625, 0.0),
+        )
 
     private val rightShoulder: Part =
-        part("animotion:robit_4", Material.STICK, 5, Vector(0.375, 0.90625, 0.0))
+        part(
+            "animotion:robit_4",
+            Material.STICK,
+            5,
+            Vector(0.375, 0.90625, 0.0),
+        )
 
     private val rightArm: Part =
-        part("animotion:robit_5", Material.STICK, 6, Vector(0.375, 0.90625, 0.0))
+        part(
+            "animotion:robit_5",
+            Material.STICK,
+            6,
+            Vector(0.375, 0.90625, 0.0),
+        )
 
     private val leftLeg: Part =
-        part("animotion:robit_6", Material.STICK, 7, Vector(-0.125, 0.3958333333333333, 0.0))
+        part(
+            "animotion:robit_6",
+            Material.STICK,
+            7,
+            Vector(-0.125, 0.3958333333333333, 0.0),
+        )
 
     private val rightLeg: Part =
-        part("animotion:robit_7", Material.STICK, 8, Vector(0.125, 0.3958333333333333, 0.0))
+        part(
+            "animotion:robit_7",
+            Material.STICK,
+            8,
+            Vector(0.125, 0.3958333333333333, 0.0),
+        )
 
     val standing: Animation =
         loopAnimation(
