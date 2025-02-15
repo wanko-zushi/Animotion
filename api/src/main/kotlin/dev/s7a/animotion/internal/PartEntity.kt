@@ -80,6 +80,20 @@ internal class PartEntity(
                                 ),
                             )
                         }
+
+                        if (part.parent.baseScale != 1.0F) {
+                            add(
+                                EntityData(
+                                    Field.SCALE,
+                                    EntityDataTypes.VECTOR3F,
+                                    Vector3f(
+                                        part.parent.baseScale,
+                                        part.parent.baseScale,
+                                        part.parent.baseScale,
+                                    ),
+                                ),
+                            )
+                        }
                     },
                 ),
             ),
@@ -110,7 +124,11 @@ internal class PartEntity(
                     EntityData(
                         Field.SCALE,
                         EntityDataTypes.VECTOR3F,
-                        Vector3f(1f, 1f, 1f),
+                        Vector3f(
+                            part.parent.baseScale,
+                            part.parent.baseScale,
+                            part.parent.baseScale,
+                        ),
                     ),
                     EntityData(
                         Field.LEFT_ROTATION,
@@ -145,13 +163,31 @@ internal class PartEntity(
                                         .clone()
                                         .multiply(1 / 16.0)
                                         .multiply(Vector(-1, 1, -1))
-                                        .vector3f(),
+                                        .multiply(
+                                            Vector(
+                                                part.parent.baseScale,
+                                                part.parent.baseScale,
+                                                part.parent.baseScale,
+                                            ),
+                                        ).vector3f(),
                                 ),
                             )
                         }
                         Keyframe.Channel.Scale -> {
                             add(
-                                EntityData(Field.SCALE, EntityDataTypes.VECTOR3F, keyframe.value.vector3f()),
+                                EntityData(
+                                    Field.SCALE,
+                                    EntityDataTypes.VECTOR3F,
+                                    keyframe.value
+                                        .clone()
+                                        .multiply(
+                                            Vector(
+                                                part.parent.baseScale,
+                                                part.parent.baseScale,
+                                                part.parent.baseScale,
+                                            ),
+                                        ).vector3f(),
+                                ),
                             )
                         }
                         Keyframe.Channel.Rotation -> {

@@ -6,14 +6,16 @@ import dev.s7a.animotion.model.Animation
 import dev.s7a.animotion.model.Part
 import org.bukkit.Material
 import org.bukkit.util.Vector
+import kotlin.Float
 
 class Robit(
     animotion: Animotion,
-) : AnimotionModel(animotion) {
+    baseScale: Float = 1.0F,
+) : AnimotionModel(animotion, baseScale) {
     private val gear: Part =
         part("animotion:robit_0", Material.STICK, 1, Vector(0.0, 23.749999999999993, 0.0), Vector(0.0, -22.5, 0.0))
 
-    private val body: Part = part("animotion:robit_1", Material.STICK, 2, Vector(0.0, 0.0, 0.0))
+    private val body: Part = part("animotion:robit_1", Material.STICK, 2)
 
     private val leftShoulder: Part =
         part("animotion:robit_2", Material.STICK, 3, Vector(-6.0, 14.5, 0.0))

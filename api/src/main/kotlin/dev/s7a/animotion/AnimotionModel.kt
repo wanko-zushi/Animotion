@@ -12,6 +12,7 @@ import java.util.UUID
 
 abstract class AnimotionModel(
     internal val animotion: Animotion,
+    val baseScale: Float,
 ) {
     private val parts = mutableListOf<Part>()
     private val playTasks = mutableMapOf<UUID, AnimationPlayTask>()

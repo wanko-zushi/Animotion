@@ -9,6 +9,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.joinToCode
@@ -51,9 +52,11 @@ class CodeGenerator(
                             FunSpec
                                 .constructorBuilder()
                                 .addParameter("animotion", animotionClass)
+                                .addParameter(ParameterSpec.builder("baseScale", Float::class).defaultValue("%L", "1.0F").build())
                                 .build(),
                         ).superclass(animotionModelClass)
                         .addSuperclassConstructorParameter("%N", "animotion")
+                        .addSuperclassConstructorParameter("%N", "baseScale")
                         .addProperties(
                             parts.mapIndexed { index, part ->
                                 partByUuid[part.uuid] = part
