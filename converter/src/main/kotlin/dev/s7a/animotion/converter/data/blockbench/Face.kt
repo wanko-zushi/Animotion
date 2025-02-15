@@ -12,7 +12,7 @@ data class Face(
     fun toMinecraftFace(textures: List<Texture>): MinecraftFace =
         if (texture == null) {
             MinecraftFace(
-                listOf(0.0, 0.0, 0.0),
+                listOf(0.0, 0.0, 0.0, 0.0),
                 "#missing",
             )
         } else {
