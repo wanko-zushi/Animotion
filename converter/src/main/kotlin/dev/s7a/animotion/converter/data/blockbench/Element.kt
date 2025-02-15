@@ -37,7 +37,7 @@ data class Element(
 
     fun toMinecraftElement(
         outliner: Outliner,
-        resolution: Resolution,
+        textures: List<Texture>,
     ): MinecraftElement {
         val (angle, axis) = rotationAngle(outliner)
         val center = listOf(8.0, 8.0, 8.0)
@@ -45,17 +45,17 @@ data class Element(
             from.eachPlus(center).eachMinus(outliner.origin),
             to.eachPlus(center).eachMinus(outliner.origin),
             Rotation(angle, axis, origin.eachPlus(center).eachMinus(outliner.origin)),
-            faces.toMinecraftFaces(resolution),
+            faces.toMinecraftFaces(textures),
         )
     }
 
     companion object {
         fun List<Element>.toMinecraftElements(
             outliner: Outliner,
-            resolution: Resolution,
+            textures: List<Texture>,
         ): List<MinecraftElement> =
             map {
-                it.toMinecraftElement(outliner, resolution)
+                it.toMinecraftElement(outliner, textures)
             }
     }
 }

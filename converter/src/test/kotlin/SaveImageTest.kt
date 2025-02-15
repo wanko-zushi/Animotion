@@ -8,7 +8,7 @@ class SaveImageTest {
     @Test
     fun saveImage() {
         val base64 = File("src/test/resources/expected/image/base64.txt").readText()
-        val texture = Texture(base64)
+        val texture = Texture(source = base64)
         val file = createTempFile().toFile()
         texture.saveTo(file)
         assertFileContent(File("src/test/resources/expected/image/robit.png"), file)

@@ -78,7 +78,7 @@ data class Part(
                             children
                                 .map(Outliner.Child.UsePart::uuid)
                                 .mapNotNull(elementByUuid::get)
-                                .toMinecraftElements(outliner, model.resolution),
+                                .toMinecraftElements(outliner, model.textures),
                         ),
                     ),
                 )
