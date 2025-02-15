@@ -9,9 +9,9 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 @Serializable
 data class Texture(
     @SerialName("uv_width")
-    val uvWidth: Int = 64,
+    val uvWidth: Double = 64.0,
     @SerialName("uv_height")
-    val uvHeight: Int = 64,
+    val uvHeight: Double = 64.0,
     val source: String,
 ) {
     fun getDestinationFile(
