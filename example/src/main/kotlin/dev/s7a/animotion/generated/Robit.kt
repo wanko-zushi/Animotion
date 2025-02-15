@@ -13,25 +13,27 @@ class Robit(
     baseScale: Float = 1.0F,
 ) : AnimotionModel(animotion, baseScale) {
     private val gear: Part =
-        part("animotion:robit_0", Material.STICK, 1, Vector(0.0, 23.749999999999993, 0.0), Vector(0.0, -22.5, 0.0))
+        part("animotion:robit_0", Material.STICK, 1, Vector(0.0, 1.4843749999999996, 0.0), Vector(0.0, -22.5, 0.0))
 
     private val body: Part = part("animotion:robit_1", Material.STICK, 2)
 
     private val leftShoulder: Part =
-        part("animotion:robit_2", Material.STICK, 3, Vector(-6.0, 14.5, 0.0))
+        part("animotion:robit_2", Material.STICK, 3, Vector(-0.375, 0.90625, 0.0))
 
-    private val leftArm: Part = part("animotion:robit_3", Material.STICK, 4, Vector(-6.0, 14.5, 0.0))
+    private val leftArm: Part =
+        part("animotion:robit_3", Material.STICK, 4, Vector(-0.375, 0.90625, 0.0))
 
     private val rightShoulder: Part =
-        part("animotion:robit_4", Material.STICK, 5, Vector(6.0, 14.5, 0.0))
+        part("animotion:robit_4", Material.STICK, 5, Vector(0.375, 0.90625, 0.0))
 
-    private val rightArm: Part = part("animotion:robit_5", Material.STICK, 6, Vector(6.0, 14.5, 0.0))
+    private val rightArm: Part =
+        part("animotion:robit_5", Material.STICK, 6, Vector(0.375, 0.90625, 0.0))
 
     private val leftLeg: Part =
-        part("animotion:robit_6", Material.STICK, 7, Vector(-2.0, 6.333333333333333, 0.0))
+        part("animotion:robit_6", Material.STICK, 7, Vector(-0.125, 0.3958333333333333, 0.0))
 
     private val rightLeg: Part =
-        part("animotion:robit_7", Material.STICK, 8, Vector(2.0, 6.333333333333333, 0.0))
+        part("animotion:robit_7", Material.STICK, 8, Vector(0.125, 0.3958333333333333, 0.0))
 
     val standing: Animation =
         loopAnimation(
@@ -134,11 +136,11 @@ class Robit(
                     1.2 to position(0.0, 0.0, 0.0),
                     1.2 to scale(1.0, 1.0, 1.0),
                     1.2166666666666666 to rotation(-90.0, 0.0, 0.0),
-                    1.2833333333333334 to position(0.0, 0.0, -12.0),
+                    1.2833333333333334 to position(0.0, 0.0, -0.75),
                     1.3333333333333333 to rotation(-17.5, 0.0, 0.0),
-                    1.3666666666666667 to position(0.0, -5.5, -18.0),
+                    1.3666666666666667 to position(0.0, -0.34375, -1.125),
                     1.45 to rotation(0.0, 0.0, 0.0),
-                    1.45 to position(0.0, -15.0, -20.0),
+                    1.45 to position(0.0, -0.9375, -1.25),
                 ),
         )
 }

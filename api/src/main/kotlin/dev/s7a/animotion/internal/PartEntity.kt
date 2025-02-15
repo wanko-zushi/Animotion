@@ -48,7 +48,7 @@ internal class PartEntity(
                             Rotation.fromLocation(location).rotate(
                                 part.position
                                     .clone()
-                                    .multiply(1 / 16.0)
+                                    .multiply(part.parent.baseScale)
                                     .multiply(Vector(-1, 1, -1)),
                             ),
                         ),
@@ -161,15 +161,9 @@ internal class PartEntity(
                                     EntityDataTypes.VECTOR3F,
                                     keyframe.value
                                         .clone()
-                                        .multiply(1 / 16.0)
                                         .multiply(Vector(-1, 1, -1))
-                                        .multiply(
-                                            Vector(
-                                                part.parent.baseScale,
-                                                part.parent.baseScale,
-                                                part.parent.baseScale,
-                                            ),
-                                        ).vector3f(),
+                                        .multiply(part.parent.baseScale)
+                                        .vector3f(),
                                 ),
                             )
                         }
@@ -180,13 +174,8 @@ internal class PartEntity(
                                     EntityDataTypes.VECTOR3F,
                                     keyframe.value
                                         .clone()
-                                        .multiply(
-                                            Vector(
-                                                part.parent.baseScale,
-                                                part.parent.baseScale,
-                                                part.parent.baseScale,
-                                            ),
-                                        ).vector3f(),
+                                        .multiply(part.parent.baseScale)
+                                        .vector3f(),
                                 ),
                             )
                         }

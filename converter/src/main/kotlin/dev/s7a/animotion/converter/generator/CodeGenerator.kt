@@ -82,7 +82,13 @@ class CodeGenerator(
 
                                             // position
                                             if (hasPosition || hasRotation) {
-                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.origin.toTypedArray()))
+                                                add(
+                                                    CodeBlock.of(
+                                                        "%T(%L, %L, %L)",
+                                                        vectorClass,
+                                                        *part.origin.map { it / 16.0 }.toTypedArray(),
+                                                    ),
+                                                )
                                             }
 
                                             // rotation
@@ -129,11 +135,11 @@ class CodeGenerator(
                                                     animator.keyframes
                                                         .sortedBy { it.time }
                                                         .map { keyframe ->
-                                                            val keyframeFunName =
+                                                            val (keyframeFunName, div) =
                                                                 when (keyframe.channel) {
-                                                                    Keyframes.Channel.Rotation -> "rotation"
-                                                                    Keyframes.Channel.Position -> "position"
-                                                                    Keyframes.Channel.Scale -> "scale"
+                                                                    Keyframes.Channel.Rotation -> "rotation" to 1.0
+                                                                    Keyframes.Channel.Position -> "position" to 16.0
+                                                                    Keyframes.Channel.Scale -> "scale" to 1.0
                                                                 }
 
                                                             val point = keyframe.dataPoints[0]
@@ -141,9 +147,9 @@ class CodeGenerator(
                                                                 "%L to %N(%L, %L, %L)",
                                                                 keyframe.time,
                                                                 keyframeFunName,
-                                                                point.x,
-                                                                point.y,
-                                                                point.z,
+                                                                point.x / div,
+                                                                point.y / div,
+                                                                point.z / div,
                                                             )
                                                         }.joinToCode(),
                                                 )
