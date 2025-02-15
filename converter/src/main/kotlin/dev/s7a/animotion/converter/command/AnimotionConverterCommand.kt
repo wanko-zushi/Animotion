@@ -98,7 +98,7 @@ class AnimotionConverterCommand(
                 }
 
                 try {
-                    listOf("assets", "pack.mcmeta").forEach {
+                    listOf("assets", "pack.mcmeta", "pack.png").forEach {
                         val file = directory.resolve(it)
                         if (file.exists()) {
                             val outputFile = output.resolve(it)
