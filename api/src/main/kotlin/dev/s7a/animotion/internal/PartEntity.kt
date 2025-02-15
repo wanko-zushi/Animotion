@@ -8,6 +8,7 @@ import com.github.retrooper.packetevents.protocol.nbt.NBTInt
 import com.github.retrooper.packetevents.protocol.nbt.NBTString
 import com.github.retrooper.packetevents.util.Quaternion4f
 import com.github.retrooper.packetevents.util.Vector3f
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import dev.s7a.animotion.Animotion
@@ -84,6 +85,15 @@ internal class PartEntity(
             ),
         )
         return true
+    }
+
+    fun remove(player: Player) {
+        animotion.packetManager.sendPacket(
+            player,
+            WrapperPlayServerDestroyEntities(
+                entityId,
+            ),
+        )
     }
 
     fun resetTransform(player: Player) {

@@ -79,6 +79,12 @@ abstract class AnimotionModel(
         }
     }
 
+    fun remove(player: Player) {
+        parts.forEach { part ->
+            part.entity.remove(player)
+        }
+    }
+
     fun isPlay(player: Player) = playTasks.contains(player.uniqueId)
 
     fun isPlay(
