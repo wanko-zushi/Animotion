@@ -133,6 +133,8 @@ internal class PartEntity(
                             .radians()
                             .quaternion(),
                     ),
+                    EntityData(Field.INTERPOLATION_DELAY, EntityDataTypes.INT, 0),
+                    EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 0),
                 ),
             ),
         )
