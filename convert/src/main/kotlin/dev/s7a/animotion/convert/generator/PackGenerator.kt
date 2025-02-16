@@ -24,14 +24,14 @@ class PackGenerator(
                     }
                 }
             }
-        destination.resolve("assets/minecraft/models/item/${resourcePack.animotion.settings.item.minecraft}.json").run {
+        destination.resolve("assets/minecraft/models/item/${resourcePack.animotion.settings.item}.json").run {
             parentFile?.mkdirs()
             writeText(
                 Json.encodeToString(
                     MinecraftItem(
                         "minecraft:item/generated",
                         mapOf(
-                            "layer0" to "minecraft:item/${resourcePack.animotion.settings.item.minecraft}",
+                            "layer0" to "minecraft:item/${resourcePack.animotion.settings.item}",
                         ),
                         overrides,
                     ),

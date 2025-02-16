@@ -11,22 +11,19 @@ import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
-import dev.s7a.animotion.Animotion
-import dev.s7a.animotion.model.Keyframe
-import dev.s7a.animotion.model.Part
+import dev.s7a.animotion.ModelPart
+import dev.s7a.animotion.common.BaseAnimation
+import dev.s7a.animotion.common.Vector3
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.util.Vector
 import java.util.UUID
 import kotlin.math.cos
 import kotlin.math.sin
 
 internal class PartEntity(
-    private val animotion: Animotion,
-    private val part: Part,
+    private val part: ModelPart,
 ) {
     private val entityId = SpigotReflectionUtil.generateEntityId()
     private val uniqueId = UUID.randomUUID()
@@ -36,7 +33,7 @@ internal class PartEntity(
         location: Location,
     ): Boolean {
         if (location.world != player.world) return false
-        animotion.packetManager.sendPacket(
+        part.parent.animotion.packetManager.sendPacket(
             player,
             listOf(
                 WrapperPlayServerSpawnEntity(
@@ -44,13 +41,11 @@ internal class PartEntity(
                     uniqueId,
                     EntityTypes.ITEM_DISPLAY,
                     SpigotConversionUtil.fromBukkitLocation(
-                        location.offset(
-                            Rotation.fromLocation(location).rotate(
-                                part.position
-                                    .clone()
-                                    .multiply(part.parent.baseScale)
-                                    .multiply(Vector(-1, 1, -1)),
-                            ),
+                        location.clone().add(
+                            part.position
+                                .multiply(part.parent.baseScale)
+                                .multiply(-1, 1, -1)
+                                .rotateFromLocation(location),
                         ),
                     ),
                     0F,
@@ -64,7 +59,7 @@ internal class PartEntity(
                             EntityData(
                                 Field.ITEM,
                                 EntityDataTypes.ITEMSTACK,
-                                part.model.itemStack(),
+                                part.itemStack(),
                             ),
                         )
 
@@ -74,7 +69,7 @@ internal class PartEntity(
                                     Field.LEFT_ROTATION,
                                     EntityDataTypes.QUATERNION,
                                     part.rotation
-                                        .multiply(Vector(1, -1, -1))
+                                        .multiply(1, -1, -1)
                                         .radians()
                                         .quaternion(),
                                 ),
@@ -102,7 +97,7 @@ internal class PartEntity(
     }
 
     fun remove(player: Player) {
-        animotion.packetManager.sendPacket(
+        part.parent.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerDestroyEntities(
                 entityId,
@@ -111,7 +106,7 @@ internal class PartEntity(
     }
 
     fun resetTransform(player: Player) {
-        animotion.packetManager.sendPacket(
+        part.parent.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerEntityMetadata(
                 entityId,
@@ -134,7 +129,7 @@ internal class PartEntity(
                         Field.LEFT_ROTATION,
                         EntityDataTypes.QUATERNION,
                         part.rotation
-                            .multiply(Vector(1, -1, -1))
+                            .multiply(1, -1, -1)
                             .radians()
                             .quaternion(),
                     ),
@@ -145,48 +140,46 @@ internal class PartEntity(
 
     fun transform(
         player: Player,
-        keyframe: Keyframe,
+        keyframe: BaseAnimation.Keyframe,
         interpolationDuration: Int?,
     ) {
-        animotion.packetManager.sendPacket(
+        part.parent.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerEntityMetadata(
                 entityId,
                 buildList {
                     when (keyframe.channel) {
-                        Keyframe.Channel.Position -> {
+                        BaseAnimation.Keyframe.Channel.Position -> {
                             add(
                                 EntityData(
                                     Field.TRANSLATION,
                                     EntityDataTypes.VECTOR3F,
                                     keyframe.value
-                                        .clone()
-                                        .multiply(Vector(-1, 1, -1))
+                                        .multiply(-1, 1, -1)
                                         .multiply(part.parent.baseScale)
                                         .vector3f(),
                                 ),
                             )
                         }
-                        Keyframe.Channel.Scale -> {
+                        BaseAnimation.Keyframe.Channel.Scale -> {
                             add(
                                 EntityData(
                                     Field.SCALE,
                                     EntityDataTypes.VECTOR3F,
                                     keyframe.value
-                                        .clone()
                                         .multiply(part.parent.baseScale)
                                         .vector3f(),
                                 ),
                             )
                         }
-                        Keyframe.Channel.Rotation -> {
+                        BaseAnimation.Keyframe.Channel.Rotation -> {
                             add(
                                 EntityData(
                                     Field.LEFT_ROTATION,
                                     EntityDataTypes.QUATERNION,
                                     keyframe.value
-                                        .offset(part.rotation)
-                                        .multiply(Vector(1, -1, -1))
+                                        .add(part.rotation)
+                                        .multiply(1, -1, -1)
                                         .radians()
                                         .quaternion(),
                                 ),
@@ -203,44 +196,22 @@ internal class PartEntity(
         )
     }
 
-    private fun Part.Model.itemStack() =
-        when (this) {
-            is Part.Model.ItemModel -> {
-                ItemStack
-                    .builder()
-                    .type(
-                        SpigotConversionUtil.fromBukkitItemMaterial(Material.STICK),
-                    ).nbt("item_model", NBTString(itemModel))
-                    .build()
-            }
-            is Part.Model.CustomModelData -> {
-                ItemStack
-                    .builder()
-                    .type(
-                        SpigotConversionUtil.fromBukkitItemMaterial(material),
-                    ).nbt("CustomModelData", NBTInt(customModelData))
-                    .build()
-            }
-            is Part.Model.Both -> {
-                ItemStack
-                    .builder()
-                    .type(
-                        SpigotConversionUtil.fromBukkitItemMaterial(material),
-                    ).nbt("item_model", NBTString(itemModel))
-                    .nbt("CustomModelData", NBTInt(customModelData))
-                    .build()
-            }
-        }
+    private fun ModelPart.itemStack() =
+        ItemStack
+            .builder()
+            .type(
+                SpigotConversionUtil.fromBukkitItemMaterial(part.parent.animotion.material),
+            ).nbt("item_model", NBTString(itemModel))
+            .nbt("CustomModelData", NBTInt(customModelData))
+            .build()
 
-    private fun Location.offset(position: Vector) = clone().add(position)
+    private fun Location.add(other: Vector3) = clone().add(other.x, other.y, other.z)
 
-    private fun Vector.offset(position: Vector) = clone().add(position)
+    private fun Vector3.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
-    private fun Vector.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
+    private fun Vector3.radians() = Vector3(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
 
-    private fun Vector.radians() = Vector(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
-
-    private fun Vector.quaternion(): Quaternion4f {
+    private fun Vector3.quaternion(): Quaternion4f {
         val cx = cos(x / 2)
         val cy = cos(y / 2)
         val cz = cos(z / 2)
@@ -256,31 +227,23 @@ internal class PartEntity(
         )
     }
 
-    private data class Rotation(
-        val yaw: Double,
-        val pitch: Double,
-    ) {
-        companion object {
-            fun fromLocation(location: Location) =
-                Rotation(Math.toRadians(location.yaw.toDouble()), Math.toRadians(location.pitch.toDouble()))
-        }
+    private fun Vector3.rotateFromLocation(location: Location) =
+        rotate(Math.toRadians(location.yaw.toDouble()), Math.toRadians(location.pitch.toDouble()))
 
-        private val cosYaw = cos(yaw)
-        private val sinYaw = sin(yaw)
-        private val cosPitch = cos(pitch)
-        private val sinPitch = sin(pitch)
+    private fun Vector3.rotate(
+        yaw: Double,
+        pitch: Double,
+    ): Vector3 {
+        val cosYaw = cos(yaw)
+        val sinYaw = sin(yaw)
+        val cosPitch = cos(pitch)
+        val sinPitch = sin(pitch)
 
-        private fun rotate(
-            x: Double,
-            y: Double,
-            z: Double,
-        ) = Vector(
+        return Vector3(
             x * cosYaw - (y * sinPitch + z * cosPitch) * sinYaw,
             y * cosPitch - z * sinPitch,
             x * sinYaw + (y * sinPitch + z * cosPitch) * cosYaw,
         )
-
-        fun rotate(vector: Vector) = rotate(vector.x, vector.y, vector.z)
     }
 
     private object Field {

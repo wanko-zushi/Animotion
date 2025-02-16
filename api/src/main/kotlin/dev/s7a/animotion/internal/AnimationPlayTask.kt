@@ -1,13 +1,14 @@
 package dev.s7a.animotion.internal
 
-import dev.s7a.animotion.model.Animation
+import dev.s7a.animotion.ModelAnimation
+import dev.s7a.animotion.common.BaseAnimation
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 import kotlin.math.roundToInt
 
 internal class AnimationPlayTask(
     private val player: Player,
-    val animation: Animation,
+    val animation: ModelAnimation,
 ) {
     private val schedules =
         buildList {
@@ -25,14 +26,14 @@ internal class AnimationPlayTask(
 
             // End action
             when (animation.type) {
-                Animation.Type.Loop -> {
+                BaseAnimation.Type.Loop -> {
                     // Restart
                     add(animation.length.toTicks() to { next(0) })
                 }
-                Animation.Type.Once -> {
+                BaseAnimation.Type.Once -> {
                     add(animation.length.toTicks() to { animation.parent.reset(player) })
                 }
-                Animation.Type.Hold -> {
+                BaseAnimation.Type.Hold -> {
                     // Nothing
                 }
             }

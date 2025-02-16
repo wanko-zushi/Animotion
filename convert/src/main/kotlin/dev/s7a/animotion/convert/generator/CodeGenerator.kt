@@ -31,10 +31,9 @@ class CodeGenerator(
     fun save(parent: File) {
         val animotionClass = ClassName("dev.s7a.animotion", "Animotion")
         val animotionModelClass = ClassName("dev.s7a.animotion", "AnimotionModel")
-        val partClass = ClassName("dev.s7a.animotion.model", "Part")
-        val animationClass = ClassName("dev.s7a.animotion.model", "Animation")
-        val materialClass = ClassName("org.bukkit", "Material")
-        val vectorClass = ClassName("org.bukkit.util", "Vector")
+        val modelPartClass = ClassName("dev.s7a.animotion", "ModelPart")
+        val modelAnimationClass = ClassName("dev.s7a.animotion", "ModelAnimation")
+        val vector3Class = ClassName("dev.s7a.animotion.common", "Vector3")
         val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())
 
         parent.mkdirs()
@@ -44,7 +43,7 @@ class CodeGenerator(
             val partByUuid = mutableMapOf<Uuid, Part>()
 
             FileSpec
-                .builder(resourcePack.animotion.settings.`package`, className)
+                .builder(resourcePack.animotion.settings.packageName, className)
                 .addType(
                     TypeSpec
                         .classBuilder(className)
@@ -64,15 +63,12 @@ class CodeGenerator(
                                 PropertySpec
                                     .builder(
                                         part.name.toCamelCase(),
-                                        partClass,
+                                        modelPartClass,
                                     ).initializer(
                                         "part(\n%L)",
                                         buildList {
                                             // item_model
                                             add(CodeBlock.of("%S", "${resourcePack.animotion.settings.namespace}:${model.name}_$index"))
-
-                                            // material
-                                            add(CodeBlock.of("%T.%N", materialClass, resourcePack.animotion.settings.item.bukkit))
 
                                             // CustomModelData
                                             add(CodeBlock.of("%L", part.customModelData))
@@ -85,7 +81,7 @@ class CodeGenerator(
                                                 add(
                                                     CodeBlock.of(
                                                         "%T(%L, %L, %L)",
-                                                        vectorClass,
+                                                        vector3Class,
                                                         *part.origin.map { it / 16.0 }.toTypedArray(),
                                                     ),
                                                 )
@@ -93,7 +89,7 @@ class CodeGenerator(
 
                                             // rotation
                                             if (hasRotation) {
-                                                add(CodeBlock.of("%T(%L, %L, %L)", vectorClass, *part.rotation.toTypedArray()))
+                                                add(CodeBlock.of("%T(%L, %L, %L)", vector3Class, *part.rotation.toTypedArray()))
                                             }
                                         }.joinToCode(),
                                     ).addModifiers(KModifier.PRIVATE)
@@ -111,7 +107,7 @@ class CodeGenerator(
                                 PropertySpec
                                     .builder(
                                         animation.name.removePrefix("animation.").toCamelCase(),
-                                        animationClass,
+                                        modelAnimationClass,
                                     ).initializer(
                                         "$animationFunName(%L, %L)",
                                         animation.length,

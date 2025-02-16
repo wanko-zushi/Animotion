@@ -1,6 +1,7 @@
 package dev.s7a.animotion
 
 import dev.s7a.animotion.generated.Robit
+import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -9,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 @Suppress("unused")
 class AnimotionPlugin : JavaPlugin() {
-    private val animotion = Animotion(this)
+    private val animotion = Animotion(this, Material.STICK)
 
     override fun onLoad() {
         animotion.onLoad()

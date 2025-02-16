@@ -1,75 +1,58 @@
 package dev.s7a.animotion
 
+import dev.s7a.animotion.common.BaseAnimation
+import dev.s7a.animotion.common.Vector3
 import dev.s7a.animotion.internal.AnimationPlayTask
-import dev.s7a.animotion.model.Animation
-import dev.s7a.animotion.model.Keyframe
-import dev.s7a.animotion.model.Part
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.util.Vector
 import java.util.UUID
 
 abstract class AnimotionModel(
     internal val animotion: Animotion,
     val baseScale: Float,
 ) {
-    private val parts = mutableListOf<Part>()
+    private val parts = mutableListOf<ModelPart>()
     private val playTasks = mutableMapOf<UUID, AnimationPlayTask>()
 
-    fun part(
+    protected fun part(
         itemModel: String,
-        position: Vector = Vector(),
-        rotation: Vector = Vector(),
-    ) = Part(this, Part.Model.ItemModel(itemModel), position, rotation).apply(parts::add)
-
-    fun part(
-        material: Material,
         customModelData: Int,
-        position: Vector = Vector(),
-        rotation: Vector = Vector(),
-    ) = Part(this, Part.Model.CustomModelData(material, customModelData), position, rotation).apply(parts::add)
+        position: Vector3 = Vector3(),
+        rotation: Vector3 = Vector3(),
+    ) = ModelPart(this, itemModel, customModelData, position, rotation).apply(parts::add)
 
-    fun part(
-        itemModel: String,
-        material: Material,
-        customModelData: Int,
-        position: Vector = Vector(),
-        rotation: Vector = Vector(),
-    ) = Part(this, Part.Model.Both(itemModel, material, customModelData), position, rotation).apply(parts::add)
-
-    fun loopAnimation(
+    protected fun loopAnimation(
         length: Double,
-        vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
-    ) = Animation(this, Animation.Type.Loop, length, animators.toMap())
+        vararg animators: Pair<ModelPart, List<Pair<Double, BaseAnimation.Keyframe>>>,
+    ) = ModelAnimation(this, BaseAnimation.Type.Loop, length, animators.toMap())
 
-    fun holdAnimation(
+    protected fun holdAnimation(
         length: Double,
-        vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
-    ) = Animation(this, Animation.Type.Hold, length, animators.toMap())
+        vararg animators: Pair<ModelPart, List<Pair<Double, BaseAnimation.Keyframe>>>,
+    ) = ModelAnimation(this, BaseAnimation.Type.Hold, length, animators.toMap())
 
-    fun onceAnimation(
+    protected fun onceAnimation(
         length: Double,
-        vararg animators: Pair<Part, List<Pair<Double, Keyframe>>>,
-    ) = Animation(this, Animation.Type.Once, length, animators.toMap())
+        vararg animators: Pair<ModelPart, List<Pair<Double, BaseAnimation.Keyframe>>>,
+    ) = ModelAnimation(this, BaseAnimation.Type.Once, length, animators.toMap())
 
-    fun position(
+    protected fun position(
         x: Double,
         y: Double,
         z: Double,
-    ) = Keyframe(Keyframe.Channel.Position, Vector(x, y, z))
+    ) = BaseAnimation.Keyframe(BaseAnimation.Keyframe.Channel.Position, Vector3(x, y, z))
 
-    fun rotation(
+    protected fun rotation(
         x: Double,
         y: Double,
         z: Double,
-    ) = Keyframe(Keyframe.Channel.Rotation, Vector(x, y, z))
+    ) = BaseAnimation.Keyframe(BaseAnimation.Keyframe.Channel.Rotation, Vector3(x, y, z))
 
-    fun scale(
+    protected fun scale(
         x: Double,
         y: Double,
         z: Double,
-    ) = Keyframe(Keyframe.Channel.Scale, Vector(x, y, z))
+    ) = BaseAnimation.Keyframe(BaseAnimation.Keyframe.Channel.Scale, Vector3(x, y, z))
 
     fun spawn(
         player: Player,
@@ -90,14 +73,14 @@ abstract class AnimotionModel(
 
     fun isPlay(
         player: Player,
-        animation: Animation,
+        animation: ModelAnimation,
     ) = getPlay(player) == animation
 
     fun getPlay(player: Player) = playTasks[player.uniqueId]?.animation
 
     fun play(
         player: Player,
-        animation: Animation,
+        animation: ModelAnimation,
     ) {
         reset(player)
         playTasks[player.uniqueId] = AnimationPlayTask(player, animation)
@@ -112,7 +95,7 @@ abstract class AnimotionModel(
 
     fun reset(
         player: Player,
-        animation: Animation,
+        animation: ModelAnimation,
     ) {
         if (isPlay(player, animation).not()) return
         reset(player)

@@ -1,11 +1,13 @@
 package dev.s7a.animotion
 
 import dev.s7a.animotion.internal.PacketManager
+import org.bukkit.Material
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 
 class Animotion(
     private val plugin: Plugin,
+    val material: Material = Material.STICK,
 ) {
     internal val packetManager = PacketManager(plugin)
 

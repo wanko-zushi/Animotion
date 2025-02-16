@@ -2,81 +2,72 @@ package dev.s7a.animotion.generated
 
 import dev.s7a.animotion.Animotion
 import dev.s7a.animotion.AnimotionModel
-import dev.s7a.animotion.model.Animation
-import dev.s7a.animotion.model.Part
-import org.bukkit.Material
-import org.bukkit.util.Vector
+import dev.s7a.animotion.ModelAnimation
+import dev.s7a.animotion.ModelPart
+import dev.s7a.animotion.common.Vector3
 import kotlin.Float
 
 class Robit(
     animotion: Animotion,
     baseScale: Float = 1.0F,
 ) : AnimotionModel(animotion, baseScale) {
-    private val gear: Part =
+    private val gear: ModelPart =
         part(
             "animotion:robit_0",
-            Material.STICK,
             1,
-            Vector(0.0, 1.4843749999999996, 0.0),
-            Vector(0.0, -22.5, 0.0),
+            Vector3(0.0, 1.4843749999999996, 0.0),
+            Vector3(0.0, -22.5, 0.0),
         )
 
-    private val body: Part =
+    private val body: ModelPart =
         part(
             "animotion:robit_1",
-            Material.STICK,
             2,
         )
 
-    private val leftShoulder: Part =
+    private val leftShoulder: ModelPart =
         part(
             "animotion:robit_2",
-            Material.STICK,
             3,
-            Vector(-0.375, 0.90625, 0.0),
+            Vector3(-0.375, 0.90625, 0.0),
         )
 
-    private val leftArm: Part =
+    private val leftArm: ModelPart =
         part(
             "animotion:robit_3",
-            Material.STICK,
             4,
-            Vector(-0.375, 0.90625, 0.0),
+            Vector3(-0.375, 0.90625, 0.0),
         )
 
-    private val rightShoulder: Part =
+    private val rightShoulder: ModelPart =
         part(
             "animotion:robit_4",
-            Material.STICK,
             5,
-            Vector(0.375, 0.90625, 0.0),
+            Vector3(0.375, 0.90625, 0.0),
         )
 
-    private val rightArm: Part =
+    private val rightArm: ModelPart =
         part(
             "animotion:robit_5",
-            Material.STICK,
             6,
-            Vector(0.375, 0.90625, 0.0),
+            Vector3(0.375, 0.90625, 0.0),
         )
 
-    private val leftLeg: Part =
+    private val leftLeg: ModelPart =
         part(
             "animotion:robit_6",
-            Material.STICK,
             7,
-            Vector(-0.125, 0.3958333333333333, 0.0),
+            Vector3(-0.125, 0.3958333333333333, 0.0),
         )
 
-    private val rightLeg: Part =
+    private val rightLeg: ModelPart =
         part(
             "animotion:robit_7",
-            Material.STICK,
             8,
-            Vector(0.125, 0.3958333333333333, 0.0),
+            Vector3(0.125, 0.3958333333333333, 0.0),
         )
 
-    val standing: Animation =
+    val standing: ModelAnimation =
         loopAnimation(
             1.0,
             gear to
@@ -85,7 +76,7 @@ class Robit(
                 ),
         )
 
-    val walking: Animation =
+    val walking: ModelAnimation =
         loopAnimation(
             1.0,
             gear to
@@ -131,7 +122,7 @@ class Robit(
                 ),
         )
 
-    val question: Animation =
+    val question: ModelAnimation =
         onceAnimation(
             2.125,
             gear to
@@ -164,7 +155,7 @@ class Robit(
                 ),
         )
 
-    val freeze: Animation =
+    val freeze: ModelAnimation =
         holdAnimation(
             2.5,
             leftArm to
