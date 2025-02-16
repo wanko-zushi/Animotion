@@ -1,7 +1,8 @@
 rootProject.name = "Animotion"
 
 include(
-    ":converter",
+    ":convert",
+    ":convert-cli",
     ":api",
     ":example",
 )
