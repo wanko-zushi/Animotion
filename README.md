@@ -66,7 +66,7 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.s7a:Animotion:1.0.0-SNAPSHOT")
+    implementation("dev.s7a:animotion-api:1.0.0-SNAPSHOT")
 }
 ```
 

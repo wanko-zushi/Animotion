@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    `maven-publish`
+    signing
 }
 
 java {
@@ -14,3 +16,5 @@ kotlin {
         jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }
+
+applyPublishingConfig("animotion-common")
