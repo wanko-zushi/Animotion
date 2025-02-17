@@ -112,7 +112,7 @@ C:\HOME\PROJECTS\ANIMOTION\CONVERTER\SRC\TEST\RESOURCES\PACKS\ROBIT
 #### Resource Pack (`-o` option)
 
 ```shell
-$ java -jar convert-cli/build/libs/animotion-converter-1.0.0-SNAPSHOT.jar -d convert/src/test/resources/packs/robit/ -o example/output
+$ java -jar convert-cli/build/libs/animotion-converter-1.0.0-SNAPSHOT.jar -d example/input/ -o example/output
 ```
 
 The generated resource pack will have the following structure:
@@ -152,7 +152,7 @@ example/output
 #### Kotlin Code (`-c` option)
 
 ```shell
-$ java -jar convert-cli/build/libs/animotion-converter-1.0.0-SNAPSHOT.jar -d convert/src/test/resources/packs/robit/ -c example/src/main/kotlin/dev/s7a/animotion/generated/
+$ java -jar convert-cli/build/libs/animotion-converter-1.0.0-SNAPSHOT.jar -d example/input/ -c example/src/main/kotlin/dev/s7a/animotion/generated/
 ```
 
 The generated Kotlin code will have the following structure:
