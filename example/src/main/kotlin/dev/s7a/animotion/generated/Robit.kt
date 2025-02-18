@@ -147,18 +147,23 @@ class Robit(
             50,
             timeline(leftArm) {
                 rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
-                rotation(10, -90.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, 0.0, 0.0, 0.0, Interpolation.Linear)
                 scale(10, 1.0, 1.0, 1.0, Interpolation.Linear)
                 scale(20, 1.0, 0.7, 1.0, Interpolation.Linear)
                 scale(23, 1.0, 0.7, 1.0, Interpolation.Linear)
                 position(24, 0.0, 0.0, 0.0, Interpolation.Linear)
                 scale(24, 1.0, 1.0, 1.0, Interpolation.Linear)
-                rotation(24, -90.0, 0.0, 0.0, Interpolation.Linear)
-                position(26, 0.0, 0.0, -0.75, Interpolation.Linear)
-                rotation(27, -17.5, 0.0, 0.0, Interpolation.Linear)
-                position(27, 0.0, -0.34375, -1.125, Interpolation.Linear)
-                rotation(29, 0.0, 0.0, 0.0, Interpolation.Linear)
-                position(29, 0.0, -0.9375, -1.25, Interpolation.Linear)
+                rotation(24, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(26, 45.0, 0.0, 0.0, Interpolation.Linear)
+                position(26, 0.0, -0.75, 0.0, Interpolation.Linear)
+                rotation(27, 72.5, 0.0, 0.0, Interpolation.Linear)
+                position(27, 0.0, -1.125, 0.34375, Interpolation.Linear)
+                rotation(29, 90.0, 0.0, 0.0, Interpolation.Linear)
+                position(29, 0.0, -1.25, 0.9375, Interpolation.Linear)
+            },
+            timeline(leftShoulder) {
+                rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, -90.0, 0.0, 0.0, Interpolation.Linear)
             },
         )
 }

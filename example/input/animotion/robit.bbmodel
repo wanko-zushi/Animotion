@@ -3150,7 +3150,7 @@
       "override": false,
       "length": 2.125,
       "snapping": 24,
-      "selected": true,
+      "selected": false,
       "anim_time_update": "",
       "blend_weight": "",
       "start_delay": "",
@@ -3477,7 +3477,7 @@
       "override": false,
       "length": 2.5,
       "snapping": 60,
-      "selected": false,
+      "selected": true,
       "anim_time_update": "",
       "blend_weight": "",
       "start_delay": "",
@@ -3505,7 +3505,7 @@
               "channel": "rotation",
               "data_points": [
                 {
-                  "x": "-90",
+                  "x": "0",
                   "y": "0",
                   "z": "0"
                 }
@@ -3519,7 +3519,7 @@
               "channel": "rotation",
               "data_points": [
                 {
-                  "x": "-90",
+                  "x": "0",
                   "y": "0",
                   "z": "0"
                 }
@@ -3533,7 +3533,7 @@
               "channel": "rotation",
               "data_points": [
                 {
-                  "x": "-17.5",
+                  "x": "72.5",
                   "y": "0",
                   "z": "0"
                 }
@@ -3547,13 +3547,27 @@
               "channel": "rotation",
               "data_points": [
                 {
-                  "x": "0",
+                  "x": "90",
                   "y": "0",
                   "z": "0"
                 }
               ],
               "uuid": "b2628b3a-21a4-75c8-414b-9c87f10b9030",
               "time": 1.45,
+              "color": -1,
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "uuid": "17edce0f-70a2-8543-223a-34e1a113580f",
+              "time": 1.2833333333333334,
               "color": -1,
               "interpolation": "linear"
             },
@@ -3576,8 +3590,8 @@
               "data_points": [
                 {
                   "x": "0",
-                  "y": "0",
-                  "z": "-12"
+                  "y": "-12",
+                  "z": "0"
                 }
               ],
               "uuid": "d3a1fd5f-b62a-3b1b-75b6-90bca9ed0159",
@@ -3590,8 +3604,8 @@
               "data_points": [
                 {
                   "x": "0",
-                  "y": "-15",
-                  "z": "-20"
+                  "y": "-20\n",
+                  "z": "15"
                 }
               ],
               "uuid": "fd96ee88-0577-3982-e55c-66f781347fb7",
@@ -3604,8 +3618,8 @@
               "data_points": [
                 {
                   "x": "0",
-                  "y": "-5.5",
-                  "z": "-18"
+                  "y": "-18",
+                  "z": "5.5"
                 }
               ],
               "uuid": "4e2fc767-e979-57e6-48ff-7489a9f9e39f",
@@ -3671,6 +3685,40 @@
               "time": 1.1333333333333333,
               "color": -1,
               "uniform": false,
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "e9b9ce35-7496-dada-3d20-346e060f411e": {
+          "name": "left_shoulder",
+          "type": "bone",
+          "keyframes": [
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "-90",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "uuid": "13d1ca08-c9ac-e05e-8926-021444259781",
+              "time": 0.48333333333333334,
+              "color": -1,
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "0",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "uuid": "9c22d926-6d41-b935-5ec1-74ce9cdaf297",
+              "time": 0,
+              "color": -1,
               "interpolation": "linear"
             }
           ]
