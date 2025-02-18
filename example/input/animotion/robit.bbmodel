@@ -2767,7 +2767,7 @@
   "animations": [
     {
       "uuid": "056ecdea-978b-56dd-f1bf-5defe7e4438f",
-      "name": "animation.standing",
+      "name": "standing",
       "loop": "loop",
       "override": false,
       "length": 1,
@@ -2823,7 +2823,7 @@
     },
     {
       "uuid": "372834df-64c1-1941-3417-1767395c6601",
-      "name": "animation.walking",
+      "name": "walking",
       "loop": "loop",
       "override": false,
       "length": 1,
@@ -3580,7 +3580,7 @@
     },
     {
       "uuid": "d0a14e22-2767-5361-d668-cde1b68f1c14",
-      "name": "animation.question",
+      "name": "question",
       "loop": "once",
       "override": false,
       "length": 2.125,
@@ -4278,7 +4278,7 @@
     },
     {
       "uuid": "3547cd0e-b3c8-fabb-036d-9983d58ef67e",
-      "name": "animation.freeze",
+      "name": "freeze",
       "loop": "hold",
       "override": false,
       "length": 2.5,

@@ -108,7 +108,7 @@ class CodeGenerator(
 
                                 PropertySpec
                                     .builder(
-                                        animation.name.removePrefix("animation.").toCamelCase(),
+                                        animation.name.toCamelCase(),
                                         modelAnimationClass,
                                     ).initializer(
                                         "$animationFunName(%L, %L)",
