@@ -32,7 +32,7 @@ internal class PartEntity(
         location: Location,
     ): Boolean {
         if (location.world != player.world) return false
-        part.parent.animotion.packetManager.sendPacket(
+        part.model.animotion.packetManager.sendPacket(
             player,
             listOf(
                 WrapperPlayServerSpawnEntity(
@@ -42,7 +42,7 @@ internal class PartEntity(
                     SpigotConversionUtil.fromBukkitLocation(
                         location.clone().add(
                             part.position
-                                .multiply(part.parent.baseScale)
+                                .multiply(part.model.baseScale)
                                 .multiply(-1, 1, -1)
                                 .rotateFromLocation(location),
                         ),
@@ -75,15 +75,15 @@ internal class PartEntity(
                             )
                         }
 
-                        if (part.parent.baseScale != 1.0F) {
+                        if (part.model.baseScale != 1.0F) {
                             add(
                                 EntityData(
                                     Field.SCALE,
                                     EntityDataTypes.VECTOR3F,
                                     Vector3f(
-                                        part.parent.baseScale,
-                                        part.parent.baseScale,
-                                        part.parent.baseScale,
+                                        part.model.baseScale,
+                                        part.model.baseScale,
+                                        part.model.baseScale,
                                     ),
                                 ),
                             )
@@ -96,7 +96,7 @@ internal class PartEntity(
     }
 
     fun remove(player: Player) {
-        part.parent.animotion.packetManager.sendPacket(
+        part.model.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerDestroyEntities(
                 entityId,
@@ -105,7 +105,7 @@ internal class PartEntity(
     }
 
     fun resetTransform(player: Player) {
-        part.parent.animotion.packetManager.sendPacket(
+        part.model.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerEntityMetadata(
                 entityId,
@@ -119,9 +119,9 @@ internal class PartEntity(
                         Field.SCALE,
                         EntityDataTypes.VECTOR3F,
                         Vector3f(
-                            part.parent.baseScale,
-                            part.parent.baseScale,
-                            part.parent.baseScale,
+                            part.model.baseScale,
+                            part.model.baseScale,
+                            part.model.baseScale,
                         ),
                     ),
                     EntityData(
@@ -148,7 +148,7 @@ internal class PartEntity(
         scale: Vector3?,
         rotation: Vector3?,
     ) {
-        part.parent.animotion.packetManager.sendPacket(
+        part.model.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerEntityMetadata(
                 entityId,
@@ -160,7 +160,7 @@ internal class PartEntity(
                                 EntityDataTypes.VECTOR3F,
                                 position
                                     .multiply(-1, 1, -1)
-                                    .multiply(part.parent.baseScale)
+                                    .multiply(part.model.baseScale)
                                     .vector3f(),
                             ),
                         )
@@ -171,7 +171,7 @@ internal class PartEntity(
                                 Field.SCALE,
                                 EntityDataTypes.VECTOR3F,
                                 scale
-                                    .multiply(part.parent.baseScale)
+                                    .multiply(part.model.baseScale)
                                     .vector3f(),
                             ),
                         )
@@ -200,7 +200,7 @@ internal class PartEntity(
         ItemStack
             .builder()
             .type(
-                SpigotConversionUtil.fromBukkitItemMaterial(part.parent.animotion.material),
+                SpigotConversionUtil.fromBukkitItemMaterial(part.model.animotion.material),
             ).nbt("item_model", NBTString(itemModel))
             .nbt("CustomModelData", NBTInt(customModelData))
             .build()
