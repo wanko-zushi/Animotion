@@ -4,6 +4,7 @@ import dev.s7a.animotion.Animotion
 import dev.s7a.animotion.AnimotionModel
 import dev.s7a.animotion.ModelAnimation
 import dev.s7a.animotion.ModelPart
+import dev.s7a.animotion.common.BaseAnimation.Interpolation
 import dev.s7a.animotion.common.Vector3
 import kotlin.Float
 
@@ -71,7 +72,7 @@ class Robit(
         loopAnimation(
             20,
             timeline(gear) {
-                rotation(0, 0.0, 0.0, 0.0, Linear)
+                rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
             },
         )
 
@@ -79,38 +80,38 @@ class Robit(
         loopAnimation(
             20,
             timeline(gear) {
-                rotation(0, 0.0, 0.0, 0.0, Linear)
-                rotation(20, 0.0, -180.0, 0.0, Linear)
+                rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, 0.0, -180.0, 0.0, Interpolation.Linear)
             },
             timeline(leftShoulder) {
-                rotation(0, -45.0, 0.0, 0.0, Linear)
-                rotation(10, 45.0, 0.0, 0.0, Linear)
-                rotation(20, -45.0, 0.0, 0.0, Linear)
+                rotation(0, -45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, 45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, -45.0, 0.0, 0.0, Interpolation.Linear)
             },
             timeline(leftArm) {
-                rotation(0, -45.0, 0.0, 0.0, Linear)
-                rotation(10, 45.0, 0.0, 0.0, Linear)
-                rotation(20, -45.0, 0.0, 0.0, Linear)
+                rotation(0, -45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, 45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, -45.0, 0.0, 0.0, Interpolation.Linear)
             },
             timeline(rightShoulder) {
-                rotation(0, 45.0, 0.0, 0.0, Linear)
-                rotation(10, -45.0, 0.0, 0.0, Linear)
-                rotation(20, 45.0, 0.0, 0.0, Linear)
+                rotation(0, 45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, -45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, 45.0, 0.0, 0.0, Interpolation.Linear)
             },
             timeline(rightArm) {
-                rotation(0, 45.0, 0.0, 0.0, Linear)
-                rotation(10, -45.0, 0.0, 0.0, Linear)
-                rotation(20, 45.0, 0.0, 0.0, Linear)
+                rotation(0, 45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, -45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, 45.0, 0.0, 0.0, Interpolation.Linear)
             },
             timeline(leftLeg) {
-                rotation(0, 45.0, 0.0, 0.0, Linear)
-                rotation(10, -45.0, 0.0, 0.0, Linear)
-                rotation(20, 45.0, 0.0, 0.0, Linear)
+                rotation(0, 45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, -45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, 45.0, 0.0, 0.0, Interpolation.Linear)
             },
             timeline(rightLeg) {
-                rotation(0, -45.0, 0.0, 0.0, Linear)
-                rotation(10, 45.0, 0.0, 0.0, Linear)
-                rotation(20, -45.0, 0.0, 0.0, Linear)
+                rotation(0, -45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, 45.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, -45.0, 0.0, 0.0, Interpolation.Linear)
             },
         )
 
@@ -118,29 +119,29 @@ class Robit(
         onceAnimation(
             43,
             timeline(gear) {
-                rotation(0, 0.0, 0.0, 0.0, Linear)
-                rotation(20, 0.0, -180.0, 0.0, Linear)
-                rotation(40, 0.0, -360.0, 0.0, Linear)
+                rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(20, 0.0, -180.0, 0.0, Interpolation.Linear)
+                rotation(40, 0.0, -360.0, 0.0, Interpolation.Linear)
             },
             timeline(leftShoulder) {
-                rotation(5, 0.0, 0.0, 0.0, Linear)
-                rotation(14, -180.0, 0.0, 0.0, Linear)
-                rotation(28, -180.0, 0.0, 0.0, Linear)
-                rotation(38, 0.0, 0.0, 0.0, Linear)
+                rotation(5, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(14, -180.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(28, -180.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(38, 0.0, 0.0, 0.0, Interpolation.Linear)
             },
             timeline(leftArm) {
-                rotation(0, 0.0, 0.0, 0.0, Linear)
-                rotation(5, 0.0, 0.0, -25.0, Linear)
-                rotation(14, -180.0, 0.0, 50.0, Linear)
-                rotation(18, -180.0, 0.0, 25.0, Linear)
-                rotation(20, -180.0, 0.0, 35.0, Linear)
-                rotation(23, -180.0, 0.0, 25.0, Linear)
-                rotation(25, -180.0, 0.0, 35.0, Linear)
-                rotation(28, -180.0, 0.0, 50.0, Linear)
-                rotation(38, 0.0, 0.0, 0.0, Linear)
-                rotation(39, 0.0, 0.0, -5.0, Linear)
-                rotation(41, 0.0, 0.0, 2.5, Linear)
-                rotation(43, 0.0, 0.0, 0.0, Linear)
+                rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(5, 0.0, 0.0, -25.0, Interpolation.Linear)
+                rotation(14, -180.0, 0.0, 50.0, Interpolation.Linear)
+                rotation(18, -180.0, 0.0, 25.0, Interpolation.Linear)
+                rotation(20, -180.0, 0.0, 35.0, Interpolation.Linear)
+                rotation(23, -180.0, 0.0, 25.0, Interpolation.Linear)
+                rotation(25, -180.0, 0.0, 35.0, Interpolation.Linear)
+                rotation(28, -180.0, 0.0, 50.0, Interpolation.Linear)
+                rotation(38, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(39, 0.0, 0.0, -5.0, Interpolation.Linear)
+                rotation(41, 0.0, 0.0, 2.5, Interpolation.Linear)
+                rotation(43, 0.0, 0.0, 0.0, Interpolation.Linear)
             },
         )
 
@@ -148,19 +149,19 @@ class Robit(
         holdAnimation(
             50,
             timeline(leftArm) {
-                rotation(0, 0.0, 0.0, 0.0, Linear)
-                rotation(10, -90.0, 0.0, 0.0, Linear)
-                scale(10, 1.0, 1.0, 1.0, Linear)
-                scale(20, 1.0, 0.7, 1.0, Linear)
-                scale(23, 1.0, 0.7, 1.0, Linear)
-                position(24, 0.0, 0.0, 0.0, Linear)
-                scale(24, 1.0, 1.0, 1.0, Linear)
-                rotation(24, -90.0, 0.0, 0.0, Linear)
-                position(26, 0.0, 0.0, -0.75, Linear)
-                rotation(27, -17.5, 0.0, 0.0, Linear)
-                position(27, 0.0, -0.34375, -1.125, Linear)
-                rotation(29, 0.0, 0.0, 0.0, Linear)
-                position(29, 0.0, -0.9375, -1.25, Linear)
+                rotation(0, 0.0, 0.0, 0.0, Interpolation.Linear)
+                rotation(10, -90.0, 0.0, 0.0, Interpolation.Linear)
+                scale(10, 1.0, 1.0, 1.0, Interpolation.Linear)
+                scale(20, 1.0, 0.7, 1.0, Interpolation.Linear)
+                scale(23, 1.0, 0.7, 1.0, Interpolation.Linear)
+                position(24, 0.0, 0.0, 0.0, Interpolation.Linear)
+                scale(24, 1.0, 1.0, 1.0, Interpolation.Linear)
+                rotation(24, -90.0, 0.0, 0.0, Interpolation.Linear)
+                position(26, 0.0, 0.0, -0.75, Interpolation.Linear)
+                rotation(27, -17.5, 0.0, 0.0, Interpolation.Linear)
+                position(27, 0.0, -0.34375, -1.125, Interpolation.Linear)
+                rotation(29, 0.0, 0.0, 0.0, Interpolation.Linear)
+                position(29, 0.0, -0.9375, -1.25, Interpolation.Linear)
             },
         )
 }

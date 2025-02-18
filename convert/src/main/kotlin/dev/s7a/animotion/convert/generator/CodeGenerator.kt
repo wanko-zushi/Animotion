@@ -34,6 +34,7 @@ class CodeGenerator(
         val animotionModelClass = ClassName("dev.s7a.animotion", "AnimotionModel")
         val modelPartClass = ClassName("dev.s7a.animotion", "ModelPart")
         val modelAnimationClass = ClassName("dev.s7a.animotion", "ModelAnimation")
+        val interpolationClass = ClassName("dev.s7a.animotion.common.BaseAnimation", "Interpolation")
         val vector3Class = ClassName("dev.s7a.animotion.common", "Vector3")
         val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())
 
@@ -141,12 +142,13 @@ class CodeGenerator(
 
                                                             val point = keyframe.dataPoints[0]
                                                             CodeBlock.of(
-                                                                "%N(%L, %L, %L, %L, %L)",
+                                                                "%N(%L, %L, %L, %L, %T.%L)",
                                                                 keyframeFunName,
                                                                 (keyframe.time * 20).roundToLong(), // seconds -> ticks
                                                                 point.x / div,
                                                                 point.y / div,
                                                                 point.z / div,
+                                                                interpolationClass,
                                                                 keyframe.interpolation.name,
                                                             )
                                                         }.joinToCode("\n"),
