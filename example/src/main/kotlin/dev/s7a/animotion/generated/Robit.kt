@@ -69,110 +69,98 @@ class Robit(
 
     val standing: ModelAnimation =
         loopAnimation(
-            1.0,
-            gear to
-                listOf(
-                    0.0 to rotation(0.0, 0.0, 0.0),
-                ),
+            20,
+            timeline(gear) {
+                rotation(0, 0.0, 0.0, 0.0, Linear)
+            },
         )
 
     val walking: ModelAnimation =
         loopAnimation(
-            1.0,
-            gear to
-                listOf(
-                    0.0 to rotation(0.0, 0.0, 0.0),
-                    1.0 to rotation(0.0, -180.0, 0.0),
-                ),
-            leftShoulder to
-                listOf(
-                    0.0 to rotation(-45.0, 0.0, 0.0),
-                    0.5 to rotation(45.0, 0.0, 0.0),
-                    1.0 to rotation(-45.0, 0.0, 0.0),
-                ),
-            leftArm to
-                listOf(
-                    0.0 to rotation(-45.0, 0.0, 0.0),
-                    0.5 to rotation(45.0, 0.0, 0.0),
-                    1.0 to rotation(-45.0, 0.0, 0.0),
-                ),
-            rightShoulder to
-                listOf(
-                    0.0 to rotation(45.0, 0.0, 0.0),
-                    0.5 to rotation(-45.0, 0.0, 0.0),
-                    1.0 to rotation(45.0, 0.0, 0.0),
-                ),
-            rightArm to
-                listOf(
-                    0.0 to rotation(45.0, 0.0, 0.0),
-                    0.5 to rotation(-45.0, 0.0, 0.0),
-                    1.0 to rotation(45.0, 0.0, 0.0),
-                ),
-            leftLeg to
-                listOf(
-                    0.0 to rotation(45.0, 0.0, 0.0),
-                    0.5 to rotation(-45.0, 0.0, 0.0),
-                    1.0 to rotation(45.0, 0.0, 0.0),
-                ),
-            rightLeg to
-                listOf(
-                    0.0 to rotation(-45.0, 0.0, 0.0),
-                    0.5 to rotation(45.0, 0.0, 0.0),
-                    1.0 to rotation(-45.0, 0.0, 0.0),
-                ),
+            20,
+            timeline(gear) {
+                rotation(0, 0.0, 0.0, 0.0, Linear)
+                rotation(20, 0.0, -180.0, 0.0, Linear)
+            },
+            timeline(leftShoulder) {
+                rotation(0, -45.0, 0.0, 0.0, Linear)
+                rotation(10, 45.0, 0.0, 0.0, Linear)
+                rotation(20, -45.0, 0.0, 0.0, Linear)
+            },
+            timeline(leftArm) {
+                rotation(0, -45.0, 0.0, 0.0, Linear)
+                rotation(10, 45.0, 0.0, 0.0, Linear)
+                rotation(20, -45.0, 0.0, 0.0, Linear)
+            },
+            timeline(rightShoulder) {
+                rotation(0, 45.0, 0.0, 0.0, Linear)
+                rotation(10, -45.0, 0.0, 0.0, Linear)
+                rotation(20, 45.0, 0.0, 0.0, Linear)
+            },
+            timeline(rightArm) {
+                rotation(0, 45.0, 0.0, 0.0, Linear)
+                rotation(10, -45.0, 0.0, 0.0, Linear)
+                rotation(20, 45.0, 0.0, 0.0, Linear)
+            },
+            timeline(leftLeg) {
+                rotation(0, 45.0, 0.0, 0.0, Linear)
+                rotation(10, -45.0, 0.0, 0.0, Linear)
+                rotation(20, 45.0, 0.0, 0.0, Linear)
+            },
+            timeline(rightLeg) {
+                rotation(0, -45.0, 0.0, 0.0, Linear)
+                rotation(10, 45.0, 0.0, 0.0, Linear)
+                rotation(20, -45.0, 0.0, 0.0, Linear)
+            },
         )
 
     val question: ModelAnimation =
         onceAnimation(
-            2.125,
-            gear to
-                listOf(
-                    0.0 to rotation(0.0, 0.0, 0.0),
-                    1.0 to rotation(0.0, -180.0, 0.0),
-                    2.0 to rotation(0.0, -360.0, 0.0),
-                ),
-            leftShoulder to
-                listOf(
-                    0.25 to rotation(0.0, 0.0, 0.0),
-                    0.7083333333333334 to rotation(-180.0, 0.0, 0.0),
-                    1.4166666666666667 to rotation(-180.0, 0.0, 0.0),
-                    1.875 to rotation(0.0, 0.0, 0.0),
-                ),
-            leftArm to
-                listOf(
-                    0.0 to rotation(0.0, 0.0, 0.0),
-                    0.25 to rotation(0.0, 0.0, -25.0),
-                    0.7083333333333334 to rotation(-180.0, 0.0, 50.0),
-                    0.875 to rotation(-180.0, 0.0, 25.0),
-                    1.0 to rotation(-180.0, 0.0, 35.0),
-                    1.125 to rotation(-180.0, 0.0, 25.0),
-                    1.25 to rotation(-180.0, 0.0, 35.0),
-                    1.4166666666666667 to rotation(-180.0, 0.0, 50.0),
-                    1.875 to rotation(0.0, 0.0, 0.0),
-                    1.9583333333333333 to rotation(0.0, 0.0, -5.0),
-                    2.0416666666666665 to rotation(0.0, 0.0, 2.5),
-                    2.125 to rotation(0.0, 0.0, 0.0),
-                ),
+            43,
+            timeline(gear) {
+                rotation(0, 0.0, 0.0, 0.0, Linear)
+                rotation(20, 0.0, -180.0, 0.0, Linear)
+                rotation(40, 0.0, -360.0, 0.0, Linear)
+            },
+            timeline(leftShoulder) {
+                rotation(5, 0.0, 0.0, 0.0, Linear)
+                rotation(14, -180.0, 0.0, 0.0, Linear)
+                rotation(28, -180.0, 0.0, 0.0, Linear)
+                rotation(38, 0.0, 0.0, 0.0, Linear)
+            },
+            timeline(leftArm) {
+                rotation(0, 0.0, 0.0, 0.0, Linear)
+                rotation(5, 0.0, 0.0, -25.0, Linear)
+                rotation(14, -180.0, 0.0, 50.0, Linear)
+                rotation(18, -180.0, 0.0, 25.0, Linear)
+                rotation(20, -180.0, 0.0, 35.0, Linear)
+                rotation(23, -180.0, 0.0, 25.0, Linear)
+                rotation(25, -180.0, 0.0, 35.0, Linear)
+                rotation(28, -180.0, 0.0, 50.0, Linear)
+                rotation(38, 0.0, 0.0, 0.0, Linear)
+                rotation(39, 0.0, 0.0, -5.0, Linear)
+                rotation(41, 0.0, 0.0, 2.5, Linear)
+                rotation(43, 0.0, 0.0, 0.0, Linear)
+            },
         )
 
     val freeze: ModelAnimation =
         holdAnimation(
-            2.5,
-            leftArm to
-                listOf(
-                    0.0 to rotation(0.0, 0.0, 0.0),
-                    0.48333333333333334 to rotation(-90.0, 0.0, 0.0),
-                    0.48333333333333334 to scale(1.0, 1.0, 1.0),
-                    1.0 to scale(1.0, 0.7, 1.0),
-                    1.1333333333333333 to scale(1.0, 0.7, 1.0),
-                    1.2 to position(0.0, 0.0, 0.0),
-                    1.2 to scale(1.0, 1.0, 1.0),
-                    1.2166666666666666 to rotation(-90.0, 0.0, 0.0),
-                    1.2833333333333334 to position(0.0, 0.0, -0.75),
-                    1.3333333333333333 to rotation(-17.5, 0.0, 0.0),
-                    1.3666666666666667 to position(0.0, -0.34375, -1.125),
-                    1.45 to rotation(0.0, 0.0, 0.0),
-                    1.45 to position(0.0, -0.9375, -1.25),
-                ),
+            50,
+            timeline(leftArm) {
+                rotation(0, 0.0, 0.0, 0.0, Linear)
+                rotation(10, -90.0, 0.0, 0.0, Linear)
+                scale(10, 1.0, 1.0, 1.0, Linear)
+                scale(20, 1.0, 0.7, 1.0, Linear)
+                scale(23, 1.0, 0.7, 1.0, Linear)
+                position(24, 0.0, 0.0, 0.0, Linear)
+                scale(24, 1.0, 1.0, 1.0, Linear)
+                rotation(24, -90.0, 0.0, 0.0, Linear)
+                position(26, 0.0, 0.0, -0.75, Linear)
+                rotation(27, -17.5, 0.0, 0.0, Linear)
+                position(27, 0.0, -0.34375, -1.125, Linear)
+                rotation(29, 0.0, 0.0, 0.0, Linear)
+                position(29, 0.0, -0.9375, -1.25, Linear)
+            },
         )
 }

@@ -4,23 +4,28 @@ import dev.s7a.animotion.ModelAnimation
 import dev.s7a.animotion.common.BaseAnimation
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
-import kotlin.math.roundToInt
 
 internal class AnimationPlayTask(
     private val player: Player,
     val animation: ModelAnimation,
 ) {
     private val schedules =
-        buildList {
+        buildMap<Long, MutableList<() -> Unit>> {
             // Animator
             animation.animators
-                .forEach { (part, keyframes) ->
-                    var previousTicks = 0
-                    keyframes.forEach { (time, keyframe) ->
-                        val ticks = time.toTicks()
-                        val duration = ticks - previousTicks
-                        add(previousTicks to { part.entity.transform(player, keyframe, duration) })
-                        previousTicks = ticks
+                .forEach { (part, timeline) ->
+                    val positions = interpolateChannel(timeline.positions)
+                    val scales = interpolateChannel(timeline.scales)
+                    val rotations = interpolateChannel(timeline.rotations)
+                    (0..animation.length).forEach { ticks ->
+                        val position = positions[ticks]
+                        val scale = scales[ticks]
+                        val rotation = rotations[ticks]
+                        if (position != null || scale != null || rotation != null) {
+                            getOrPut(ticks, ::mutableListOf).add {
+                                part.entity.transform(player, position, scale, rotation)
+                            }
+                        }
                     }
                 }
 
@@ -28,18 +33,20 @@ internal class AnimationPlayTask(
             when (animation.type) {
                 BaseAnimation.Type.Loop -> {
                     // Restart
-                    add(animation.length.toTicks() to { next(0) })
+                    getOrPut(animation.length, ::mutableListOf).add {
+                        next(0)
+                    }
                 }
                 BaseAnimation.Type.Once -> {
-                    add(animation.length.toTicks() to { animation.parent.reset(player) })
+                    getOrPut(animation.length, ::mutableListOf).add {
+                        animation.parent.reset(player)
+                    }
                 }
                 BaseAnimation.Type.Hold -> {
                     // Nothing
                 }
             }
-        }.groupBy({ it.first }, { it.second })
-            .toDelays()
-            .toMutableList()
+        }.toDelays()
 
     private lateinit var currentTask: BukkitTask
 
@@ -54,17 +61,15 @@ internal class AnimationPlayTask(
     private fun next(cursor: Int) {
         val (delay, actions) = schedules.getOrNull(cursor) ?: return
         currentTask =
-            animation.parent.animotion.runTaskLaterAsync(delay.toLong()) {
+            animation.parent.animotion.runTaskLaterAsync(delay) {
                 actions.forEach { it() }
                 next(cursor + 1)
             }
     }
 
-    private fun Double.toTicks() = (this * 20).roundToInt()
-
-    private fun <T> Map<Int, T>.toDelays() =
-        buildList<Pair<Int, T>> {
-            var previousTime = 0
+    private fun <T> Map<Long, T>.toDelays() =
+        buildList<Pair<Long, T>> {
+            var previousTime = 0L
             toSortedMap().forEach { (time, actions) ->
                 val delay = time - previousTime
                 add(delay to actions)

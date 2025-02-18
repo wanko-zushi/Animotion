@@ -45,80 +45,47 @@ abstract class AnimotionModel(
     /**
      * Creates a looping animation for the specified model parts.
      *
-     * @param length The duration of the animation in seconds.
+     * @param length The duration of the animation in ticks.
      * @param animators A variable number of pairs of model parts and their keyframe lists.
      * @return A looping animation instance.
      */
     protected fun loopAnimation(
-        length: Double,
-        vararg animators: Pair<ModelPart, List<Pair<Double, BaseAnimation.Keyframe>>>,
+        length: Long,
+        vararg animators: Pair<ModelPart, BaseAnimation.Timeline>,
     ) = ModelAnimation(this, BaseAnimation.Type.Loop, length, animators.toMap())
 
     /**
      * Creates a hold animation for the specified model parts, maintaining the last frame when finished.
      *
-     * @param length The duration of the animation in seconds.
+     * @param length The duration of the animation in ticks.
      * @param animators A variable number of pairs of model parts and their keyframe lists.
      * @return A hold animation instance.
      */
     protected fun holdAnimation(
-        length: Double,
-        vararg animators: Pair<ModelPart, List<Pair<Double, BaseAnimation.Keyframe>>>,
+        length: Long,
+        vararg animators: Pair<ModelPart, BaseAnimation.Timeline>,
     ) = ModelAnimation(this, BaseAnimation.Type.Hold, length, animators.toMap())
 
     /**
      * Creates an animation that plays once for the specified model parts.
      *
-     * @param length The duration of the animation in seconds.
+     * @param length The duration of the animation in ticks.
      * @param animators A variable number of pairs of model parts and their keyframe lists.
      * @return An instance of a one-time animation.
      */
     protected fun onceAnimation(
-        length: Double,
-        vararg animators: Pair<ModelPart, List<Pair<Double, BaseAnimation.Keyframe>>>,
+        length: Long,
+        vararg animators: Pair<ModelPart, BaseAnimation.Timeline>,
     ) = ModelAnimation(this, BaseAnimation.Type.Once, length, animators.toMap())
 
-    /**
-     * Creates a position keyframe with the specified 3D coordinates.
-     *
-     * @param x The x-coordinate.
-     * @param y The y-coordinate.
-     * @param z The z-coordinate.
-     * @return A position keyframe.
-     */
-    protected fun position(
-        x: Double,
-        y: Double,
-        z: Double,
-    ) = BaseAnimation.Keyframe(BaseAnimation.Keyframe.Channel.Position, Vector3(x, y, z))
-
-    /**
-     * Creates a rotation keyframe with the specified rotational angles.
-     *
-     * @param x The rotation angle about the x-axis.
-     * @param y The rotation angle about the y-axis.
-     * @param z The rotation angle about the z-axis.
-     * @return A rotation keyframe.
-     */
-    protected fun rotation(
-        x: Double,
-        y: Double,
-        z: Double,
-    ) = BaseAnimation.Keyframe(BaseAnimation.Keyframe.Channel.Rotation, Vector3(x, y, z))
-
-    /**
-     * Creates a scale keyframe with the specified scaling factors.
-     *
-     * @param x The scaling factor along the x-axis.
-     * @param y The scaling factor along the y-axis.
-     * @param z The scaling factor along the z-axis.
-     * @return A scale keyframe.
-     */
-    protected fun scale(
-        x: Double,
-        y: Double,
-        z: Double,
-    ) = BaseAnimation.Keyframe(BaseAnimation.Keyframe.Channel.Scale, Vector3(x, y, z))
+    protected inline fun timeline(
+        part: ModelPart,
+        action: BaseAnimation.Timeline.Builder.() -> Unit,
+    ) = part to
+        BaseAnimation.Timeline
+            .Builder()
+            .apply(action)
+            .build()
 
     /**
      * Spawns all model parts at the specified location for the given player.

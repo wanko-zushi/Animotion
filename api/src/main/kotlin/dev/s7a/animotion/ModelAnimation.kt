@@ -10,14 +10,14 @@ import org.bukkit.entity.Player
  *
  * @param parent The parent `AnimotionModel` that manages this animation.
  * @param type The type of the animation.
- * @param length The duration of the animation in seconds.
+ * @param length The duration of the animation in ticks.
  * @param animators A map of model parts to their associated keyframe animations.
  */
 class ModelAnimation(
     val parent: AnimotionModel,
     type: Type,
-    length: Double,
-    animators: Map<ModelPart, List<Pair<Double, Keyframe>>>,
+    length: Long,
+    animators: Map<ModelPart, Timeline>,
 ) : BaseAnimation<ModelPart>(type, length, animators) {
     /**
      * Plays this animation for the specified player.

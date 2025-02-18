@@ -17,6 +17,14 @@ data class Vector3(
      */
     constructor() : this(0.0, 0.0, 0.0)
 
+    operator fun plus(other: Vector3) = add(other)
+
+    operator fun minus(other: Vector3) = add(-other)
+
+    operator fun times(scalar: Double) = multiply(scalar)
+
+    operator fun unaryMinus() = Vector3(-x, -y, -z)
+
     /**
      * Adds another vector to this vector.
      *
@@ -28,10 +36,18 @@ data class Vector3(
     /**
      * Multiplies this vector by a scalar value.
      *
-     * @param other The scalar value to multiply by.
+     * @param scalar The scalar value to multiply by.
      * @return A new vector resulting from the multiplication.
      */
-    fun multiply(other: Float) = Vector3(x * other, y * other, z * other)
+    fun multiply(scalar: Float) = Vector3(x * scalar, y * scalar, z * scalar)
+
+    /**
+     * Multiplies this vector by a scalar value.
+     *
+     * @param scalar The scalar value to multiply by.
+     * @return A new vector resulting from the multiplication.
+     */
+    fun multiply(scalar: Double) = Vector3(x * scalar, y * scalar, z * scalar)
 
     /**
      * Multiplies this vector by independent scaling factors for each axis.

@@ -12,7 +12,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import dev.s7a.animotion.ModelPart
-import dev.s7a.animotion.common.BaseAnimation
 import dev.s7a.animotion.common.Vector3
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
@@ -133,8 +132,11 @@ internal class PartEntity(
                             .radians()
                             .quaternion(),
                     ),
-                    EntityData(Field.INTERPOLATION_DELAY, EntityDataTypes.INT, 0),
-                    EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 0),
+                    EntityData(
+                        Field.INTERPOLATION_DURATION,
+                        EntityDataTypes.INT,
+                        0,
+                    ),
                 ),
             ),
         )
@@ -142,57 +144,53 @@ internal class PartEntity(
 
     fun transform(
         player: Player,
-        keyframe: BaseAnimation.Keyframe,
-        interpolationDuration: Int?,
+        position: Vector3?,
+        scale: Vector3?,
+        rotation: Vector3?,
     ) {
         part.parent.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerEntityMetadata(
                 entityId,
                 buildList {
-                    when (keyframe.channel) {
-                        BaseAnimation.Keyframe.Channel.Position -> {
-                            add(
-                                EntityData(
-                                    Field.TRANSLATION,
-                                    EntityDataTypes.VECTOR3F,
-                                    keyframe.value
-                                        .multiply(-1, 1, -1)
-                                        .multiply(part.parent.baseScale)
-                                        .vector3f(),
-                                ),
-                            )
-                        }
-                        BaseAnimation.Keyframe.Channel.Scale -> {
-                            add(
-                                EntityData(
-                                    Field.SCALE,
-                                    EntityDataTypes.VECTOR3F,
-                                    keyframe.value
-                                        .multiply(part.parent.baseScale)
-                                        .vector3f(),
-                                ),
-                            )
-                        }
-                        BaseAnimation.Keyframe.Channel.Rotation -> {
-                            add(
-                                EntityData(
-                                    Field.LEFT_ROTATION,
-                                    EntityDataTypes.QUATERNION,
-                                    keyframe.value
-                                        .add(part.rotation)
-                                        .multiply(1, -1, -1)
-                                        .radians()
-                                        .quaternion(),
-                                ),
-                            )
-                        }
+                    if (position != null) {
+                        add(
+                            EntityData(
+                                Field.TRANSLATION,
+                                EntityDataTypes.VECTOR3F,
+                                position
+                                    .multiply(-1, 1, -1)
+                                    .multiply(part.parent.baseScale)
+                                    .vector3f(),
+                            ),
+                        )
+                    }
+                    if (scale != null) {
+                        add(
+                            EntityData(
+                                Field.SCALE,
+                                EntityDataTypes.VECTOR3F,
+                                scale
+                                    .multiply(part.parent.baseScale)
+                                    .vector3f(),
+                            ),
+                        )
+                    }
+                    if (rotation != null) {
+                        add(
+                            EntityData(
+                                Field.LEFT_ROTATION,
+                                EntityDataTypes.QUATERNION,
+                                rotation
+                                    .add(part.rotation)
+                                    .multiply(1, -1, -1)
+                                    .radians()
+                                    .quaternion(),
+                            ),
+                        )
                     }
 
-                    add(EntityData(Field.INTERPOLATION_DELAY, EntityDataTypes.INT, 0))
-                    if (interpolationDuration != null) {
-                        add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, interpolationDuration))
-                    }
+                    add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 1))
                 },
             ),
         )
@@ -250,7 +248,6 @@ internal class PartEntity(
 
     private object Field {
         // https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display
-        const val INTERPOLATION_DELAY = 8
         const val INTERPOLATION_DURATION = 9
         const val TRANSLATION = 11
         const val SCALE = 12

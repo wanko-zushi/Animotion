@@ -21,6 +21,7 @@ import dev.s7a.animotion.convert.loader.ResourcePack
 import dev.s7a.animotion.convert.util.toCamelCase
 import dev.s7a.animotion.convert.util.toPascalCase
 import java.io.File
+import kotlin.math.roundToLong
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -110,7 +111,7 @@ class CodeGenerator(
                                         modelAnimationClass,
                                     ).initializer(
                                         "$animationFunName(%L, %L)",
-                                        animation.length,
+                                        (animation.length * 20).roundToLong(), // seconds -> ticks
                                         animation.animators
                                             .flatMap { (uuid, animator) ->
                                                 val part = partByUuid[uuid] ?: throw NotFoundPartException(uuid)
@@ -126,7 +127,7 @@ class CodeGenerator(
                                                 part.customModelData
                                             }.map { (part, animator) ->
                                                 CodeBlock.of(
-                                                    "%N to\nlistOf(\n%L)",
+                                                    "timeline(%N) {\n%L\n}",
                                                     part.name.toCamelCase(),
                                                     animator.keyframes
                                                         .sortedBy { it.time }
@@ -140,14 +141,15 @@ class CodeGenerator(
 
                                                             val point = keyframe.dataPoints[0]
                                                             CodeBlock.of(
-                                                                "%L to %N(%L, %L, %L)",
-                                                                keyframe.time,
+                                                                "%N(%L, %L, %L, %L, %L)",
                                                                 keyframeFunName,
+                                                                (keyframe.time * 20).roundToLong(), // seconds -> ticks
                                                                 point.x / div,
                                                                 point.y / div,
                                                                 point.z / div,
+                                                                keyframe.interpolation.name,
                                                             )
-                                                        }.joinToCode(),
+                                                        }.joinToCode("\n"),
                                                 )
                                             }.joinToCode(),
                                     ).build()
