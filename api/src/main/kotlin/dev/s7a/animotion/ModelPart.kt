@@ -25,4 +25,16 @@ class ModelPart(
      * The internal entity used to render and manage this part in the animation system.
      */
     internal val entity = PartEntity(this)
+
+    private val children = mutableListOf<ModelPart>()
+
+    /**
+     * Adds one or more child `ModelPart` instances to this part.
+     *
+     * @param parts The child parts to add. These components will be managed as children
+     *              of this part and inherit transformations like positioning and rotation.
+     */
+    fun children(vararg parts: ModelPart) {
+        children.addAll(parts)
+    }
 }

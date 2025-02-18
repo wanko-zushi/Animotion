@@ -12,6 +12,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.joinToCode
 import dev.s7a.animotion.convert.data.animotion.Part
 import dev.s7a.animotion.convert.data.blockbench.Animation
@@ -97,7 +98,26 @@ class CodeGenerator(
                                     ).addModifiers(KModifier.PRIVATE)
                                     .build()
                             },
-                        ).addProperties(
+                        ).run {
+                            if (parts.all { it.children.isEmpty() }) {
+                                this
+                            } else {
+                                addInitializerBlock(
+                                    buildCodeBlock {
+                                        parts.forEach { part ->
+                                            val children = part.children
+                                            if (children.isNotEmpty()) {
+                                                addStatement(
+                                                    "%N.children(%L)",
+                                                    part.name.toCamelCase(),
+                                                    children.joinToCode { CodeBlock.of("%N", it.name.toCamelCase()) },
+                                                )
+                                            }
+                                        }
+                                    },
+                                )
+                            }
+                        }.addProperties(
                             model.animations.map { animation ->
                                 val animationFunName =
                                     when (animation.loop) {
@@ -114,16 +134,9 @@ class CodeGenerator(
                                         "$animationFunName(%L, %L)",
                                         (animation.length * 20).roundToLong(), // seconds -> ticks
                                         animation.animators
-                                            .flatMap { (uuid, animator) ->
+                                            .map { (uuid, animator) ->
                                                 val part = partByUuid[uuid] ?: throw NotFoundPartException(uuid)
-                                                listOf(
-                                                    part to animator,
-                                                    *part.children
-                                                        .map {
-                                                            it to animator
-                                                        }.toTypedArray(),
-                                                    // TODO merge & teleport
-                                                )
+                                                part to animator
                                             }.sortedBy { (part) ->
                                                 part.customModelData
                                             }.map { (part, animator) ->
