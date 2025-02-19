@@ -27,6 +27,30 @@ abstract class AnimotionModel(
     private val playTasks = mutableMapOf<UUID, AnimationPlayTask>()
 
     /**
+     * Represents a list of `ModelPart` instances in a sorted order based on a depth-first traversal.
+     *
+     * This property ensures that each `ModelPart` in the list is visited exactly once. The
+     * traversal begins with the root parts in the `parts` field of the containing `AnimotionModel` class
+     * and recursively visits their children. The order ensures that parent parts appear before their children.
+     */
+    val orderedParts: List<ModelPart>
+        get() {
+            val sortedParts = mutableListOf<ModelPart>()
+            val visited = mutableSetOf<ModelPart>()
+
+            fun traverse(part: ModelPart) {
+                if (!visited.add(part)) return
+                sortedParts.add(part)
+                part.children.forEach { traverse(it) }
+            }
+
+            parts.forEach {
+                if (it !in visited) traverse(it)
+            }
+            return sortedParts
+        }
+
+    /**
      * Creates a new model part and adds it to the list of parts.
      *
      * @param itemModel The string identifier for the item model.

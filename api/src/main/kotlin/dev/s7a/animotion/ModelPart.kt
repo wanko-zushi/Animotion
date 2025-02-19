@@ -26,7 +26,10 @@ class ModelPart(
      */
     internal val entity = PartEntity(this)
 
-    private val children = mutableListOf<ModelPart>()
+    private val parts = mutableListOf<ModelPart>()
+
+    val children
+        get() = parts.toList()
 
     /**
      * Adds one or more child `ModelPart` instances to this part.
@@ -35,6 +38,6 @@ class ModelPart(
      *              of this part and inherit transformations like positioning and rotation.
      */
     fun children(vararg parts: ModelPart) {
-        children.addAll(parts)
+        this.parts.addAll(parts)
     }
 }
