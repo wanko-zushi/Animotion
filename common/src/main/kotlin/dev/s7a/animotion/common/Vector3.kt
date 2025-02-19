@@ -54,6 +54,12 @@ data class Vector3(
      */
     fun multiply(scalar: Double) = Vector3(x * scalar, y * scalar, z * scalar)
 
+    /**
+     * Multiplies this vector by another vector, component-wise.
+     *
+     * @param other The vector to multiply with.
+     * @return A new vector resulting from the component-wise multiplication.
+     */
     fun multiply(other: Vector3) = Vector3(x * other.x, y * other.y, z * other.z)
 
     /**
@@ -78,8 +84,19 @@ data class Vector3(
     val isZero
         get() = x == 0.0 && y == 0.0 && z == 0.0
 
+    /**
+     * Converts the components of this vector from degrees to radians.
+     *
+     * @return A new vector with its components in radians.
+     */
     fun toRadians() = Vector3(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
 
+    /**
+     * Converts this vector into a quaternion representation.
+     * The resulting quaternion represents a rotation in 3D space.
+     *
+     * @return A quaternion calculated from the vector's components.
+     */
     fun quaternion(): Quaternion {
         val cx = cos(x / 2)
         val cy = cos(-y / 2)

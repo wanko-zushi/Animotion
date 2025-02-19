@@ -173,7 +173,7 @@ internal class PartEntity(
                                 Field.TRANSLATION,
                                 EntityDataTypes.VECTOR3F,
                                 position
-                                    .multiply(-1, 1, -1)
+                                    .multiply(1, -1, 1)
                                     .multiply(part.model.baseScale)
                                     .vector3f(),
                             ),

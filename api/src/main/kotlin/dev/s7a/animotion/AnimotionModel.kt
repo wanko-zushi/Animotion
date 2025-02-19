@@ -26,6 +26,12 @@ abstract class AnimotionModel(
     private val parts = mutableListOf<ModelPart>()
     private val playTasks = mutableMapOf<UUID, AnimationPlayTask>()
 
+    /**
+     * A list of model parts ordered from fully dependent to independent parts.
+     *
+     * The parts are organized such that a part appears after all its children, ensuring each part's dependencies
+     * are resolved before it is processed. The list is reversed to account for dependencies properly.
+     */
     val orderedParts: List<ModelPart>
         get() {
             val sortedParts = mutableListOf<ModelPart>()

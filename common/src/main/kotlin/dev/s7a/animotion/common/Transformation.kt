@@ -1,14 +1,34 @@
 package dev.s7a.animotion.common
 
+/**
+ * Represents a 3D transformation consisting of position, scale, and rotation.
+ *
+ * @property position The 3D position vector of the transformation, or null if unspecified.
+ * @property scale The scaling factor as a vector, or null if unspecified.
+ * @property rotation The rotational quaternion representing orientation, or null if unspecified.
+ */
 data class Transformation(
     val position: Vector3?,
     val scale: Vector3?,
     val rotation: Quaternion?,
 ) {
+    /**
+     * Returns true if at least one of the position, scale, or rotation properties is not null.
+     */
     val isNotNull
         get() = position != null || scale != null || rotation != null
 
     companion object {
+        /**
+         * Creates a new [Transformation] by combining the given components, with optional
+         * inheritance from a parent transformation.
+         *
+         * @param parent An optional transformation to inherit values for unspecified components.
+         * @param position The new position vector, or null to inherit the parent's position.
+         * @param scale The new scale vector, or null to inherit the parent's scale.
+         * @param rotation The new rotation quaternion, or null to inherit the parent's rotation.
+         * @return A new [Transformation] that combines the specified and inherited components.
+         */
         fun create(
             parent: Transformation?,
             position: Vector3?,
@@ -40,10 +60,19 @@ data class Transformation(
                 },
             )
 
+        /**
+         * The default position vector, initialized as (0, 0, 0).
+         */
         val DefaultPosition = Vector3()
 
+        /**
+         * The default rotation vector, initialized as (0, 0, 0).
+         */
         val DefaultRotation = Vector3()
 
+        /**
+         * The default scale vector, initialized as (1, 1, 1).
+         */
         val DefaultScale = Vector3(1.0, 1.0, 1.0)
     }
 }
