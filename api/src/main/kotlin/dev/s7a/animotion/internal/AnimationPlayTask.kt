@@ -1,7 +1,11 @@
 package dev.s7a.animotion.internal
 
 import dev.s7a.animotion.ModelAnimation
+import dev.s7a.animotion.ModelPart
 import dev.s7a.animotion.common.BaseAnimation
+import dev.s7a.animotion.common.Quaternion
+import dev.s7a.animotion.common.Transformation
+import dev.s7a.animotion.common.Vector3
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 
@@ -12,18 +16,44 @@ internal class AnimationPlayTask(
     private val schedules =
         buildMap<Long, MutableList<() -> Unit>> {
             // Animator
-            animation.animators
-                .forEach { (part, timeline) ->
-                    val positions = interpolateChannel(timeline.positions)
-                    val scales = interpolateChannel(timeline.scales)
-                    val rotations = interpolateChannel(timeline.rotations)
+            val animators = animation.animators
+            val transformations = mutableMapOf<Pair<ModelPart, Long>, Transformation>()
+            animation.parent.orderedParts
+                .forEach { part ->
+                    val timeline = animators[part]
+                    val positions =
+                        if (timeline != null) {
+                            interpolateChannel(timeline.positions)
+                        } else {
+                            emptyMap()
+                        }
+                    val scales =
+                        if (timeline != null) {
+                            interpolateChannel(timeline.scales)
+                        } else {
+                            emptyMap()
+                        }
+                    val rotations =
+                        if (timeline != null) {
+                            interpolateChannel(timeline.rotations).mapValues { it.value.toRadians().quaternion() }
+                        } else {
+                            emptyMap()
+                        }
+                    val lastPosition = positions.maxByOrNull(Map.Entry<Long, Vector3>::key)?.value
+                    val lastScale = scales.maxByOrNull(Map.Entry<Long, Vector3>::key)?.value
+                    val lastRotation = rotations.maxByOrNull(Map.Entry<Long, Quaternion>::key)?.value
                     (0..animation.length).forEach { ticks ->
-                        val position = positions[ticks]
-                        val scale = scales[ticks]
-                        val rotation = rotations[ticks]
-                        if (position != null || scale != null || rotation != null) {
+                        val position = positions[ticks] ?: lastPosition
+                        val scale = scales[ticks] ?: lastScale
+                        val rotation = rotations[ticks] ?: lastRotation
+                        val parent = transformations[part to ticks]
+                        val transformation = Transformation.create(parent, position, scale, rotation)
+                        part.children.forEach { child ->
+                            transformations[child to ticks] = transformation
+                        }
+                        if (transformation.isNotNull) {
                             getOrPut(ticks, ::mutableListOf).add {
-                                part.entity.transform(player, position, scale, rotation)
+                                part.entity.transform(player, transformation)
                             }
                         }
                     }

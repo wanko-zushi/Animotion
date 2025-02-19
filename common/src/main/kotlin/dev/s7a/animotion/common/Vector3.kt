@@ -1,5 +1,8 @@
 package dev.s7a.animotion.common
 
+import kotlin.math.cos
+import kotlin.math.sin
+
 /**
  * A class representing a 3D vector.
  *
@@ -22,6 +25,8 @@ data class Vector3(
     operator fun minus(other: Vector3) = add(-other)
 
     operator fun times(scalar: Double) = multiply(scalar)
+
+    operator fun times(other: Vector3) = multiply(other)
 
     operator fun unaryMinus() = Vector3(-x, -y, -z)
 
@@ -49,6 +54,8 @@ data class Vector3(
      */
     fun multiply(scalar: Double) = Vector3(x * scalar, y * scalar, z * scalar)
 
+    fun multiply(other: Vector3) = Vector3(x * other.x, y * other.y, z * other.z)
+
     /**
      * Multiplies this vector by independent scaling factors for each axis.
      *
@@ -70,4 +77,22 @@ data class Vector3(
      */
     val isZero
         get() = x == 0.0 && y == 0.0 && z == 0.0
+
+    fun toRadians() = Vector3(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
+
+    fun quaternion(): Quaternion {
+        val cx = cos(x / 2)
+        val cy = cos(-y / 2)
+        val cz = cos(-z / 2)
+        val sx = sin(x / 2)
+        val sy = sin(-y / 2)
+        val sz = sin(-z / 2)
+
+        return Quaternion(
+            sx * cy * cz - cx * sy * sz,
+            cx * sy * cz + sx * cy * sz,
+            cx * cy * sz - sx * sy * cz,
+            cx * cy * cz + sx * sy * sz,
+        )
+    }
 }

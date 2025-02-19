@@ -12,6 +12,8 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import dev.s7a.animotion.ModelPart
+import dev.s7a.animotion.common.Quaternion
+import dev.s7a.animotion.common.Transformation
 import dev.s7a.animotion.common.Vector3
 import io.github.retrooper.packetevents.util.SpigotConversionUtil
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil
@@ -68,9 +70,9 @@ internal class PartEntity(
                                     Field.LEFT_ROTATION,
                                     EntityDataTypes.QUATERNION,
                                     part.rotation
-                                        .multiply(1, -1, -1)
-                                        .radians()
-                                        .quaternion(),
+                                        .toRadians()
+                                        .quaternion()
+                                        .quaternion4f(),
                                 ),
                             )
                         }
@@ -128,9 +130,9 @@ internal class PartEntity(
                         Field.LEFT_ROTATION,
                         EntityDataTypes.QUATERNION,
                         part.rotation
-                            .multiply(1, -1, -1)
-                            .radians()
-                            .quaternion(),
+                            .toRadians()
+                            .quaternion()
+                            .quaternion4f(),
                     ),
                     EntityData(
                         Field.INTERPOLATION_DURATION,
@@ -144,9 +146,21 @@ internal class PartEntity(
 
     fun transform(
         player: Player,
+        transformation: Transformation,
+    ) {
+        transform(
+            player,
+            transformation.position,
+            transformation.scale,
+            transformation.rotation,
+        )
+    }
+
+    private fun transform(
+        player: Player,
         position: Vector3?,
         scale: Vector3?,
-        rotation: Vector3?,
+        rotation: Quaternion?,
     ) {
         part.model.animotion.packetManager.sendPacket(
             player,
@@ -181,11 +195,7 @@ internal class PartEntity(
                             EntityData(
                                 Field.LEFT_ROTATION,
                                 EntityDataTypes.QUATERNION,
-                                rotation
-                                    .add(part.rotation)
-                                    .multiply(1, -1, -1)
-                                    .radians()
-                                    .quaternion(),
+                                (rotation * part.rotation.toRadians().quaternion()).quaternion4f(),
                             ),
                         )
                     }
@@ -209,23 +219,13 @@ internal class PartEntity(
 
     private fun Vector3.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
-    private fun Vector3.radians() = Vector3(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z))
-
-    private fun Vector3.quaternion(): Quaternion4f {
-        val cx = cos(x / 2)
-        val cy = cos(y / 2)
-        val cz = cos(z / 2)
-        val sx = sin(x / 2)
-        val sy = sin(y / 2)
-        val sz = sin(z / 2)
-
-        return Quaternion4f(
-            (sx * cy * cz - cx * sy * sz).toFloat(),
-            (cx * sy * cz + sx * cy * sz).toFloat(),
-            (cx * cy * sz - sx * sy * cz).toFloat(),
-            (cx * cy * cz + sx * sy * sz).toFloat(),
+    private fun Quaternion.quaternion4f(): Quaternion4f =
+        Quaternion4f(
+            x.toFloat(),
+            y.toFloat(),
+            z.toFloat(),
+            w.toFloat(),
         )
-    }
 
     private fun Vector3.rotateFromLocation(location: Location) =
         rotate(Math.toRadians(location.yaw.toDouble()), Math.toRadians(location.pitch.toDouble()))

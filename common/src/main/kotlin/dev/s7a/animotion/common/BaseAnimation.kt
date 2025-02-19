@@ -62,15 +62,15 @@ open class BaseAnimation<P : BasePart>(
         class Builder {
             private val positions =
                 mutableMapOf(
-                    0L to Entry(Vector3(), Interpolation.Linear),
+                    0L to Entry(Transformation.DefaultPosition, Interpolation.Linear),
                 )
             private val rotations =
                 mutableMapOf(
-                    0L to Entry(Vector3(), Interpolation.Linear),
+                    0L to Entry(Transformation.DefaultRotation, Interpolation.Linear),
                 )
             private val scales =
                 mutableMapOf(
-                    0L to Entry(Vector3(1.0, 1.0, 1.0), Interpolation.Linear),
+                    0L to Entry(Transformation.DefaultScale, Interpolation.Linear),
                 )
 
             /**
