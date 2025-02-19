@@ -39,19 +39,22 @@ data class Transformation(
             Transformation(
                 if (part.position.isZero.not() || parent?.position != null || position != null) {
                     val parentPosition = parent?.position ?: part.position
-                    val rotatedPosition = position?.let { parent?.rotation?.rotate(it) } ?: position ?: DefaultPosition
+                    val rotatedPosition = position?.let { parent?.rotation?.rotate(it) ?: position } ?: DefaultPosition
                     parentPosition + rotatedPosition
                 } else {
                     null
                 },
                 if (parent?.scale != null || scale != null) {
-                    (parent?.scale ?: DefaultScale) * (scale ?: DefaultScale)
+                    val parentScale = parent?.scale ?: DefaultScale
+                    val localScale = scale ?: DefaultScale
+                    parentScale * localScale
                 } else {
                     null
                 },
                 if (parent?.rotation != null || rotation != null) {
                     val parentRotation = parent?.rotation ?: Quaternion()
-                    parentRotation * (rotation ?: Quaternion())
+                    val localeRotation = rotation ?: Quaternion()
+                    parentRotation * localeRotation
                 } else {
                     null
                 },
