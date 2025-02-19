@@ -20,8 +20,6 @@ import io.github.retrooper.packetevents.util.SpigotReflectionUtil
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.UUID
-import kotlin.math.cos
-import kotlin.math.sin
 
 internal class PartEntity(
     private val part: ModelPart,
@@ -41,14 +39,7 @@ internal class PartEntity(
                     entityId,
                     uniqueId,
                     EntityTypes.ITEM_DISPLAY,
-                    SpigotConversionUtil.fromBukkitLocation(
-                        location.clone().add(
-                            part.position
-                                .multiply(part.model.baseScale)
-                                .multiply(-1, 1, -1)
-                                .rotateFromLocation(location),
-                        ),
-                    ),
+                    SpigotConversionUtil.fromBukkitLocation(location),
                     0F,
                     0,
                     null,
@@ -63,6 +54,16 @@ internal class PartEntity(
                                 part.itemStack(),
                             ),
                         )
+
+                        if (part.position.isZero.not()) {
+                            add(
+                                EntityData(
+                                    Field.TRANSLATION,
+                                    EntityDataTypes.VECTOR3F,
+                                    part.position.vector3f(),
+                                ),
+                            )
+                        }
 
                         if (part.rotation.isZero.not()) {
                             add(
@@ -115,7 +116,7 @@ internal class PartEntity(
                     EntityData(
                         Field.TRANSLATION,
                         EntityDataTypes.VECTOR3F,
-                        Vector3f.zero(),
+                        part.position.vector3f(),
                     ),
                     EntityData(
                         Field.SCALE,
@@ -172,10 +173,7 @@ internal class PartEntity(
                             EntityData(
                                 Field.TRANSLATION,
                                 EntityDataTypes.VECTOR3F,
-                                position
-                                    .multiply(1, -1, 1)
-                                    .multiply(part.model.baseScale)
-                                    .vector3f(),
+                                position.multiply(part.model.baseScale).multiply(-1, 1, 1).vector3f(),
                             ),
                         )
                     }
@@ -184,9 +182,7 @@ internal class PartEntity(
                             EntityData(
                                 Field.SCALE,
                                 EntityDataTypes.VECTOR3F,
-                                scale
-                                    .multiply(part.model.baseScale)
-                                    .vector3f(),
+                                scale.multiply(part.model.baseScale).vector3f(),
                             ),
                         )
                     }
@@ -215,8 +211,6 @@ internal class PartEntity(
             .nbt("CustomModelData", NBTInt(customModelData))
             .build()
 
-    private fun Location.add(other: Vector3) = clone().add(other.x, other.y, other.z)
-
     private fun Vector3.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
     private fun Quaternion.quaternion4f(): Quaternion4f =
@@ -226,25 +220,6 @@ internal class PartEntity(
             z.toFloat(),
             w.toFloat(),
         )
-
-    private fun Vector3.rotateFromLocation(location: Location) =
-        rotate(Math.toRadians(location.yaw.toDouble()), Math.toRadians(location.pitch.toDouble()))
-
-    private fun Vector3.rotate(
-        yaw: Double,
-        pitch: Double,
-    ): Vector3 {
-        val cosYaw = cos(yaw)
-        val sinYaw = sin(yaw)
-        val cosPitch = cos(pitch)
-        val sinPitch = sin(pitch)
-
-        return Vector3(
-            x * cosYaw - (y * sinPitch + z * cosPitch) * sinYaw,
-            y * cosPitch - z * sinPitch,
-            x * sinYaw + (y * sinPitch + z * cosPitch) * cosYaw,
-        )
-    }
 
     private object Field {
         // https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display

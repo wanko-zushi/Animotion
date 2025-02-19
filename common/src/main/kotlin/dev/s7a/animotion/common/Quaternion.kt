@@ -28,7 +28,7 @@ data class Quaternion(
     fun rotate(vector: Vector3): Vector3 {
         val qVector = Quaternion(vector.x, vector.y, vector.z, 0.0)
         val rotated = this * qVector * this.conjugate()
-        return Vector3(rotated.x, rotated.y, rotated.z)
+        return Vector3(rotated.x, -rotated.y, rotated.z)
     }
 
     /**

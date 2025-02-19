@@ -31,20 +31,16 @@ data class Transformation(
          */
         fun create(
             parent: Transformation?,
+            part: BasePart,
             position: Vector3?,
             scale: Vector3?,
             rotation: Quaternion?,
         ): Transformation =
             Transformation(
-                if (parent?.position != null || position != null) {
-                    (parent?.position ?: DefaultPosition).run {
-                        if (position != null) {
-                            val rotatedPosition = parent?.rotation?.rotate(position) ?: position
-                            this + rotatedPosition
-                        } else {
-                            this
-                        }
-                    }
+                if (part.position.isZero.not() || parent?.position != null || position != null) {
+                    val parentPosition = parent?.position ?: part.position
+                    val rotatedPosition = position?.let { parent?.rotation?.rotate(it) } ?: position ?: DefaultPosition
+                    parentPosition + rotatedPosition
                 } else {
                     null
                 },
@@ -54,7 +50,8 @@ data class Transformation(
                     null
                 },
                 if (parent?.rotation != null || rotation != null) {
-                    (parent?.rotation ?: Quaternion()) * (rotation ?: Quaternion())
+                    val parentRotation = parent?.rotation ?: Quaternion()
+                    parentRotation * (rotation ?: Quaternion())
                 } else {
                     null
                 },
