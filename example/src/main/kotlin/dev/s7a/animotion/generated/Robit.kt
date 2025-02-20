@@ -16,7 +16,7 @@ class Robit(
         part(
             "animotion:robit_0",
             1,
-            Vector3(0.0, 1.4843749999999996, 0.0),
+            Vector3(0.0, 1.484375, 0.0),
             Vector3(0.0, -22.5, 0.0),
         )
 
@@ -58,14 +58,14 @@ class Robit(
         part(
             "animotion:robit_6",
             7,
-            Vector3(-0.125, 0.3958333333333333, 0.0),
+            Vector3(-0.125, 0.395833125, 0.0),
         )
 
     private val rightLeg: ModelPart =
         part(
             "animotion:robit_7",
             8,
-            Vector3(0.125, 0.3958333333333333, 0.0),
+            Vector3(0.125, 0.395833125, 0.0),
         )
 
     init {
