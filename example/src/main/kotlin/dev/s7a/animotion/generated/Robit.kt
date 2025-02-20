@@ -24,6 +24,7 @@ class Robit(
         part(
             "animotion:robit_1",
             2,
+            Vector3(0.0, 0.375, 0.0),
         )
 
     private val leftArm: ModelPart =
