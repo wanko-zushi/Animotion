@@ -10,6 +10,7 @@ import com.github.retrooper.packetevents.util.Quaternion4f
 import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityTeleport
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity
 import dev.s7a.animotion.ModelPart
 import dev.s7a.animotion.common.Quaternion
@@ -28,12 +29,16 @@ internal class PartEntity(
 ) {
     private val entityId = SpigotReflectionUtil.generateEntityId()
     private val uniqueId = UUID.randomUUID()
+    private val locations = mutableMapOf<UUID, Location>()
+    private val transformations = mutableMapOf<UUID, Transformation>()
 
     fun spawn(
         player: Player,
         location: Location,
     ): Boolean {
         if (location.world != player.world) return false
+        locations[player.uniqueId] = location
+        transformations.remove(player.uniqueId)
         part.model.animotion.packetManager.sendPacket(
             player,
             listOf(
@@ -98,6 +103,8 @@ internal class PartEntity(
     }
 
     fun remove(player: Player) {
+        locations.remove(player.uniqueId)
+        transformations.remove(player.uniqueId)
         part.model.animotion.packetManager.sendPacket(
             player,
             WrapperPlayServerDestroyEntities(
@@ -109,38 +116,60 @@ internal class PartEntity(
     fun resetTransform(player: Player) {
         part.model.animotion.packetManager.sendPacket(
             player,
-            WrapperPlayServerEntityMetadata(
-                entityId,
-                listOf(
-                    EntityData(
-                        Field.TRANSLATION,
-                        EntityDataTypes.VECTOR3F,
-                        Vector3f.zero(),
-                    ),
-                    EntityData(
-                        Field.SCALE,
-                        EntityDataTypes.VECTOR3F,
-                        Vector3f(
-                            part.model.baseScale,
-                            part.model.baseScale,
-                            part.model.baseScale,
+            buildList {
+                add(
+                    WrapperPlayServerEntityMetadata(
+                        entityId,
+                        listOf(
+                            EntityData(
+                                Field.TRANSLATION,
+                                EntityDataTypes.VECTOR3F,
+                                Vector3f.zero(),
+                            ),
+                            EntityData(
+                                Field.SCALE,
+                                EntityDataTypes.VECTOR3F,
+                                Vector3f(
+                                    part.model.baseScale,
+                                    part.model.baseScale,
+                                    part.model.baseScale,
+                                ),
+                            ),
+                            EntityData(
+                                Field.LEFT_ROTATION,
+                                EntityDataTypes.QUATERNION,
+                                part.rotation
+                                    .toRadians()
+                                    .quaternion()
+                                    .quaternion4f(),
+                            ),
+                            EntityData(
+                                Field.INTERPOLATION_DURATION,
+                                EntityDataTypes.INT,
+                                0,
+                            ),
                         ),
                     ),
-                    EntityData(
-                        Field.LEFT_ROTATION,
-                        EntityDataTypes.QUATERNION,
-                        part.rotation
-                            .toRadians()
-                            .quaternion()
-                            .quaternion4f(),
-                    ),
-                    EntityData(
-                        Field.INTERPOLATION_DURATION,
-                        EntityDataTypes.INT,
-                        0,
-                    ),
-                ),
-            ),
+                )
+
+                val location = locations[player.uniqueId]
+                if (location != null) {
+                    add(
+                        WrapperPlayServerEntityTeleport(
+                            entityId,
+                            SpigotConversionUtil.fromBukkitLocation(
+                                location.clone().add(
+                                    part.position
+                                        .multiply(part.model.baseScale)
+                                        .multiply(-1, 1, -1)
+                                        .rotateFromLocation(location),
+                                ),
+                            ),
+                            false,
+                        ),
+                    )
+                }
+            },
         )
     }
 
@@ -148,11 +177,13 @@ internal class PartEntity(
         player: Player,
         transformation: Transformation,
     ) {
+        transformations[player.uniqueId] = transformation
         transform(
             player,
             transformation.position,
             transformation.scale,
             transformation.rotation,
+            transformation.teleport,
         )
     }
 
@@ -161,48 +192,72 @@ internal class PartEntity(
         position: Vector3?,
         scale: Vector3?,
         rotation: Quaternion?,
+        teleport: Vector3,
     ) {
         part.model.animotion.packetManager.sendPacket(
             player,
-            WrapperPlayServerEntityMetadata(
-                entityId,
-                buildList {
-                    if (position != null) {
-                        add(
-                            EntityData(
-                                Field.TRANSLATION,
-                                EntityDataTypes.VECTOR3F,
-                                position
-                                    .multiply(1, -1, 1)
-                                    .multiply(part.model.baseScale)
-                                    .vector3f(),
-                            ),
-                        )
-                    }
-                    if (scale != null) {
-                        add(
-                            EntityData(
-                                Field.SCALE,
-                                EntityDataTypes.VECTOR3F,
-                                scale
-                                    .multiply(part.model.baseScale)
-                                    .vector3f(),
-                            ),
-                        )
-                    }
-                    if (rotation != null) {
-                        add(
-                            EntityData(
-                                Field.LEFT_ROTATION,
-                                EntityDataTypes.QUATERNION,
-                                (rotation * part.rotation.toRadians().quaternion()).quaternion4f(),
-                            ),
-                        )
+            buildList {
+                val entityDataList =
+                    buildList {
+                        if (position != null) {
+                            add(
+                                EntityData(
+                                    Field.TRANSLATION,
+                                    EntityDataTypes.VECTOR3F,
+                                    position
+                                        .multiply(1, -1, 1)
+                                        .multiply(part.model.baseScale)
+                                        .vector3f(),
+                                ),
+                            )
+                        }
+                        if (scale != null) {
+                            add(
+                                EntityData(
+                                    Field.SCALE,
+                                    EntityDataTypes.VECTOR3F,
+                                    scale
+                                        .multiply(part.model.baseScale)
+                                        .vector3f(),
+                                ),
+                            )
+                        }
+                        if (rotation != null) {
+                            add(
+                                EntityData(
+                                    Field.LEFT_ROTATION,
+                                    EntityDataTypes.QUATERNION,
+                                    (rotation * part.rotation.toRadians().quaternion()).quaternion4f(),
+                                ),
+                            )
+                        }
+
+                        add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 1))
                     }
 
-                    add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 1))
-                },
-            ),
+                if (entityDataList.isNotEmpty()) {
+                    add(WrapperPlayServerEntityMetadata(entityId, entityDataList))
+                }
+
+                val location = locations[player.uniqueId]
+                if (location != null) {
+                    add(
+                        WrapperPlayServerEntityTeleport(
+                            entityId,
+                            SpigotConversionUtil.fromBukkitLocation(
+                                location.clone().add(
+                                    part.position
+                                        .multiply(-1, 1, -1)
+                                        .add(teleport)
+                                        .multiply(part.model.baseScale)
+                                        .rotateFromLocation(location),
+                                ),
+                            ),
+                            false,
+                        ),
+                    )
+                }
+            },
         )
     }
 

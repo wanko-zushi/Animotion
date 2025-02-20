@@ -47,7 +47,7 @@ internal class AnimationPlayTask(
                         val scale = scales[ticks] ?: lastScale
                         val rotation = rotations[ticks] ?: lastRotation
                         val parent = transformations[part to ticks]
-                        val transformation = Transformation.create(parent, position, scale, rotation)
+                        val transformation = Transformation.create(parent, part, position, scale, rotation)
                         part.children.forEach { child ->
                             transformations[child to ticks] = transformation
                         }

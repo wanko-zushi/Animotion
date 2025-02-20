@@ -6,14 +6,22 @@ package dev.s7a.animotion.common
  * @property position The 3D position vector of the transformation, or null if unspecified.
  * @property scale The scaling factor as a vector, or null if unspecified.
  * @property rotation The rotational quaternion representing orientation, or null if unspecified.
+ * @property teleport The teleportation position vector, representing a direct movement point, or null if unspecified.
+ *
  */
 data class Transformation(
+    val part: BasePart,
     val position: Vector3?,
     val scale: Vector3?,
     val rotation: Quaternion?,
+    val teleport: Vector3,
 ) {
     /**
      * Returns true if at least one of the position, scale, or rotation properties is not null.
+     * Specifically, checks whether any of the following components of the transformation are specified:
+     * - [position]: The position vector.
+     * - [scale]: The scale vector.
+     * - [rotation]: The rotation quaternion.
      */
     val isNotNull
         get() = position != null || scale != null || rotation != null
@@ -31,11 +39,13 @@ data class Transformation(
          */
         fun create(
             parent: Transformation?,
+            part: BasePart,
             position: Vector3?,
             scale: Vector3?,
             rotation: Quaternion?,
         ): Transformation =
             Transformation(
+                part,
                 if (parent?.position != null || position != null) {
                     (parent?.position ?: DefaultPosition).run {
                         if (position != null) {
@@ -61,6 +71,16 @@ data class Transformation(
                     parentRotation * localeRotation
                 } else {
                     null
+                },
+                if (parent != null) {
+                    val positionDiff = (part.position - parent.part.position).multiply(-1, 1, -1)
+                    if (parent.rotation != null) {
+                        parent.rotation.rotate(positionDiff) - positionDiff
+                    } else {
+                        Vector3()
+                    }
+                } else {
+                    Vector3()
                 },
             )
 
