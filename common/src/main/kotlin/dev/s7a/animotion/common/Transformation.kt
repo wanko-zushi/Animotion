@@ -47,14 +47,10 @@ data class Transformation(
             Transformation(
                 part,
                 if (parent?.position != null || position != null) {
-                    (parent?.position ?: DefaultPosition).run {
-                        if (position != null) {
-                            val rotatedPosition = parent?.rotation?.rotate(position) ?: position
-                            this + rotatedPosition
-                        } else {
-                            this
-                        }
-                    }
+                    val parentPosition = parent?.position ?: DefaultPosition
+                    val localPosition = position ?: DefaultPosition
+                    val rotatedPosition = parent?.rotation?.rotate(localPosition) ?: localPosition
+                    parentPosition + rotatedPosition
                 } else {
                     null
                 },
