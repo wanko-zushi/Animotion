@@ -17,7 +17,7 @@ class PackGenerator(
             buildList {
                 resourcePack.animotion.models.createParts(namespace).forEach { (model, parts) ->
                     model.textures.forEachIndexed { index, texture ->
-                        val file = MinecraftAsset.ItemTexture.resolve(packDirectory, "${model.name}/$index", namespace)
+                        val file = MinecraftAsset.Texture.resolve(packDirectory, "${model.name}/$index", namespace)
                         texture.saveTo(file)
                     }
                     parts.forEachIndexed { index, part ->

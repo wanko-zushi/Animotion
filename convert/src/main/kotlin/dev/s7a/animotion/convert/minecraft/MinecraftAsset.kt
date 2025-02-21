@@ -7,8 +7,8 @@ enum class MinecraftAsset(
     private val extension: String,
 ) {
     Model("models", "json"),
+    Texture("textures", "png"),
     ItemModel(Model, "item"),
-    ItemTexture("textures/item", "png"),
     ;
 
     constructor(parent: MinecraftAsset, path: String) : this("${parent.path}/$path", parent.extension)

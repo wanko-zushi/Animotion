@@ -45,7 +45,7 @@ data class Part(
             val elementByUuid = model.elements.associateBy(Element::uuid)
 
             val textureSize = listOf(model.resolution.width, model.resolution.height)
-            val textures = model.textures.indices.associate { "$it" to "$namespace:item/${model.name}/$it" }
+            val textures = model.textures.indices.associate { "$it" to "$namespace:${model.name}/$it" }
 
             fun createParts(outliner: Outliner): List<Part> {
                 val children = mutableListOf<Outliner.Child.UsePart>()
