@@ -18,7 +18,7 @@ import dev.s7a.animotion.convert.InputPack
 import dev.s7a.animotion.convert.createParts
 import dev.s7a.animotion.convert.data.animotion.Part
 import dev.s7a.animotion.convert.data.blockbench.Animation
-import dev.s7a.animotion.convert.data.blockbench.Keyframes
+import dev.s7a.animotion.convert.data.blockbench.Keyframe
 import dev.s7a.animotion.convert.exception.NotFoundPartException
 import dev.s7a.animotion.convert.util.toCamelCase
 import dev.s7a.animotion.convert.util.toPascalCase
@@ -77,8 +77,8 @@ class CodeGenerator(
                                             // CustomModelData
                                             add(CodeBlock.of("%L", part.customModelData))
 
-                                            val hasPosition = part.origin.any { it != 0.0 }
-                                            val hasRotation = part.rotation.any { it != 0.0 }
+                                            val hasPosition = part.origin.isZero.not()
+                                            val hasRotation = part.rotation.isZero.not()
 
                                             // position
                                             if (hasPosition || hasRotation) {
@@ -86,7 +86,7 @@ class CodeGenerator(
                                                     CodeBlock.of(
                                                         "%T(%L, %L, %L)",
                                                         vector3Class,
-                                                        *part.origin.map { it / 16.0 }.toTypedArray(),
+                                                        *(part.origin / 16.0).toTypedArray(),
                                                     ),
                                                 )
                                             }
@@ -149,9 +149,9 @@ class CodeGenerator(
                                                         .map { keyframe ->
                                                             val (keyframeFunName, div) =
                                                                 when (keyframe.channel) {
-                                                                    Keyframes.Channel.Rotation -> "rotation" to 1.0
-                                                                    Keyframes.Channel.Position -> "position" to 16.0
-                                                                    Keyframes.Channel.Scale -> "scale" to 1.0
+                                                                    Keyframe.Channel.Rotation -> "rotation" to 1.0
+                                                                    Keyframe.Channel.Position -> "position" to 16.0
+                                                                    Keyframe.Channel.Scale -> "scale" to 1.0
                                                                 }
 
                                                             val point = keyframe.dataPoints[0]

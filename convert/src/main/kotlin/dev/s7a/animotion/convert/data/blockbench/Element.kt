@@ -3,8 +3,7 @@ package dev.s7a.animotion.convert.data.blockbench
 import dev.s7a.animotion.convert.data.blockbench.Face.Companion.toMinecraftFaces
 import dev.s7a.animotion.convert.data.common.FaceType
 import dev.s7a.animotion.convert.data.minecraft.model.Rotation
-import dev.s7a.animotion.convert.util.eachMinus
-import dev.s7a.animotion.convert.util.eachPlus
+import dev.s7a.animotion.convert.model.Vector3
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.uuid.ExperimentalUuidApi
@@ -14,10 +13,10 @@ import dev.s7a.animotion.convert.data.minecraft.model.Element as MinecraftElemen
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
 data class Element(
-    val from: List<Double>,
-    val to: List<Double>,
-    val rotation: List<Double> = listOf(0.0, 0.0, 0.0),
-    val origin: List<Double>,
+    val from: Vector3,
+    val to: Vector3,
+    val rotation: Vector3 = Vector3(),
+    val origin: Vector3,
     val faces: Map<FaceType, Face>,
     val type: Type,
     val uuid: Uuid,
@@ -28,23 +27,23 @@ data class Element(
         Cube,
     }
 
-    private fun rotationAngle(outliner: Outliner): Pair<Double, Rotation.Axis> {
-        val rotation = rotation.eachMinus(outliner.rotation)
-        val index = rotation.indexOfFirst { it != 0.0 }
-        if (index == -1) return 0.0 to Rotation.Axis.Y
-        return rotation[index] to Rotation.Axis.entries[index]
-    }
-
     fun toMinecraftElement(
         outliner: Outliner,
         textures: List<Texture>,
     ): MinecraftElement {
-        val (angle, axis) = rotationAngle(outliner)
-        val center = listOf(8.0, 8.0, 8.0)
+        val rotation = rotation - outliner.rotation
+        val (angle, axis) =
+            when {
+                rotation.x != 0.0 -> rotation.x to Rotation.Axis.X
+                rotation.y != 0.0 -> rotation.y to Rotation.Axis.Y
+                rotation.z != 0.0 -> rotation.z to Rotation.Axis.Z
+                else -> 0.0 to Rotation.Axis.Y
+            }
+        val center = Vector3(8.0)
         return MinecraftElement(
-            from.eachPlus(center).eachMinus(outliner.origin),
-            to.eachPlus(center).eachMinus(outliner.origin),
-            Rotation(angle, axis, origin.eachPlus(center).eachMinus(outliner.origin)),
+            from + center - outliner.origin,
+            to + center - outliner.origin,
+            Rotation(angle, axis, origin + center - outliner.origin),
             faces.toMinecraftFaces(textures),
         )
     }

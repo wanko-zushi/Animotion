@@ -1,5 +1,6 @@
 package dev.s7a.animotion.convert.data.blockbench
 
+import dev.s7a.animotion.convert.model.Vector3
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -12,8 +13,8 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 data class Outliner(
     val name: String,
-    val origin: List<Double>,
-    val rotation: List<Double> = listOf(0.0, 0.0, 0.0),
+    val origin: Vector3,
+    val rotation: Vector3 = Vector3(),
     val uuid: Uuid,
     val children: List<Child>,
 ) {

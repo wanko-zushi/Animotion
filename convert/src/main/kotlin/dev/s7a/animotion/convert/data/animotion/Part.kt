@@ -5,6 +5,7 @@ import dev.s7a.animotion.convert.data.blockbench.Element
 import dev.s7a.animotion.convert.data.blockbench.Element.Companion.toMinecraftElements
 import dev.s7a.animotion.convert.data.blockbench.Outliner
 import dev.s7a.animotion.convert.data.minecraft.model.MinecraftModel
+import dev.s7a.animotion.convert.model.Vector3
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
@@ -16,8 +17,8 @@ data class Part(
     val customModelData: Int,
     val name: String,
     val uuid: Uuid,
-    val origin: List<Double>,
-    val rotation: List<Double>,
+    val origin: Vector3,
+    val rotation: Vector3,
     val children: List<Part>,
     val model: MinecraftModel,
 ) {

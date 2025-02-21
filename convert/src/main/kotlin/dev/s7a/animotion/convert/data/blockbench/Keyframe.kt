@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Keyframes(
+data class Keyframe(
     val channel: Channel,
     @SerialName("data_points") val dataPoints: List<DataPoints>,
     val time: Double,
@@ -21,6 +21,13 @@ data class Keyframes(
         @SerialName("scale")
         Scale,
     }
+
+    @Serializable
+    data class DataPoints(
+        val x: Double,
+        val y: Double,
+        val z: Double,
+    )
 
     @Serializable
     enum class Interpolation {

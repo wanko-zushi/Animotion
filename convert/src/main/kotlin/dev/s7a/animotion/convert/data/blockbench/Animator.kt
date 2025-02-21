@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class Animator(
     val name: String,
     val type: Type,
-    val keyframes: List<Keyframes>,
+    val keyframes: List<Keyframe>,
 ) {
     @Serializable
     enum class Type {
