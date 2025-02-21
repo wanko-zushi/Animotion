@@ -16,7 +16,6 @@ import com.github.ajalt.mordant.terminal.warning
 import dev.s7a.animotion.convert.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.convert.generator.CodeGenerator
 import dev.s7a.animotion.convert.generator.PackGenerator
-import dev.s7a.animotion.convert.loader.ResourcePack
 import java.io.IOException
 
 class AnimotionConverterCommand(
@@ -60,8 +59,8 @@ class AnimotionConverterCommand(
             existWithErrorMessage("The directory doesn't exists: $directory")
         }
 
-        val resourcePack =
-            ResourcePack.load(directory) { error ->
+        val pack =
+            InputPack.load(directory) { error ->
                 when (error) {
                     is UnsupportedPackFormatException -> {
                         if (ignorePackFormat) {
@@ -113,7 +112,7 @@ class AnimotionConverterCommand(
                 }
             }
 
-            PackGenerator(resourcePack).save(output)
+            PackGenerator(pack).save(output)
             successMessage("Generate resource pack: $output")
         }
 
@@ -128,7 +127,7 @@ class AnimotionConverterCommand(
                 }
             }
 
-            CodeGenerator(resourcePack).save(code)
+            CodeGenerator(pack).save(code)
             successMessage("Generate code: $code")
         }
     }

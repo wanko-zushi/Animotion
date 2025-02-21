@@ -1,6 +1,6 @@
+import dev.s7a.animotion.convert.InputPack
 import dev.s7a.animotion.convert.exception.UnsupportedPackFormatException
 import dev.s7a.animotion.convert.generator.PackGenerator
-import dev.s7a.animotion.convert.loader.ResourcePack
 import util.assertFileContent
 import java.io.File
 import kotlin.io.path.createTempDirectory
@@ -14,7 +14,7 @@ sealed class ResourcePackTest(
 ) {
     protected val destination: File = createTempDirectory().toFile()
 
-    protected fun resourcePack(): ResourcePack = ResourcePack.load(File("src/test/resources/packs/$name"))
+    protected fun resourcePack(): InputPack = InputPack.load(File("src/test/resources/packs/$name"))
 
     protected fun assertGeneratedPack() {
         val expected = File("src/test/resources/expected/$name")

@@ -1,19 +1,20 @@
 package dev.s7a.animotion.convert.generator
 
+import dev.s7a.animotion.convert.InputPack
+import dev.s7a.animotion.convert.createParts
 import dev.s7a.animotion.convert.data.minecraft.item.MinecraftItem
 import dev.s7a.animotion.convert.data.minecraft.item.Override
 import dev.s7a.animotion.convert.data.minecraft.item.Predicate
-import dev.s7a.animotion.convert.loader.ResourcePack
 import kotlinx.serialization.json.Json
 import java.io.File
 
 class PackGenerator(
-    private val resourcePack: ResourcePack,
+    private val resourcePack: InputPack,
 ) {
     fun save(destination: File) {
         val overrides =
             buildList {
-                resourcePack.animotion.models.forEach { (model, parts) ->
+                resourcePack.animotion.models.createParts(resourcePack.animotion.settings.namespace).forEach { (model, parts) ->
                     model.textures.forEachIndexed { index, texture ->
                         val file = texture.getDestinationFile(destination, resourcePack.animotion.settings.namespace, model.name, index)
                         texture.saveTo(file)

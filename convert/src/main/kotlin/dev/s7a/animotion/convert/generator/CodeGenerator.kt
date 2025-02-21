@@ -14,11 +14,12 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.joinToCode
+import dev.s7a.animotion.convert.InputPack
+import dev.s7a.animotion.convert.createParts
 import dev.s7a.animotion.convert.data.animotion.Part
 import dev.s7a.animotion.convert.data.blockbench.Animation
 import dev.s7a.animotion.convert.data.blockbench.Keyframes
 import dev.s7a.animotion.convert.exception.NotFoundPartException
-import dev.s7a.animotion.convert.loader.ResourcePack
 import dev.s7a.animotion.convert.util.toCamelCase
 import dev.s7a.animotion.convert.util.toPascalCase
 import java.io.File
@@ -27,7 +28,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class CodeGenerator(
-    private val resourcePack: ResourcePack,
+    private val resourcePack: InputPack,
 ) {
     @OptIn(ExperimentalUuidApi::class)
     fun save(parent: File) {
@@ -40,7 +41,7 @@ class CodeGenerator(
         val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())
 
         parent.mkdirs()
-        resourcePack.animotion.models.forEach { (model, parts) ->
+        resourcePack.animotion.models.createParts(resourcePack.animotion.settings.namespace).forEach { (model, parts) ->
             val className = model.name.toPascalCase()
             val file = parent.resolve("$className.kt")
             val partByUuid = mutableMapOf<Uuid, Part>()
