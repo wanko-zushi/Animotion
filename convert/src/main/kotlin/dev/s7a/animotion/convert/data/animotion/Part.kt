@@ -5,7 +5,9 @@ import dev.s7a.animotion.convert.data.blockbench.Element
 import dev.s7a.animotion.convert.data.blockbench.Element.Companion.toMinecraftElements
 import dev.s7a.animotion.convert.data.blockbench.Outliner
 import dev.s7a.animotion.convert.data.minecraft.model.MinecraftModel
+import dev.s7a.animotion.convert.minecraft.MinecraftAsset
 import dev.s7a.animotion.convert.model.Vector3
+import dev.s7a.animotion.convert.util.createParentDirectory
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
@@ -23,15 +25,14 @@ data class Part(
     val model: MinecraftModel,
 ) {
     fun save(
-        destination: File,
+        packDirectory: File,
         namespace: String,
         modelName: String,
         index: Int,
     ) {
-        destination.resolve("assets/$namespace/models/$modelName/$index.json").run {
-            parentFile?.mkdirs()
-            writeText(Json.encodeToString(model))
-        }
+        val file = MinecraftAsset.Model.resolve(packDirectory, "$modelName/$index", namespace)
+        file.createParentDirectory()
+        file.writeText(Json.encodeToString(model))
     }
 
     companion object {

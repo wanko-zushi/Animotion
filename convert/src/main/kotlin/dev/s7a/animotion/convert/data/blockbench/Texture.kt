@@ -1,5 +1,6 @@
 package dev.s7a.animotion.convert.data.blockbench
 
+import dev.s7a.animotion.convert.util.createParentDirectory
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.io.File
@@ -14,19 +15,10 @@ data class Texture(
     val uvHeight: Double = 64.0,
     val source: String,
 ) {
-    fun getDestinationFile(
-        directory: File,
-        namespace: String,
-        modelName: String,
-        index: Int,
-    ) = directory.resolve("assets/$namespace/textures/item/$modelName/$index.png")
-
     @OptIn(ExperimentalEncodingApi::class)
     fun saveTo(file: File) {
         require(source.startsWith("data:image/png;base64,"))
-        file.run {
-            parentFile?.mkdirs()
-            writeBytes(Base64.decode(source.drop(22)))
-        }
+        file.createParentDirectory()
+        file.writeBytes(Base64.decode(source.drop(22)))
     }
 }
