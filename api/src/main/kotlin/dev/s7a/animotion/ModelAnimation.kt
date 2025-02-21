@@ -1,7 +1,7 @@
 package dev.s7a.animotion
 
 import dev.s7a.animotion.common.BaseAnimation
-import dev.s7a.animotion.internal.AnimationPlayTask
+import dev.s7a.animotion.internal.AnimationPlaySchedule
 import org.bukkit.entity.Player
 
 /**
@@ -20,7 +20,7 @@ class ModelAnimation(
     length: Long,
     animators: Map<ModelPart, Timeline>,
 ) : BaseAnimation<ModelPart>(type, length, animators) {
-    internal val schedule = AnimationPlayTask.Schedule(this)
+    internal val schedule = AnimationPlaySchedule(this)
 
     /**
      * Plays this animation for the specified player.
