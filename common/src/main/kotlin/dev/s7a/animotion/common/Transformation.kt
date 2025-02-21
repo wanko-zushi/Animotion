@@ -75,7 +75,7 @@ data class Transformation(
                 if (parent != null) {
                     val positionDiff = (part.position - parent.part.position).multiply(-1, 1, -1)
                     if (parent.rotation != null) {
-                        parent.rotation.rotate(positionDiff) - positionDiff
+                        parent.teleport + parent.rotation.rotate(positionDiff) - positionDiff
                     } else {
                         Vector3()
                     }
