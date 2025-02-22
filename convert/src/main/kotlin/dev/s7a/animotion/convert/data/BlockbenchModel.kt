@@ -1,7 +1,5 @@
 package dev.s7a.animotion.convert.data
 
-import dev.s7a.animotion.convert.data.BlockbenchModel.Element.Face.Companion.toMinecraftFaces
-import dev.s7a.animotion.convert.util.createParentDirectory
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -61,67 +59,12 @@ data class BlockbenchModel(
         data class Face(
             val uv: List<Double>,
             val texture: Int? = null,
-        ) {
-            fun toMinecraftFace(textures: List<Texture>): MinecraftModel.Element.Face =
-                if (texture == null) {
-                    MinecraftModel.Element.Face(
-                        listOf(0.0, 0.0, 0.0, 0.0),
-                        "#missing",
-                    )
-                } else {
-                    MinecraftModel.Element.Face(
-                        uv.mapIndexed { index, value ->
-                            value * 16 / (if (index % 2 == 0) textures[texture].uvWidth else textures[texture].uvHeight)
-                        },
-                        "#$texture",
-                    )
-                }
-
-            companion object {
-                fun Map<MinecraftModel.Element.FaceType, Face>.toMinecraftFaces(
-                    textures: List<Texture>,
-                ): Map<MinecraftModel.Element.FaceType, MinecraftModel.Element.Face> =
-                    mapValues { (_, value) ->
-                        value.toMinecraftFace(textures)
-                    }
-            }
-        }
+        )
 
         @Serializable
         enum class Type {
             @SerialName("cube")
             Cube,
-        }
-
-        fun toMinecraftElement(
-            outliner: Outliner,
-            textures: List<Texture>,
-        ): MinecraftModel.Element {
-            val rotation = rotation - outliner.rotation
-            val (angle, axis) =
-                when {
-                    rotation.x != 0.0 -> rotation.x to MinecraftModel.Element.Rotation.Axis.X
-                    rotation.y != 0.0 -> rotation.y to MinecraftModel.Element.Rotation.Axis.Y
-                    rotation.z != 0.0 -> rotation.z to MinecraftModel.Element.Rotation.Axis.Z
-                    else -> 0.0 to MinecraftModel.Element.Rotation.Axis.Y
-                }
-            val center = Vector3(8.0)
-            return MinecraftModel.Element(
-                from + center - outliner.origin,
-                to + center - outliner.origin,
-                MinecraftModel.Element.Rotation(angle, axis, origin + center - outliner.origin),
-                faces.toMinecraftFaces(textures),
-            )
-        }
-
-        companion object {
-            fun List<Element>.toMinecraftElements(
-                outliner: Outliner,
-                textures: List<Texture>,
-            ): List<MinecraftModel.Element> =
-                map {
-                    it.toMinecraftElement(outliner, textures)
-                }
         }
     }
 
@@ -167,12 +110,12 @@ data class BlockbenchModel(
         val uvHeight: Double = 64.0,
         val source: String,
     ) {
-        @OptIn(ExperimentalEncodingApi::class)
-        fun saveTo(file: File) {
+        init {
             require(source.startsWith("data:image/png;base64,"))
-            file.createParentDirectory()
-            file.writeBytes(Base64.decode(source.drop(22)))
         }
+
+        @OptIn(ExperimentalEncodingApi::class)
+        fun toImage() = Base64.decode(source.drop(22))
     }
 
     @Serializable

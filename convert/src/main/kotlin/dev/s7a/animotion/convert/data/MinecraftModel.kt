@@ -60,6 +60,14 @@ data class MinecraftModel(
         data class Face(
             val uv: List<Double>,
             val texture: String,
-        )
+        ) {
+            companion object {
+                val Missing =
+                    Face(
+                        listOf(0.0, 0.0, 0.0, 0.0),
+                        "#missing",
+                    )
+            }
+        }
     }
 }

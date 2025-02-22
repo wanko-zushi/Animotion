@@ -112,7 +112,7 @@ class AnimotionConverterCommand(
                 }
             }
 
-            PackGenerator(pack).save(output)
+            PackGenerator(pack.animotion).save(output)
             successMessage("Generate resource pack: $output")
         }
 

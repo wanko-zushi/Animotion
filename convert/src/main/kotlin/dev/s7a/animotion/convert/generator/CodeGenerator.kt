@@ -40,7 +40,7 @@ class CodeGenerator(
         val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())
 
         parent.mkdirs()
-        resourcePack.animotion.models.createParts(resourcePack.animotion.settings.namespace).forEach { (model, parts) ->
+        resourcePack.animotion.models.createParts().forEach { (model, parts) ->
             val className = model.name.toPascalCase()
             val file = parent.resolve("$className.kt")
             val partByUuid = mutableMapOf<Uuid, Part>()
@@ -99,13 +99,13 @@ class CodeGenerator(
                                     .build()
                             },
                         ).run {
-                            if (parts.all { it.children.isEmpty() }) {
+                            if (parts.all { it.parts.isEmpty() }) {
                                 this
                             } else {
                                 addInitializerBlock(
                                     buildCodeBlock {
                                         parts.forEach { part ->
-                                            val children = part.children
+                                            val children = part.parts
                                             if (children.isNotEmpty()) {
                                                 addStatement(
                                                     "%N.children(%L)",

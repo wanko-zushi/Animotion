@@ -1,26 +1,33 @@
 package dev.s7a.animotion.convert.generator
 
-import dev.s7a.animotion.convert.InputPack
+import dev.s7a.animotion.convert.Animotion
 import dev.s7a.animotion.convert.createParts
 import dev.s7a.animotion.convert.data.MinecraftItem
 import dev.s7a.animotion.convert.minecraft.MinecraftAsset
 import dev.s7a.animotion.convert.minecraft.createMinecraftItemFile
+import dev.s7a.animotion.convert.util.createParentDirectory
+import kotlinx.serialization.json.Json
 import java.io.File
 
 class PackGenerator(
-    private val resourcePack: InputPack,
+    private val animotion: Animotion,
 ) {
     fun save(packDirectory: File) {
-        val namespace = resourcePack.animotion.settings.namespace
+        val namespace = animotion.settings.namespace
         val overrides =
             buildList {
-                resourcePack.animotion.models.createParts(namespace).forEach { (model, parts) ->
+                animotion.models.createParts().forEach { (model, parts) ->
                     model.textures.forEachIndexed { index, texture ->
                         val file = MinecraftAsset.Texture.resolve(packDirectory, "${model.name}/$index", namespace)
-                        texture.saveTo(file)
+                        val image = texture.toImage()
+                        file.createParentDirectory()
+                        file.writeBytes(image)
                     }
                     parts.forEachIndexed { index, part ->
-                        part.save(packDirectory, namespace, model.name, index)
+                        val minecraftModel = part.toMinecraftModel(namespace)
+                        val file = MinecraftAsset.Model.resolve(packDirectory, "${model.name}/$index", namespace)
+                        file.createParentDirectory()
+                        file.writeText(Json.encodeToString(minecraftModel))
                         add(
                             MinecraftItem.Override(
                                 MinecraftItem.Override.Predicate(part.customModelData),
@@ -30,6 +37,6 @@ class PackGenerator(
                     }
                 }
             }
-        createMinecraftItemFile(packDirectory, resourcePack.animotion.settings.item, overrides)
+        createMinecraftItemFile(packDirectory, animotion.settings.item, overrides)
     }
 }

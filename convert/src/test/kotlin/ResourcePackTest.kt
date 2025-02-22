@@ -38,7 +38,7 @@ sealed class ResourcePackTest(
     class Robit : ResourcePackTest("robit") {
         @Test
         fun load() {
-            PackGenerator(resourcePack()).run {
+            PackGenerator(resourcePack().animotion).run {
                 save(destination)
                 assertGeneratedPack()
             }
