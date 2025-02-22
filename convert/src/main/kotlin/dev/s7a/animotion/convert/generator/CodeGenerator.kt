@@ -15,10 +15,9 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.joinToCode
 import dev.s7a.animotion.convert.InputPack
+import dev.s7a.animotion.convert.Part
 import dev.s7a.animotion.convert.createParts
-import dev.s7a.animotion.convert.data.animotion.Part
-import dev.s7a.animotion.convert.data.blockbench.Animation
-import dev.s7a.animotion.convert.data.blockbench.Keyframe
+import dev.s7a.animotion.convert.data.BlockbenchModel
 import dev.s7a.animotion.convert.exception.NotFoundPartException
 import dev.s7a.animotion.convert.util.toCamelCase
 import dev.s7a.animotion.convert.util.toPascalCase
@@ -122,9 +121,9 @@ class CodeGenerator(
                             model.animations.map { animation ->
                                 val animationFunName =
                                     when (animation.loop) {
-                                        Animation.LoopType.Loop -> "loopAnimation"
-                                        Animation.LoopType.Once -> "onceAnimation"
-                                        Animation.LoopType.Hold -> "holdAnimation"
+                                        BlockbenchModel.Animation.LoopType.Loop -> "loopAnimation"
+                                        BlockbenchModel.Animation.LoopType.Once -> "onceAnimation"
+                                        BlockbenchModel.Animation.LoopType.Hold -> "holdAnimation"
                                     }
 
                                 PropertySpec
@@ -149,9 +148,15 @@ class CodeGenerator(
                                                         .map { keyframe ->
                                                             val (keyframeFunName, div) =
                                                                 when (keyframe.channel) {
-                                                                    Keyframe.Channel.Rotation -> "rotation" to 1.0
-                                                                    Keyframe.Channel.Position -> "position" to 16.0
-                                                                    Keyframe.Channel.Scale -> "scale" to 1.0
+                                                                    BlockbenchModel.Animation.Animator.Keyframe.Channel.Rotation ->
+                                                                        "rotation" to
+                                                                            1.0
+                                                                    BlockbenchModel.Animation.Animator.Keyframe.Channel.Position ->
+                                                                        "position" to
+                                                                            16.0
+                                                                    BlockbenchModel.Animation.Animator.Keyframe.Channel.Scale ->
+                                                                        "scale" to
+                                                                            1.0
                                                                 }
 
                                                             val point = keyframe.dataPoints[0]

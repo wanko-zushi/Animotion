@@ -1,6 +1,6 @@
 package dev.s7a.animotion.convert
 
-import dev.s7a.animotion.convert.data.minecraft.PackMeta
+import dev.s7a.animotion.convert.data.PackMeta
 import dev.s7a.animotion.convert.exception.UnsupportedPackFormatException
 import kotlinx.serialization.json.Json
 import java.io.File

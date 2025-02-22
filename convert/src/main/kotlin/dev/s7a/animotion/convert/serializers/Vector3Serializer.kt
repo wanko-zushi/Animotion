@@ -1,6 +1,6 @@
 package dev.s7a.animotion.convert.serializers
 
-import dev.s7a.animotion.convert.model.Vector3
+import dev.s7a.animotion.convert.data.Vector3
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer

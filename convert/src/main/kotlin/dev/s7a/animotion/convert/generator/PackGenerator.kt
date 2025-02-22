@@ -2,8 +2,7 @@ package dev.s7a.animotion.convert.generator
 
 import dev.s7a.animotion.convert.InputPack
 import dev.s7a.animotion.convert.createParts
-import dev.s7a.animotion.convert.data.minecraft.item.Override
-import dev.s7a.animotion.convert.data.minecraft.item.Predicate
+import dev.s7a.animotion.convert.data.MinecraftItem
 import dev.s7a.animotion.convert.minecraft.MinecraftAsset
 import dev.s7a.animotion.convert.minecraft.createMinecraftItemFile
 import java.io.File
@@ -22,7 +21,12 @@ class PackGenerator(
                     }
                     parts.forEachIndexed { index, part ->
                         part.save(packDirectory, namespace, model.name, index)
-                        add(Override(Predicate(part.customModelData), "$namespace:${model.name}/$index"))
+                        add(
+                            MinecraftItem.Override(
+                                MinecraftItem.Override.Predicate(part.customModelData),
+                                "$namespace:${model.name}/$index",
+                            ),
+                        )
                     }
                 }
             }

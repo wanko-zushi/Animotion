@@ -1,8 +1,8 @@
 package dev.s7a.animotion.convert
 
 import dev.s7a.animotion.convert.blockbench.isBlockbenchModel
-import dev.s7a.animotion.convert.data.animotion.AnimotionSettings
-import dev.s7a.animotion.convert.data.blockbench.BlockbenchModel
+import dev.s7a.animotion.convert.data.AnimotionSettings
+import dev.s7a.animotion.convert.data.BlockbenchModel
 import java.io.File
 
 data class Animotion(

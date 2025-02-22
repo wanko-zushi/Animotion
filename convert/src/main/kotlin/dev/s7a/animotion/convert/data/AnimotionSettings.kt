@@ -1,4 +1,4 @@
-package dev.s7a.animotion.convert.data.animotion
+package dev.s7a.animotion.convert.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
