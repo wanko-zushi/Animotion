@@ -1,6 +1,6 @@
 package dev.s7a.animotion.convert.data.animotion
 
-import dev.s7a.animotion.convert.data.blockbench.BlockBenchModel
+import dev.s7a.animotion.convert.data.blockbench.BlockbenchModel
 import dev.s7a.animotion.convert.data.blockbench.Element
 import dev.s7a.animotion.convert.data.blockbench.Element.Companion.toMinecraftElements
 import dev.s7a.animotion.convert.data.blockbench.Outliner
@@ -38,7 +38,7 @@ data class Part(
     companion object {
         @OptIn(ExperimentalUuidApi::class)
         fun from(
-            model: BlockBenchModel,
+            model: BlockbenchModel,
             namespace: String,
             customModelData: AtomicInteger,
         ): List<Part> {

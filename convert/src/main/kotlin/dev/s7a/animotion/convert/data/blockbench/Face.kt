@@ -9,7 +9,7 @@ data class Face(
     val uv: List<Double>,
     val texture: Int? = null,
 ) {
-    fun toMinecraftFace(textures: List<dev.s7a.animotion.convert.data.blockbench.Texture>): MinecraftFace =
+    fun toMinecraftFace(textures: List<Texture>): MinecraftFace =
         if (texture == null) {
             MinecraftFace(
                 listOf(0.0, 0.0, 0.0, 0.0),
@@ -25,9 +25,7 @@ data class Face(
         }
 
     companion object {
-        fun Map<FaceType, dev.s7a.animotion.convert.data.blockbench.Face>.toMinecraftFaces(
-            textures: List<dev.s7a.animotion.convert.data.blockbench.Texture>,
-        ): Map<FaceType, MinecraftFace> =
+        fun Map<FaceType, Face>.toMinecraftFaces(textures: List<Texture>): Map<FaceType, MinecraftFace> =
             mapValues { (_, value) ->
                 value.toMinecraftFace(textures)
             }
