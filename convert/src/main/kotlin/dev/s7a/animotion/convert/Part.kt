@@ -16,8 +16,8 @@ data class Part(
     val uuid: Uuid,
     val origin: Vector3,
     val rotation: Vector3,
-    val parts: List<Part>,
-    val children: List<Uuid>,
+    val children: List<Part>,
+    val elements: List<Uuid>,
 ) {
     fun toMinecraftModel(namespace: String): MinecraftModel {
         val elementByUuid = model.elements.associateBy(BlockbenchModel.Element::uuid)
@@ -26,7 +26,7 @@ data class Part(
         return MinecraftModel(
             textureSize,
             textures,
-            children
+            elements
                 .mapNotNull(elementByUuid::get)
                 .map { element ->
                     val (angle, axis) = getElementRotation(element.rotation - rotation)

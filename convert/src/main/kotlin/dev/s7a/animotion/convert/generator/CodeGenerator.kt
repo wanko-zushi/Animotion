@@ -16,7 +16,6 @@ import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.joinToCode
 import dev.s7a.animotion.convert.InputPack
 import dev.s7a.animotion.convert.Part
-import dev.s7a.animotion.convert.createParts
 import dev.s7a.animotion.convert.data.BlockbenchModel
 import dev.s7a.animotion.convert.exception.NotFoundPartException
 import dev.s7a.animotion.convert.util.toCamelCase
@@ -40,7 +39,7 @@ class CodeGenerator(
         val ktLintRuleEngine = KtLintRuleEngine(StandardRuleSetProvider().getRuleProviders())
 
         parent.mkdirs()
-        resourcePack.animotion.models.createParts().forEach { (model, parts) ->
+        resourcePack.animotion.parts.forEach { (model, parts) ->
             val className = model.name.toPascalCase()
             val file = parent.resolve("$className.kt")
             val partByUuid = mutableMapOf<Uuid, Part>()
@@ -99,13 +98,13 @@ class CodeGenerator(
                                     .build()
                             },
                         ).run {
-                            if (parts.all { it.parts.isEmpty() }) {
+                            if (parts.all { it.children.isEmpty() }) {
                                 this
                             } else {
                                 addInitializerBlock(
                                     buildCodeBlock {
                                         parts.forEach { part ->
-                                            val children = part.parts
+                                            val children = part.children
                                             if (children.isNotEmpty()) {
                                                 addStatement(
                                                     "%N.children(%L)",

@@ -1,7 +1,6 @@
 package dev.s7a.animotion.convert.generator
 
 import dev.s7a.animotion.convert.Animotion
-import dev.s7a.animotion.convert.createParts
 import dev.s7a.animotion.convert.data.MinecraftItem
 import dev.s7a.animotion.convert.minecraft.MinecraftAsset
 import dev.s7a.animotion.convert.minecraft.createMinecraftItemFile
@@ -16,7 +15,7 @@ class PackGenerator(
         val namespace = animotion.settings.namespace
         val overrides =
             buildList {
-                animotion.models.createParts().forEach { (model, parts) ->
+                animotion.parts.forEach { (model, parts) ->
                     model.textures.forEachIndexed { index, texture ->
                         val file = MinecraftAsset.Texture.resolve(packDirectory, "${model.name}/$index", namespace)
                         val image = texture.toImage()
