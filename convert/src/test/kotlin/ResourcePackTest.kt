@@ -31,6 +31,9 @@ sealed class ResourcePackTest(
                 assertFileContent(it, files.remove(it.toRelativeString(expected)) ?: fail("File $it does not exist"))
             }
         if (files.isNotEmpty()) {
+            files.forEach { (path, file) ->
+                file.copyTo(expected.resolve(path))
+            }
             fail("File is not generated: ${files.keys}")
         }
     }

@@ -22,7 +22,7 @@ data class Part(
     fun toMinecraftModel(namespace: String): MinecraftModel {
         val elementByUuid = model.elements.associateBy(BlockbenchModel.Element::uuid)
         val textureSize = listOf(model.resolution.width, model.resolution.height)
-        val textures = model.textures.indices.associate { "$it" to "$namespace:${model.name}/$it" }
+        val textures = model.textures.indices.associate { "$it" to "$namespace:item/${model.name}/$it" }
         return MinecraftModel(
             textureSize,
             textures,
