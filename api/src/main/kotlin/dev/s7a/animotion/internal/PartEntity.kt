@@ -172,6 +172,11 @@ internal class PartEntity(
                                 EntityDataTypes.INT,
                                 0,
                             ),
+                            EntityData(
+                                Field.TELEPORT_DURATION,
+                                EntityDataTypes.INT,
+                                1,
+                            ),
                         ),
                     ),
                 )
@@ -256,7 +261,6 @@ internal class PartEntity(
                             )
                         }
 
-                        add(EntityData(Field.TELEPORT_DURATION, EntityDataTypes.INT, 1))
                         add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 1))
                     }
 
