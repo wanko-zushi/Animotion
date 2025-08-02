@@ -8,10 +8,16 @@ import java.io.File
 @Serializable
 data class AnimotionSettings(
     val namespace: String = "animotion",
-    val item: String = "stick",
     @SerialName("package")
     val packageName: String = "",
+    val item: Item? = Item(),
+    val itemModel: Boolean = true,
 ) {
+    @Serializable
+    data class Item(
+        val material: String = "stick",
+    )
+
     companion object {
         private val json =
             Json {

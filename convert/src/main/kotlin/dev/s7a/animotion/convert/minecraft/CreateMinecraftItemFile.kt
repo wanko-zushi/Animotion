@@ -10,7 +10,7 @@ fun createMinecraftItemFile(
     item: String,
     overrides: List<MinecraftItem.Override>,
 ) {
-    val file = MinecraftAsset.ItemModel.resolve(packDirectory, item)
+    val file = MinecraftAsset.ModelItem.resolve(packDirectory, item)
     file.createParentDirectory()
     file.writeText(
         Json.encodeToString(
