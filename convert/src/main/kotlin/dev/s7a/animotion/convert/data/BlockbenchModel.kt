@@ -22,7 +22,7 @@ data class BlockbenchModel(
     val elements: List<Element>,
     val outliner: List<Outliner>,
     val textures: List<Texture>,
-    val animations: List<Animation>,
+    val animations: List<Animation> = listOf(),
 ) {
     @Serializable
     data class Meta(
@@ -35,6 +35,9 @@ data class BlockbenchModel(
         enum class ModelFormat {
             @SerialName("free")
             Free,
+
+            @SerialName("java_block")
+            JavaBlock,
         }
     }
 
