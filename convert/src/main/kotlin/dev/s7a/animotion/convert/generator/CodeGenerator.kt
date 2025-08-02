@@ -70,7 +70,7 @@ class CodeGenerator(
                                         "part(\n%L)",
                                         buildList {
                                             // item_model
-                                            add(CodeBlock.of("%S", "${resourcePack.animotion.settings.namespace}:${model.name}_$index"))
+                                            add(CodeBlock.of("%S", "${resourcePack.animotion.settings.namespace}:${model.name}/$index"))
 
                                             // CustomModelData
                                             add(CodeBlock.of("%L", part.customModelData))
