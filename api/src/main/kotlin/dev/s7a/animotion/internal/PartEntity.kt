@@ -9,7 +9,6 @@ import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.nbt.NBTInt
 import com.github.retrooper.packetevents.resources.ResourceLocation
 import com.github.retrooper.packetevents.util.Quaternion4f
-import com.github.retrooper.packetevents.util.Vector3d
 import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata
@@ -114,16 +113,14 @@ internal class PartEntity(
             player,
             WrapperPlayServerEntityTeleport(
                 entityId,
-                location
-                    .clone()
-                    .add(
+                SpigotConversionUtil.fromBukkitLocation(
+                    location.clone().add(
                         part.position
                             .multiply(part.model.baseScale)
                             .multiply(-1, 1, -1)
                             .rotateFromLocation(location),
-                    ).vector3d(),
-                0F,
-                0F,
+                    ),
+                ),
                 false,
             ),
         )
@@ -298,8 +295,6 @@ internal class PartEntity(
             .build()
 
     private fun Location.add(other: Vector3) = clone().add(other.x, other.y, other.z)
-
-    private fun Location.vector3d() = Vector3d(x, y, z)
 
     private fun Vector3.vector3f() = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
