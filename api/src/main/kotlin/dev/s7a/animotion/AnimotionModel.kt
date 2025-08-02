@@ -124,6 +124,21 @@ abstract class AnimotionModel(
     }
 
     /**
+     * Teleports all model parts to a new location for the specified player.
+     *
+     * @param player The player for whom the model parts will be teleported.
+     * @param location The new location where the model parts will be moved to.
+     */
+    fun teleport(
+        player: Player,
+        location: Location,
+    ) {
+        parts.forEach { part ->
+            part.entity.teleport(player, location)
+        }
+    }
+
+    /**
      * Removes all model parts for the specified player.
      *
      * @param player The player from whom the model parts will be removed.
