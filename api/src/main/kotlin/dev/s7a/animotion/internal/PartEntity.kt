@@ -1,11 +1,13 @@
 package dev.s7a.animotion.internal
 
+import com.github.retrooper.packetevents.protocol.component.ComponentTypes
+import com.github.retrooper.packetevents.protocol.component.builtin.item.ItemModel
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes
 import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.nbt.NBTInt
-import com.github.retrooper.packetevents.protocol.nbt.NBTString
+import com.github.retrooper.packetevents.resources.ResourceLocation
 import com.github.retrooper.packetevents.util.Quaternion4f
 import com.github.retrooper.packetevents.util.Vector3f
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities
@@ -266,7 +268,7 @@ internal class PartEntity(
             .builder()
             .type(
                 SpigotConversionUtil.fromBukkitItemMaterial(part.model.animotion.material),
-            ).nbt("minecraft:item_model", NBTString(itemModel))
+            ).component(ComponentTypes.ITEM_MODEL, ItemModel(ResourceLocation(itemModel)))
             .nbt("CustomModelData", NBTInt(customModelData))
             .build()
 
