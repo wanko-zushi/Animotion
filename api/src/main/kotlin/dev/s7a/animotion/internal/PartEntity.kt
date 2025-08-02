@@ -256,6 +256,7 @@ internal class PartEntity(
                             )
                         }
 
+                        add(EntityData(Field.TELEPORT_DURATION, EntityDataTypes.INT, 1))
                         add(EntityData(Field.INTERPOLATION_DURATION, EntityDataTypes.INT, 1))
                     }
 
@@ -328,6 +329,7 @@ internal class PartEntity(
     private object Field {
         // https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display
         const val INTERPOLATION_DURATION = 9
+        const val TELEPORT_DURATION = 10
         const val TRANSLATION = 11
         const val SCALE = 12
         const val LEFT_ROTATION = 13
