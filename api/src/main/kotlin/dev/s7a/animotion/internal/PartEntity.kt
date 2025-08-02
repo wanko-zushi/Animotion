@@ -266,7 +266,7 @@ internal class PartEntity(
             .builder()
             .type(
                 SpigotConversionUtil.fromBukkitItemMaterial(part.model.animotion.material),
-            ).nbt("item_model", NBTString(itemModel))
+            ).nbt("minecraft:item_model", NBTString(itemModel))
             .nbt("CustomModelData", NBTInt(customModelData))
             .build()
 
