@@ -3,7 +3,7 @@
 kotlin = "2.2.21"
 kotlinter = "5.2.0"
 kotlinx-kover = "0.9.3"
-git-version = "4.1.0"
+git-version = "4.2.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
 minecraft-server = "4.0.0"
