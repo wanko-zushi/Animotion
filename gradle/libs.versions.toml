@@ -6,7 +6,7 @@ kotlinx-kover = "0.9.4"
 git-version = "4.2.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
-minecraft-server = "4.0.1"
+minecraft-server = "4.0.2"
 
 # Libraries
 kotlinx-serialization = "1.9.0"
