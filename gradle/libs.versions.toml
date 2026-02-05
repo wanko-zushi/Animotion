@@ -2,7 +2,7 @@
 # Plugins
 kotlin = "2.3.0"
 kotlinter = "5.2.0"
-kotlinx-kover = "0.9.5"
+kotlinx-kover = "0.9.6"
 git-version = "4.3.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
