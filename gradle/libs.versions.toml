@@ -7,6 +7,8 @@ git-version = "4.3.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
 minecraft-server = "4.0.2"
+dokka = "2.1.0"
+mavenPublish = "0.35.0"
 
 # Libraries
 kotlinx-serialization = "1.10.0"
@@ -38,3 +40,6 @@ git-version = { id = "com.palantir.git-version", version.ref = "git-version" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 plugin-yml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "plugin-yml" }
 minecraft-server = { id = "dev.s7a.gradle.minecraft.server", version.ref = "minecraft-server" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
