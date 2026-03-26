@@ -7,7 +7,7 @@ git-version = "5.0.0"
 shadow = "8.1.1"
 plugin-yml = "0.6.0"
 minecraft-server = "4.0.2"
-dokka = "2.1.0"
+dokka = "2.2.0"
 mavenPublish = "0.36.0"
 
 # Libraries
