@@ -12,7 +12,7 @@ mavenPublish = "0.36.0"
 
 # Libraries
 kotlinx-serialization = "1.10.0"
-kotlinpoet = "2.2.0"
+kotlinpoet = "2.3.0"
 clikt = "5.1.0"
 ktlint = "1.8.0"
 slf4j = "2.0.17"
