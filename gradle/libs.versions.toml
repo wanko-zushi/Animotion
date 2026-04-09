@@ -11,7 +11,7 @@ dokka = "2.2.0"
 mavenPublish = "0.36.0"
 
 # Libraries
-kotlinx-serialization = "1.10.0"
+kotlinx-serialization = "1.11.0"
 kotlinpoet = "2.3.0"
 clikt = "5.1.0"
 ktlint = "1.8.0"
