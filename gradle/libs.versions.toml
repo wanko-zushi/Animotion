@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 kotlinter = "5.2.0"
 kotlinx-kover = "0.9.8"
 git-version = "5.0.0"
